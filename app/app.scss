@@ -1,0 +1,22 @@
+// NativeScript core theme
+// @see https://docs.nativescript.org/ui/theme
+@import '~@nativescript/theme/core';
+
+// Override variables here
+
+// Global SCSS styling
+// @see https://docs.nativescript.org/ui/styling
+
+Page {
+	font-family: 'Orkney-Regular';
+}
+.orkm {
+	font-family: 'Orkney-Medium';
+}
+.orkb {
+	font-family: 'Orkney-Bold';
+}
+.bx {
+	font-family: 'boxicons';
+	font-size: 24;
+}
