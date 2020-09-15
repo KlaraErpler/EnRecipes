@@ -35,6 +35,7 @@
 import { Menu } from "nativescript-menu"
 import * as permissions from "nativescript-permissions"
 export default {
+  props: ["highlight"],
   data() {
     return {
       icon: {
@@ -75,6 +76,7 @@ export default {
   },
   methods: {
     selectThemes(args) {
+      this.highlight(args)
       let btn = args.object
       Menu.popup({
         view: btn,
@@ -89,6 +91,7 @@ export default {
         .catch(console.log)
     },
     selectBackupDir(args) {
+      this.highlight(args)
       let btn = args.object
       permissions
         .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -101,6 +104,7 @@ export default {
     },
     backupData(args) {
       let btn = args.object
+      this.highlight(args)
       permissions
         .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         .then(() => {
@@ -112,6 +116,7 @@ export default {
     },
     restoreData(args) {
       let btn = args.object
+      this.highlight(args)
       permissions
         .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         .then(() => {
@@ -125,6 +130,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.option-highlight {
+  background-color: #eeeeee;
+}
 .group-header {
   padding: 12;
   color: #ff7043;

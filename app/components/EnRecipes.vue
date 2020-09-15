@@ -1,7 +1,50 @@
 <template>
   <AbsoluteLayout>
     <ScrollView scrollBarIndicatorVisible="false" width="100%" height="100%">
-      <StackLayout>
+      <StackLayout v-if="filteredRecipes.length">
+        <!-- <RadListView
+          ref="listView"
+          for="item in filteredRecipes"
+          swipeActions="true"
+          @itemSwipeProgressStarted="onSwipeStarted"
+        >
+          <v-template>
+            <StackLayout class="item p-t-10" orientation="vertical">
+              <Label :text="item.name" class="nameLabel"></Label>
+              <Label :text="item.description" class="descriptionLabel"></Label>
+            </StackLayout>
+          </v-template>
+          <v-template name="itemswipe">
+            <GridLayout columns="auto, *, auto" backgroundColor="White">
+              <StackLayout
+                id="mark-view"
+                col="0"
+                class="swipe-item left"
+                orientation="horizontal"
+                @tap="onLeftSwipeClick"
+              >
+                <Label
+                  text="mark"
+                  verticalAlignment="center"
+                  horizontalAlignment="center"
+                />
+              </StackLayout>
+              <StackLayout
+                id="delete-view"
+                col="2"
+                class="swipe-item right"
+                orientation="horizontal"
+                @tap="onRightSwipeClick"
+              >
+                <Label
+                  text="delete"
+                  verticalAlignment="center"
+                  horizontalAlignment="center"
+                />
+              </StackLayout>
+            </GridLayout>
+          </v-template>
+        </RadListView>-->
         <GridLayout
           v-for="recipe in filteredRecipes"
           :key="recipe.id"
@@ -24,6 +67,16 @@
         </GridLayout>
         <StackLayout height="128"></StackLayout>
       </StackLayout>
+      <Label
+        v-else
+        class="recipe-list-item"
+        horizontalAlignment="center"
+        :text="
+          `Your search '${searchQuery}' did not match any recipes in this category.`
+        "
+        textAlignment="center"
+        textWrap="true"
+      />
     </ScrollView>
     <GridLayout id="btnFabContainer" rows="*,88" columns="*,88">
       <Label
@@ -58,15 +111,20 @@ export default {
       }, {})
     },
     filteredRecipes() {
-      if (this.selectedCategory)
-        return this.recipesByCategory[this.selectedCategory]
-      else {
+      if (this.selectedCategory) {
+        return this.recipesByCategory[this.selectedCategory].filter((e) => {
+          if (e.title.toLowerCase().includes(this.searchQuery)) return e
+        })
+      } else if (this.filterFavorites) {
+        console.log("fav")
         return this.recipes.filter((e) => {
-          if (this.filterFavorites) {
-            if (e.isFavorite) return e
-          } else {
+          if (e.isFavorite) {
             if (e.title.toLowerCase().includes(this.searchQuery)) return e
           }
+        })
+      } else {
+        return this.recipes.filter((e) => {
+          if (e.title.toLowerCase().includes(this.searchQuery)) return e
         })
       }
     },

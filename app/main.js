@@ -1,5 +1,6 @@
 import Vue from "nativescript-vue"
 import App from "./components/App"
+// import RadListView from "nativescript-ui-listview/vue"
 
 Vue.registerElement(
   "CheckBox",
@@ -11,6 +12,7 @@ Vue.registerElement(
     },
   }
 )
+// Vue.use('RadListView')
 // import VueDevtools from 'nativescript-vue-devtools'
 
 // import { TNSFontIcon, fonticon } from 'nativescript-fonticon'

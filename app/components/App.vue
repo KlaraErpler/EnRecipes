@@ -55,7 +55,9 @@
               :key="index"
               orientation="horizontal"
               class="drawer-item orkm"
-              :class="{ 'selected-drawer-item': selectedCategory == item }"
+              :class="{
+                'selected-drawer-item': selectedCategory == item,
+              }"
             >
               <Label class="bx" :text="icon.label" margin="0 24 0 0" />
               <Label :text="item" />
@@ -71,7 +73,9 @@
             :key="index"
             orientation="horizontal"
             class="drawer-item orkm"
-            :class="{ 'selected-drawer-item': currentComponent == item.title }"
+            :class="{
+              'selected-drawer-item': currentComponent == item.title,
+            }"
           >
             <Label class="bx" :text="item.icon" margin="0 24 0 0" />
             <Label :text="item.title" />
@@ -127,7 +131,7 @@
                   col="1"
                 />
                 <Label
-                  v-if="!filterFavorites && currentComponent == 'EnRecipes'"
+                  v-if="currentComponent == 'EnRecipes'"
                   color="#000000"
                   class="bx"
                   :text="icon.search"
@@ -156,6 +160,7 @@
                 :selectedCategory="selectedCategory"
                 :searchQuery="searchQuery"
                 :filterFavorites="filterFavorites"
+                :highlight="highlight"
               />
             </GridLayout>
           </Page>
@@ -288,6 +293,14 @@ export default {
     },
   },
   methods: {
+    highlight(args) {
+      console.log(args.object.className)
+      let temp = args.object.className
+      args.object.className = `${temp} option-highlight`
+      setTimeout(() => {
+        args.object.className = temp
+      }, 100)
+    },
     setSelectedCategory(e) {
       this.selectedCategory = e.item
       console.log(e)
