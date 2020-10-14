@@ -14,16 +14,25 @@
       "version": "6.5.0"
     }
   },
+  "scripts": {
+    "run": "tns run"
+  },
   "dependencies": {
     "@nativescript/theme": "^2.2.1",
     "@nstudio/nativescript-checkbox": "^1.0.0",
+    "@vue/devtools": "^5.3.3",
+    "nativescript-camera": "^4.5.0",
+    "nativescript-datetimepicker": "^1.2.3",
     "nativescript-fonticon": "^2.0.2",
+    "nativescript-mediafilepicker": "^4.0.0",
     "nativescript-menu": "^1.1.6",
     "nativescript-permissions": "^1.3.9",
-    "nativescript-popup": "^1.5.0",
-    "nativescript-ui-listview": "^9.0.2",
+    "nativescript-socketio": "^3.3.1",
+    "nativescript-toasty": "^3.0.0-alpha.2",
+    "nativescript-ui-listview": "^8.2.0",
     "nativescript-ui-sidedrawer": "^8.0.1",
     "nativescript-vue": "^2.6.1",
+    "nativescript-vue-devtools": "^1.4.0",
     "tns-core-modules": "^6.5.1",
     "vuex": "^3.3.0"
   },

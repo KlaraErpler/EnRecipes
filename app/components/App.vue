@@ -3,7 +3,7 @@
     <RadSideDrawer
       ref="drawer"
       allowEdgeSwipe="true"
-      drawerContentSize="300"
+      drawerContentSize="270"
       showOverNavigation="true"
       gesturesEnabled="true"
       drawerTransition="RevealTransition"
@@ -12,55 +12,59 @@
         rows="auto, auto, *, auto, auto"
         columns="*"
         ~drawerContent
-        backgroundColor="#ffffff"
         padding="8"
+        class="sd"
       >
         <StackLayout row="0">
           <StackLayout
-            @tap="navigateTo('EnRecipes', true, false)"
+            @tap="localNavigation('EnRecipes', 'EnRecipes', true, false)"
             orientation="horizontal"
-            class="drawer-item orkm"
+            class="sd-item orkm"
             :class="{
-              'selected-drawer-item':
-                currentComponent == 'EnRecipes' &&
+              'selected-sd-item':
+                currentComponent === 'EnRecipes' &&
                 !filterFavorites &&
                 !selectedCategory,
             }"
           >
             <Label class="bx" :text="icon.home" margin="0 24 0 0" />
-            <Label text="Home" />
+            <Label verticalAlignment="center" text="Home" />
           </StackLayout>
           <StackLayout
-            @tap="navigateTo('Favorites', true, false)"
+            @tap="localNavigation('Favorites', 'Favorites', true, false)"
             orientation="horizontal"
-            class="drawer-item orkm"
-            :class="{ 'selected-drawer-item': filterFavorites }"
+            class="sd-item orkm"
+            :class="{
+              'selected-sd-item':
+                currentComponent === 'EnRecipes' && filterFavorites,
+            }"
           >
             <Label class="bx" :text="icon.heart" margin="0 24 0 0" />
-            <Label text="Favorites" />
+            <Label verticalAlignment="center" text="Favorites" />
           </StackLayout>
         </StackLayout>
         <StackLayout
           orientation="horizontal"
           row="1"
-          class="drawer-group-header orkr"
+          class="sd-group-header orkr"
         >
           <Label text="Categories" />
         </StackLayout>
-        <ScrollView row="2">
+        <ScrollView row="2" scrollBarIndicatorVisible="false">
           <StackLayout>
             <StackLayout
-              @tap="navigateTo(item, false, true)"
+              @tap="localNavigation(item, item, false, true)"
               v-for="(item, index) in categories"
               :key="index"
               orientation="horizontal"
-              class="drawer-item orkm"
+              class="sd-item orkm"
               :class="{
-                'selected-drawer-item': selectedCategory == item,
+                'selected-sd-item':
+                  currentComponent === 'EnRecipes' && selectedCategory == item,
               }"
             >
               <Label class="bx" :text="icon.label" margin="0 24 0 0" />
-              <Label :text="item" />
+              <Label verticalAlignment="center" :text="item" />
             </StackLayout>
           </StackLayout>
         </ScrollView>
@@ -68,102 +72,30 @@
         <StackLayout row="3" class="hr m-10"></StackLayout>
         <StackLayout row="4">
           <StackLayout
-            @tap="navigateTo(item.title, false, false)"
+            @tap="navigateTo(item.component, item.title)"
             v-for="(item, index) in bottommenu"
             :key="index"
             orientation="horizontal"
-            class="drawer-item orkm"
+            class="sd-item orkm"
             :class="{
-              'selected-drawer-item': currentComponent == item.title,
+              'selected-sd-item': currentComponent == item.title,
             }"
           >
-            <Label class="bx" :text="item.icon" margin="0 24 0 0" />
-            <Label :text="item.title" />
+            <Label class="bx" :text="icon[item.icon]" margin="0 24 0 0" />
+            <Label verticalAlignment="center" :text="item.title" />
           </StackLayout>
         </StackLayout>
       </GridLayout>
 
       <GridLayout ~mainContent rows="*" columns="*">
-        <Frame ref="page">
-          <Page>
-            <ActionBar margin="0" flat="true" row="0" col="0">
-              <GridLayout v-if="showSearch" rows="auto" columns="auto, *">
-                <Label
-                  color="#000000"
-                  class="bx"
-                  padding="16 16 16 8"
-                  margin="0"
-                  :text="icon.back"
-                  automationText="Back"
-                  col="0"
-                  @tap="closeSearch"
-                />
-                <SearchBar
-                  @loaded="searchBarLoaded()"
-                  id="searchField"
-                  col="1"
-                  hint="Search"
-                  textFieldHintColor="#555555"
-                  v-model="searchQuery"
-                />
-              </GridLayout>
-              <GridLayout
-                v-else
-                rows="auto"
-                columns="auto, *, auto, auto"
-                margin="0"
-                padding="0"
-              >
-                <Label
-                  color="#000000"
-                  class="bx"
-                  padding="16 16 16 8"
-                  margin="0"
-                  :text="icon.menu"
-                  automationText="Menu"
-                  @tap="$refs.drawer.nativeView.showDrawer()"
-                  col="0"
-                />
-                <Label
-                  color="#000000"
-                  class="title orkm"
-                  :text="title"
-                  col="1"
-                />
-                <Label
-                  v-if="currentComponent == 'EnRecipes'"
-                  color="#000000"
-                  class="bx"
-                  :text="icon.search"
-                  col="2"
-                  @tap="showSearch = true"
-                />
-                <Label
-                  v-if="currentComponent == 'EnRecipes'"
-                  color="#000000"
-                  class="bx"
-                  :text="icon.sort"
-                  @tap="sortTapped"
-                  col="3"
-                />
-              </GridLayout>
-            </ActionBar>
-            <GridLayout rows="*" columns="*">
-              <component
-                row="0"
-                col="0"
-                v-for="(component, index) in componentsArray"
-                v-show="component === currentComponent"
-                :key="index"
-                :is="component"
-                :recipes="recipes"
-                :selectedCategory="selectedCategory"
-                :searchQuery="searchQuery"
-                :filterFavorites="filterFavorites"
-                :highlight="highlight"
-              />
-            </GridLayout>
-          </Page>
+        <Frame id="main-frame">
+          <!-- Home  -->
+          <EnRecipes
+            :selectedCategory="selectedCategory"
+            :filterFavorites="filterFavorites"
+            :title="title"
+            :showDrawer="showDrawer"
+          />
         </Frame>
       </GridLayout>
     </RadSideDrawer>
@@ -174,14 +106,12 @@
 import * as utils from "tns-core-modules/utils/utils"
 import { isAndroid } from "tns-core-modules/platform"
 import * as application from "tns-core-modules/application"
-import { Label } from "tns-core-modules/ui/label"
 
-import { Menu } from "nativescript-menu"
-import { Popup } from "nativescript-popup"
+import EnRecipes from "./EnRecipes.vue"
+import Settings from "./Settings.vue"
+import About from "./About.vue"
 
-import EnRecipes from "./EnRecipes"
-import Settings from "./Settings"
-import About from "./About"
+import { mapState } from "vuex"
 
 let page
 export default {
@@ -193,98 +123,27 @@ export default {
   data() {
     return {
       title: "EnRecipes",
-      currentComponent: "EnRecipes",
-      componentsArray: ["EnRecipes", "Settings", "About"],
       selectedCategory: null,
       filterFavorites: false,
       searchQuery: "",
       showSearch: false,
-      icon: {
-        menu: "\ueb2a",
-        home: "\ued99",
-        heart: "\ued94",
-        search: "\uebbc",
-        sort: "\ueb2b",
-        cog: "\ued05",
-        info: "\ueda7",
-        label: "\uedaf",
-        plus: "\ueb89",
-        close: "\uec4e",
-        back: "\ue988",
-      },
-      topmenu: [
-        {
-          title: "EnRecipes",
-          icon: "\ued99",
-        },
-        {
-          title: "Favorites",
-          icon: "\ued94",
-        },
-      ],
+      currentComponent: "EnRecipes",
       bottommenu: [
         {
           title: "Settings",
-          icon: "\ued05",
+          component: Settings,
+          icon: "cog",
         },
         {
           title: "About",
-          icon: "\ueda7",
-        },
-      ],
-      recipes: [
-        {
-          id: 1,
-          img: "",
-          category: "Salads",
-          title: "Mediterranean Salad",
-          time: "30m",
-          isFavorite: true,
-        },
-        {
-          id: 2,
-          img: "",
-          category: "Sauces",
-          title: "Fresh Tomato Sauce",
-          time: "45m",
-          isFavorite: false,
-        },
-        {
-          id: 3,
-          img: "",
-          category: "Lunch",
-          title: "Creamy Mushroom Herb Pasta Creamy Mushroom Herb Pasta",
-          time: "30m",
-          isFavorite: false,
-        },
-        {
-          id: 4,
-          img: "",
-          category: "Lunch",
-          title: "Grilled Cheese Sandwich",
-          time: "20m",
-          isFavorite: false,
-        },
-        {
-          id: 5,
-          img: "",
-          category: "Lunch",
-          title: "Creamy Mushroom Herb Pasta Creamy Mushroom Herb Pasta",
-          time: "30m",
-          isFavorite: false,
-        },
-        {
-          id: 6,
-          img: "",
-          category: "Lunch",
-          title: "Grilled Cheese Sandwich",
-          time: "20m",
-          isFavorite: false,
+          component: About,
+          icon: "info",
         },
       ],
     }
   },
   computed: {
+    ...mapState(["recipes", "icon"]),
     categories() {
       let arr = this.recipes.map((e) => {
         return e.category
@@ -294,29 +153,17 @@ export default {
   },
   methods: {
     highlight(args) {
-      console.log(args.object.className)
       let temp = args.object.className
       args.object.className = `${temp} option-highlight`
       setTimeout(() => {
         args.object.className = temp
       }, 100)
     },
+
+    // Navigation
     setSelectedCategory(e) {
       this.selectedCategory = e.item
-      console.log(e)
       this.closeDrawer()
-    },
-    // SearchBar
-    closeSearch() {
-      this.searchQuery = ""
-      this.showSearch = false
-      utils.ad.dismissSoftInput()
-    },
-    searchBarLoaded() {
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
-        this.backEvent
-      )
     },
     removeBackEvent() {
       application.android.off(
@@ -324,158 +171,99 @@ export default {
         this.backEvent
       )
     },
-
-    // Sort
-    sortTapped(args) {
-      let anchor = args.object
-      const popup = new Popup({
-        backgroundColor: "white" | "#fff",
-        height: 100,
-        width: 100,
-        unit: "dp" | "px" | "%",
-        elevation: 10, // android only
-        borderRadius: 25, // android only
-      })
-      const View = new Label()
-      View.text = "Test"
-
-      popup.showPopup(anchor, View)
-    },
-
-    // Navigation
     backEvent(args) {
-      if (this.showSearch) {
-        args.cancel = true
-        this.closeSearch()
-        this.removeBackEvent()
-      } else if (
-        this.currentComponent !== "EnRecipes" ||
-        this.filterFavorites
-      ) {
-        args.cancel = true
-        console.log("backEvent")
+      args.cancel = true
+      if (this.$refs.drawer.nativeView.getIsOpen()) this.closeDrawer()
+      else if (this.currentComponent !== "EnRecipes") {
+        this.$navigateBack({ frame: "main-frame" })
         this.currentComponent = "EnRecipes"
-        this.filterFavorites = false
+      } else if (this.filterFavorites || this.selectedCategory) {
         this.title = "EnRecipes"
+        this.filterFavorites = false
+        this.selectedCategory = null
         this.removeBackEvent()
       }
     },
-    navigateBackToHome() {
+    localNavigation(to, title, filter, filterCategory) {
+      // navigateBackToHome
       application.android.on(
         application.AndroidApplication.activityBackPressedEvent,
         this.backEvent
       )
-      console.log("navigateBackToHome")
-    },
-    navigateTo(to, filter, filterCategory) {
-      this.navigateBackToHome()
+      if (this.currentComponent !== "EnRecipes") {
+        this.currentComponent = "EnRecipes"
+        this.$navigateBack({ frame: "main-frame" })
+      }
       this.filterFavorites = false
       this.selectedCategory = null
-      this.title = to
+      this.title = title
+      console.log(title)
       if (filter) {
-        this.currentComponent = "EnRecipes"
-        if (to === "Favorites") {
-          this.filterFavorites = true
-        }
-      } else if (filterCategory) {
-        this.currentComponent = "EnRecipes"
-        this.selectedCategory = to
-      } else {
-        this.currentComponent = to
-      }
+        if (to === "Favorites") this.filterFavorites = true
+      } else if (filterCategory) this.selectedCategory = to
+      if (!this.filterFavorites && !this.selectedCategory)
+        this.removeBackEvent()
       this.closeDrawer()
     },
+    navigateTo(to, title) {
+      this.currentComponent = title
+      this.$navigateTo(to, {
+        frame: "main-frame",
+        // transition: {
+        //   name: "slide",
+        //   duration: 250,
+        //   curve: "easeIn",
+        // },
+        props: {
+          highlight: this.highlight,
+          viewIsScrolled: this.viewIsScrolled,
+          showDrawer: this.showDrawer,
+          title,
+        },
+        backstackVisible: false,
+      })
+      this.closeDrawer()
+    },
+    showDrawer() {
+      this.$refs.drawer.nativeView.showDrawer()
+    },
     closeDrawer() {
-      this.$refs.drawer.nativeView.toggleDrawerState()
+      this.$refs.drawer.nativeView.closeDrawer()
     },
   },
 }
 </script>
 
 <style lang="scss">
-ActionBar {
-  background: white;
-  color: #000000;
-  height: 64;
-  .bx {
-    background: white;
-    padding: 16;
-  }
-}
-SearchBar {
-  background: #fff;
-  color: #333333;
+.noResults {
+  width: 100%;
+  padding: 16;
   font-size: 16;
-  margin-top: 4;
+  line-height: 8;
 }
-.hr {
-  border-color: #eeeeee;
-}
-.title {
-  text-align: left;
-  padding-left: 8;
-  font-size: 20;
+.swipe-item {
+  margin: 0 8;
+  background: #ff7043;
+  color: #fff;
+  height: 128;
+  border-radius: 6;
 }
 
-.message {
-  vertical-align: center;
-  text-align: center;
-  font-size: 20;
-  color: #333333;
-}
-
-.drawer-item {
-  border-radius: 4;
-  padding: 12 16;
-  color: #546e7a;
-  font-size: 16;
-}
-.drawer-group-header {
-  padding: 12;
-  color: #546e7a;
-  font-size: 12;
-}
-.selected-drawer-item {
-  background: #fbe9e7;
-  color: #ff7043;
-}
-.recipe-list-item {
-  background: white;
-  margin: 16 16 0;
-  border-radius: 4;
-  &:last-of-type {
-    margin-bottom: 16;
-  }
-  .recipeCategory {
-    font-size: 14;
-    padding: 0;
-    color: #ff7043;
-  }
-  .recipeTitle {
-    font-size: 16;
-    line-height: 4;
-    // height: 48;
-    // width: 128;
-  }
-  .recipeTime {
-    font-size: 12;
-    color: #546e7a;
-  }
-}
-#categoriesMenu {
-  max-height: 336;
-}
 #btnFabContainer {
   width: 100%;
   height: 100%;
 }
-#btnFab {
+.btnFab {
   width: 56;
   height: 56;
   padding: 16;
   background-color: #ff7043;
-  color: #000;
+  color: #fff;
   border-radius: 28;
   text-align: center;
+}
+// prettier-ignore
+Button {
+  color: #ff7043;
 }
 </style>

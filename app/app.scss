@@ -1,22 +1,370 @@
 // NativeScript core theme
 // @see https://docs.nativescript.org/ui/theme
-@import '~@nativescript/theme/core';
+@import "~@nativescript/theme/core";
 
 // Override variables here
+
+$grayD4: #212121;
+$grayD3: #424242;
+$grayD2: #616161;
+$grayD1: #757575;
+$gray: #9e9e9e;
+$grayL1: #e0e0e0;
+$grayL2: #eeeeee;
+$grayL3: #f5f5f5;
+$grayL4: #fafafa;
+
+$orange: #ff7043;
+$paleOrange: #fbe9e7;
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
 
 Page {
-	font-family: 'Orkney-Regular';
+  font-family: "Orkney-Regular";
 }
 .orkm {
-	font-family: 'Orkney-Medium';
+  font-family: "Orkney-Medium";
 }
 .orkb {
-	font-family: 'Orkney-Bold';
+  font-family: "Orkney-Bold";
 }
 .bx {
-	font-family: 'boxicons';
-	font-size: 24;
+  font-family: "boxicons";
+  font-size: 24;
+}
+
+.ns-light {
+  Page,
+  ActionBar,
+  SearchBar {
+    background: $grayL4;
+    color: $grayD4;
+  }
+  TabView {
+    tab-background-color: $grayL4;
+    tab-text-color: $gray;
+    selected-tab-text-color: $grayD4;
+  }
+  .hr {
+    border-color: $grayL2;
+  }
+  TextField,
+  TextView,
+  TimePickerField {
+    border-color: $gray;
+  }
+  .sd,
+  .fieldLabel {
+    background: $grayL4;
+  }
+  .recipe-li,
+  .option-highlight {
+    background: white;
+  }
+  .sd-item,
+  .sd-group-header,
+  .recipe-time {
+    color: $grayD2;
+  }
+  .selected-sd-item {
+    background: $paleOrange;
+    color: $orange;
+  }
+  .option,
+  .icon-option {
+    .bx,
+    .option-info {
+      color: $grayD2;
+    }
+    .option-title {
+      color: $grayD4;
+    }
+  }
+  .view-imageHolder {
+    background: $grayL2;
+    color: $grayL1;
+  }
+  .view-other {
+    color: $grayD2;
+  }
+  .view-count {
+    color: $grayL4;
+    background: $grayD4;
+  }
+  .view-instruction {
+    border-color: $grayD4;
+  }
+  .instructionWOBorder {
+    border-color: transparent;
+  }
+}
+.ns-dark {
+  Page,
+  ActionBar,
+  SearchBar {
+    background: $grayD4;
+    color: $grayL4;
+  }
+  TabView {
+    tab-background-color: $grayD4;
+    tab-text-color: $gray;
+    selected-tab-text-color: $grayL4;
+  }
+  .hr {
+    border-color: #111;
+  }
+  TextField,
+  TextView,
+  TimePickerField {
+    border-color: $gray;
+  }
+  .sd,
+  .fieldLabel {
+    background: $grayD4;
+  }
+  .recipe-li,
+  .option-highlight {
+    background: $grayD3;
+  }
+  .sd-item,
+  .sd-group-header,
+  .recipe-time {
+    color: $grayL2;
+  }
+  .selected-sd-item {
+    background: $paleOrange;
+    color: $orange;
+  }
+  .option,
+  .icon-option {
+    .bx,
+    .option-info {
+      color: $grayL2;
+    }
+    .option-title {
+      color: $grayL4;
+    }
+  }
+  .view-imageHolder {
+    background: black;
+    color: $grayD4;
+  }
+  .view-other {
+    color: $grayL2;
+  }
+  .view-count {
+    color: $grayD4;
+    background: $grayL4;
+  }
+  .view-instruction {
+    border-color: $grayL4;
+  }
+  .instructionWOBorder {
+    border-color: transparent;
+  }
+}
+
+// Elements
+TextField,
+TextView,
+TimePickerField {
+  border-width: 1;
+  font-size: 15;
+  padding: 16;
+  margin: 8 0 0 0;
+  border-radius: 4;
+  placeholder-color: $gray;
+}
+TextView {
+  line-height: 12;
+}
+.inputField {
+  margin-top: 16;
+}
+.fieldLabel {
+  font-size: 13;
+  margin-left: 8;
+  padding: 0 8;
+}
+
+// ActionBar
+ActionBar {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 64;
+  .bx {
+    padding: 16;
+  }
+  .leftAction {
+    padding: 16 16 16 4;
+    margin: 0;
+  }
+}
+.actionBarContainer {
+  margin: 0;
+  padding: 0;
+}
+SearchBar {
+  font-size: 16;
+  margin-top: 4;
+}
+.title {
+  padding-left: 8;
+  text-align: left;
+  font-size: 18;
+}
+
+// Side Drawer
+.sd-item {
+  border-radius: 4;
+  padding: 12 16;
+  font-size: 14;
+}
+.sd-group-header {
+  padding: 12;
+  font-size: 12;
+}
+
+// Home
+.recipe-li {
+  margin: 8 16;
+  border-radius: 6;
+  .recipe-info {
+    margin: 4 0;
+  }
+  .recipe-cat {
+    padding: 0;
+    margin: 0;
+  }
+  .recipe-title {
+    font-size: 16;
+    line-height: 4;
+    margin: 0;
+    padding: 4 0;
+  }
+  .recipe-time {
+    padding: 0;
+  }
+  .recipe-favorite {
+    font-size: 14;
+    padding: 14 12 0 0;
+  }
+  .recipe-cat,
+  .recipe-favorite {
+    color: $orange;
+  }
+  .recipe-favorite.hide {
+    opacity: 0;
+  }
+}
+
+// Settings
+.group-header {
+  padding: 12;
+  color: #ff7043;
+}
+.main-container {
+  padding: 16 8 128;
+  .option {
+    padding: 16;
+    border-radius: 4;
+    font-size: 16;
+    .bx {
+      margin: 0 24 0 0;
+    }
+
+    .option-info {
+      font-size: 12;
+    }
+  }
+}
+
+// About
+.app-icon-container {
+  margin: 32 0;
+  width: 100%;
+  .app-icon {
+    width: 56;
+    height: 56;
+    margin: 0 6 0 0;
+    padding: 0;
+  }
+  .app-name {
+    font-size: 24;
+  }
+}
+.icon-option {
+  padding: 16;
+  border-radius: 4;
+  .bx {
+    margin: 0 24 0 0;
+  }
+  .option-title {
+    font-size: 16;
+  }
+}
+
+// View Recipe
+
+.view-cat {
+  font-size: 14;
+  color: #ff7043;
+}
+.view-other {
+  font-size: 14;
+}
+.view-title {
+  font-size: 22;
+}
+.view-ingredient {
+  font-size: 14;
+  line-height: 6;
+  margin-top: 12;
+}
+.view-favorited {
+  color: #ff7043;
+}
+
+.view-count {
+  font-size: 10;
+  width: 20;
+  height: 20;
+  padding: 3 0 0;
+  margin-left: 6;
+  text-align: center;
+  border-radius: 100;
+}
+
+.view-instruction,
+.view-note,
+.view-reference {
+  font-size: 14;
+  line-height: 6;
+  padding: 0 0 12 24;
+  margin: 0 0 0 15;
+  border-width: 0 0 0 2;
+}
+
+.view-note {
+  border-width: 0;
+}
+.view-reference {
+  border-width: 0;
+}
+
+// Edit Recipe
+.btnFab {
+  margin: 16;
+}
+.sectionTitle {
+  font-size: 20;
+}
+.sec-btn {
+  font-size: 14;
+  color: #ff7043;
+  text-align: left;
+  padding: 16;
+  margin: 8 0 0 0;
 }

@@ -1,78 +1,104 @@
 <template>
-  <StackLayout class="main-container">
-    <Label text="Interface" class="group-header" />
+  <Page>
+    <ActionBar :flat="viewIsScrolled ? false : true">
+      <!-- Settings Actionbar -->
+      <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
+        <Label
+          class="bx leftAction"
+          :text="icon.menu"
+          automationText="Menu"
+          @tap="showDrawer"
+          col="0"
+        />
+        <Label class="title orkm" :text="title" col="1" />
+      </GridLayout>
+    </ActionBar>
+    <ScrollView scrollBarIndicatorVisible="false">
+      <StackLayout class="main-container">
+        <Label text="Interface" class="group-header" />
 
-    <StackLayout orientation="horizontal" class="option" @tap="selectThemes">
-      <Label verticalAlignment="center" class="bx" :text="icon.theme" />
-      <StackLayout>
-        <Label text="Theme" class="option-title" />
-        <Label :text="themeName" class="option-info" textWrap="true" />
+        <StackLayout
+          orientation="horizontal"
+          class="option"
+          @tap="selectThemes"
+        >
+          <Label verticalAlignment="center" class="bx" :text="icon.theme" />
+          <StackLayout>
+            <Label text="Theme" class="option-title" />
+            <Label :text="themeName" class="option-info" textWrap="true" />
+          </StackLayout>
+        </StackLayout>
+
+        <StackLayout class="hr m-10"></StackLayout>
+
+        <Label text="Backup/Restore" class="group-header" />
+        <StackLayout
+          orientation="horizontal"
+          class="option"
+          @tap="selectBackupDir"
+        >
+          <Label verticalAlignment="center" class="bx" :text="icon.folder" />
+          <StackLayout>
+            <Label text="EnRecipes Backup Directory" class="option-title" />
+            <Label text="/storage/emulated/0/EnRecipes" class="option-info" />
+          </StackLayout>
+        </StackLayout>
+        <StackLayout orientation="horizontal" class="option" @tap="backupData">
+          <Label class="bx" :text="icon.backup" />
+          <Label text="Backup Data" class="option-title" />
+        </StackLayout>
+        <StackLayout orientation="horizontal" class="option" @tap="restoreData">
+          <Label class="bx" :text="icon.restore" />
+          <Label text="Restore Data" class="option-title" />
+        </StackLayout>
       </StackLayout>
-    </StackLayout>
-
-    <StackLayout class="hr m-10"></StackLayout>
-
-    <Label text="Backup/Restore" class="group-header" />
-    <StackLayout orientation="horizontal" class="option" @tap="selectBackupDir">
-      <Label verticalAlignment="center" class="bx" :text="icon.folder" />
-      <StackLayout>
-        <Label text="EnRecipes Backup Directory" class="option-title" />
-        <Label text="/storage/emulated/0/EnRecipes" class="option-info" />
-      </StackLayout>
-    </StackLayout>
-    <StackLayout orientation="horizontal" class="option" @tap="backupData">
-      <Label class="bx" :text="icon.backup" />
-      <Label text="Backup Data" class="option-title" />
-    </StackLayout>
-    <StackLayout orientation="horizontal" class="option" @tap="restoreData">
-      <Label class="bx" :text="icon.restore" />
-      <Label text="Restore Data" class="option-title" />
-    </StackLayout>
-  </StackLayout>
+    </ScrollView>
+  </Page>
 </template>
 
 <script>
 import { Menu } from "nativescript-menu"
 import * as permissions from "nativescript-permissions"
+import * as application from "tns-core-modules/application"
+
+import { getString, setString } from "application-settings"
+import Theme from "@nativescript/theme"
+
+import { mapState, mapActions } from "vuex"
 export default {
-  props: ["highlight"],
+  props: ["highlight", "viewIsScrolled", "showDrawer", "title"],
   data() {
     return {
-      icon: {
-        theme: "\ued09",
-        folder: "\ued7c",
-        backup: "\uee48",
-        restore: "\ueadc",
+      interface: {
+        theme: {
+          title: "Theme",
+          subTitle: "Light",
+          icon: "\ued09",
+        },
       },
-      options: {
-        interface: [
-          {
-            title: "Theme",
-            subTitle: "Light",
-            icon: "\ued09",
-          },
-        ],
-        backupRestore: [
-          {
-            title: "EnRecipes Backup Directory",
-            subTitle: "/storage/emulated/0/EnRecipes",
-            icon: "\ued7c",
-          },
-          {
-            title: "Backup Data",
-            subTitle: null,
-            icon: "\uee48",
-          },
-          {
-            title: "Restore Data",
-            subTitle: null,
-            icon: "\ueadc",
-          },
-        ],
-      },
+      backupRestore: [
+        {
+          title: "EnRecipes Backup Directory",
+          subTitle: "/storage/emulated/0/EnRecipes",
+          icon: "\ued7c",
+        },
+        {
+          title: "Backup Data",
+          subTitle: null,
+          icon: "\uee48",
+        },
+        {
+          title: "Restore Data",
+          subTitle: null,
+          icon: "\ueadc",
+        },
+      ],
       themeName: "Light",
-      themesArray: ["Light", "Dark", "Black"],
+      themesArray: ["Light", "Dark"],
     }
+  },
+  computed: {
+    ...mapState(["icon"]),
   },
   methods: {
     selectThemes(args) {
@@ -83,10 +109,10 @@ export default {
         actions: this.themesArray,
       })
         .then((action) => {
-          if (this.themesArray.includes(action.title)) {
-            this.options.interface[0].subTitle = this.themeName = action.title
-          }
-          //   alert(action.id + " - " + action.title)
+          this.interface.theme.subTitle = this.themeName = action.title
+          console.log(this.themeName)
+          setString("application-theme", action.title)
+          Theme.toggleMode()
         })
         .catch(console.log)
     },
@@ -127,35 +153,11 @@ export default {
         })
     },
   },
+  created() {
+    this.interface.theme.subTitle = this.themeName = getString(
+      "application-theme",
+      "Light"
+    )
+  },
 }
 </script>
-<style lang="scss">
-.option-highlight {
-  background-color: #eeeeee;
-}
-.group-header {
-  padding: 12;
-  color: #ff7043;
-}
-.main-container {
-  padding: 16 8 0;
-  .option {
-    padding: 16;
-    border-radius: 4;
-    background: transparent;
-    font-size: 16;
-    .bx {
-      margin: 0 24 0 0;
-      color: #546e7a;
-    }
-    .option-title {
-      color: #333333;
-      background: transparent;
-    }
-    .option-info {
-      font-size: 12;
-      color: #546e7a;
-    }
-  }
-}
-</style>

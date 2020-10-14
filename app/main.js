@@ -1,18 +1,29 @@
+// import VueDevtools from "nativescript-vue-devtools"
 import Vue from "nativescript-vue"
 import App from "./components/App"
-// import RadListView from "nativescript-ui-listview/vue"
+import RadListView from "nativescript-ui-listview/vue"
 
-Vue.registerElement(
-  "CheckBox",
-  () => require("@nstudio/nativescript-checkbox").CheckBox,
-  {
-    model: {
-      prop: "checked",
-      event: "checkedChange",
-    },
-  }
-)
-// Vue.use('RadListView')
+
+// Vue.registerElement(
+//   "RadListView",
+//   () => require("nativescript-ui-listview/vue").RadListView
+// )
+Vue.use(RadListView)
+
+// Vue.use(VueDevtools)
+
+// Vue.registerElement(
+//   "CheckBox",
+//   () => require("@nstudio/nativescript-checkbox").CheckBox,
+//   {
+//     model: {
+//       prop: "checked",
+//       event: "checkedChange",
+//     },
+//   }
+// )
+import DateTimePicker from "nativescript-datetimepicker/vue"
+Vue.use(DateTimePicker)
 // import VueDevtools from 'nativescript-vue-devtools'
 
 // import { TNSFontIcon, fonticon } from 'nativescript-fonticon'
