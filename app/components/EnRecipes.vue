@@ -1,12 +1,12 @@
 <template>
-  <Page>
+  <Page @loaded="setCurrentComponent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Search Actionbar -->
       <GridLayout
         v-if="showSearch"
-        rows="*"
         columns="auto, *"
         class="actionBarContainer"
+        verticalAlignment="center"
       >
         <Label
           class="bx leftAction"
@@ -15,20 +15,20 @@
           col="0"
           @tap="closeSearch"
         />
+        <!-- @loaded="searchBarLoaded" -->
         <SearchBar
-          @loaded="searchBarLoaded"
-          id="searchField"
           col="1"
           hint="Search"
           textFieldHintColor="#bdbdbd"
           v-model="searchQuery"
+          @textChange="updateFilter"
+          @clear="updateFilter"
         />
       </GridLayout>
       <!-- Home Actionbar -->
       <GridLayout
         v-else
-        rows="*"
-        columns="auto, *, auto,"
+        columns="auto, *, auto, auto"
         class="actionBarContainer"
       >
         <Label
@@ -38,84 +38,61 @@
           @tap="showDrawer"
           col="0"
         />
-        <Label class="title orkm" :text="title" col="1" />
-        <Label
-          class="bx"
-          :text="icon.search"
-          col="2"
-          @tap="showSearch = true"
-        />
+        <Label class="title orkm" :text="currentComponent" col="1" />
+        <Label class="bx" :text="icon.search" col="2" @tap="openSearch" />
+        <Label class="bx" :text="icon.sort" col="3" @tap="sortDialog" />
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
       <RadListView
-        v-if="filteredRecipes.length"
         ref="listView"
-        for="recipe in filteredRecipes"
+        itemHeight="112"
+        for="recipe in recipes"
         swipeActions="true"
         @itemSwipeProgressChanged="onSwiping"
         @itemSwipeProgressEnded="onSwipeEnded"
         @scrolled="onScroll($event)"
         @itemTap="viewRecipe"
+        :filteringFunction="filterFunction"
+        :sortingFunction="sortFunction"
       >
         <v-template>
           <GridLayout
             class="recipe-li"
-            rows="128"
-            columns="auto, *, auto"
-            androidElevation="2"
+            rows="112"
+            columns="112, *"
+            androidElevation="1"
           >
-            <Image
-              src="res://icon"
-              stretch="fill"
-              col="0"
-              width="128"
-              height="128"
-            />
-            <StackLayout
-              class="recipe-info"
-              col="1"
-              horizontalAlignment="left"
-              verticalAlignment="top"
-            >
-              <Label :text="recipe.category" class="orkm h4 recipe-cat" />
+            <Image col="0" src="res://icon" stretch="fill" />
+            <StackLayout class="recipe-info" col="1">
+              <Label :text="recipe.category" class="orkm recipe-cat" />
               <Label :text="recipe.title" class="orkm recipe-title" />
               <Label
                 :text="recipeTotalTime(recipe.prepTime, recipe.cookTime)"
                 class="h4 recipe-time"
               />
             </StackLayout>
-            <Label
-              verticalAlignment="top"
-              col="2"
-              class="bx recipe-favorite"
-              :class="{ hide: !recipe.isFavorite }"
-              :text="icon.heart"
-            />
           </GridLayout>
         </v-template>
-
         <v-template name="itemswipe">
-          <GridLayout columns="auto, *, auto">
-            <StackLayout
-              id="favorite-action"
-              col="0"
-              class="swipe-item left"
-              verticalAlignment="top"
-            >
-              <Label class="bx" padding="8 6 0 0" :text="icon.heart" />
-            </StackLayout>
-            <StackLayout
-              id="delete-action"
-              col="2"
-              class="swipe-item right"
-              verticalAlignment="top"
-            >
+          <GridLayout columns="*, auto">
+            <StackLayout id="delete-action" col="1" class="swipe-item right">
               <Label class="bx" padding="8 0 0 6" :text="icon.trash" />
             </StackLayout>
           </GridLayout>
         </v-template>
+        <v-template name="footer">
+          <StackLayout height="128"></StackLayout>
+        </v-template>
       </RadListView>
+      <Label
+        v-if="!recipes.length && !filterFavorites && !filterMustTry"
+        class="noResults"
+        horizontalAlignment="center"
+        text='Click the "+" icon to add a new recipe.'
+        textAlignment="center"
+        textWrap="true"
+      />
       <Label
         v-if="!filteredRecipes.length && searchQuery"
         class="noResults"
@@ -134,12 +111,15 @@
         textAlignment="center"
         textWrap="true"
       />
-      <GridLayout
-        id="btnFabContainer"
-        rows="*,88"
-        columns="*,88"
-        v-if="!showSearch"
-      >
+      <Label
+        v-if="!filteredRecipes.length && filterMustTry && !searchQuery"
+        class="noResults"
+        horizontalAlignment="center"
+        text="Your Must-Try recipes will be listed here."
+        textAlignment="center"
+        textWrap="true"
+      />
+      <GridLayout id="btnFabContainer" rows="*,88" columns="*,88">
         <Label
           row="1"
           col="1"
@@ -157,15 +137,25 @@
 import * as utils from "tns-core-modules/utils/utils"
 import * as application from "tns-core-modules/application"
 import * as gestures from "tns-core-modules/ui/gestures"
+import * as Toast from "nativescript-toast"
 
 import { ObservableArray } from "tns-core-modules/data/observable-array"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
+import ActionDialog from "./modal/ActionDialog.vue"
+import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import { mapState, mapActions } from "vuex"
 
 export default {
-  props: ["filterFavorites", "selectedCategory", "title", "showDrawer"],
+  props: [
+    "filterFavorites",
+    "filterMustTry",
+    "selectedCategory",
+    "showDrawer",
+    "hijackGlobalBackEvent",
+    "releaseGlobalBackEvent",
+  ],
   components: {
     EditRecipe,
     ViewRecipe,
@@ -173,80 +163,182 @@ export default {
   data() {
     return {
       searchQuery: "",
-      showSearch: false,
       viewIsScrolled: false,
-      leftAction: false,
+      showSearch: false,
+      // leftAction: false,
       rightAction: false,
+      sortType: "Natural order",
     }
   },
   computed: {
-    ...mapState(["recipes", "icon"]),
-    recipesByCategory() {
-      return this.recipes.reduce((acc, e) => {
-        acc[e.category] = [...(acc[e.category] || []), e]
-        return acc
-      }, {})
-    },
+    ...mapState(["recipes", "icon", "currentComponent"]),
     filteredRecipes() {
-      if (this.selectedCategory) {
-        return this.recipesByCategory[this.selectedCategory].filter((e) => {
-          if (e.title.toLowerCase().includes(this.searchQuery)) return e
-        })
-      } else if (this.filterFavorites) {
-        console.log("fav")
-        return this.recipes.filter((e) => {
-          if (e.isFavorite) {
-            if (e.title.toLowerCase().includes(this.searchQuery)) return e
-          }
-        })
+      if (this.filterFavorites) {
+        return this.recipes.filter(
+          (e) =>
+            e.isFavorite && e.title.toLowerCase().includes(this.searchQuery)
+        )
+      } else if (this.filterMustTry) {
+        return this.recipes.filter(
+          (e) => !e.tried && e.title.toLowerCase().includes(this.searchQuery)
+        )
+      } else if (this.selectedCategory) {
+        return this.recipes.filter(
+          (e) =>
+            e.category === this.selectedCategory &&
+            e.title.toLowerCase().includes(this.searchQuery)
+        )
       } else {
-        return this.recipes.filter((e) => {
-          if (e.title.toLowerCase().includes(this.searchQuery)) return e
-        })
+        return this.recipes.filter((e) =>
+          e.title.toLowerCase().includes(this.searchQuery)
+        )
       }
     },
   },
   methods: {
+    openSearch() {
+      this.showSearch = true
+      this.hijackLocalBackEvent()
+    },
+    hijackLocalBackEvent() {
+      this.releaseGlobalBackEvent()
+      application.android.on(
+        application.AndroidApplication.activityBackPressedEvent,
+        this.searchBackEvent
+      )
+    },
+    releaseLocalBackEvent() {
+      application.android.off(
+        application.AndroidApplication.activityBackPressedEvent,
+        this.searchBackEvent
+      )
+      this.hijackGlobalBackEvent()
+    },
+    searchBackEvent(args) {
+      args.cancel = true
+      this.closeSearch()
+    },
+    closeSearch() {
+      this.searchQuery = ""
+      utils.ad.dismissSoftInput()
+      this.showSearch = false
+      this.updateFilter()
+      this.releaseLocalBackEvent()
+    },
+    sortDialog() {
+      this.releaseGlobalBackEvent()
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Sort by",
+          list: ["Natural order", "Title", "Duration", "Last modified"],
+          height: "auto",
+        },
+      }).then((action) => {
+        if (action && action !== "Cancel" && this.sortType !== action) {
+          this.sortType = action
+          this.updateSort()
+        }
+        this.hijackGlobalBackEvent()
+      })
+    },
+    updateSort() {
+      let listView = this.$refs.listView.nativeView
+      listView.sortingFunction = undefined
+      listView.sortingFunction = this.sortFunction
+    },
+    sortFunction(item, otherItem) {
+      const titleOrder = item.title
+        .toLowerCase()
+        .localeCompare(otherItem.title.toLowerCase(), "en", {
+          ignorePunctuation: true,
+        })
+      let d1 = this.recipeDuration(item.prepTime, item.cookTime)
+      let d2 = this.recipeDuration(otherItem.prepTime, otherItem.cookTime)
+      let ld1 = new Date(item.lastModified)
+      let ld2 = new Date(otherItem.lastModified)
+      switch (this.sortType) {
+        case "Title":
+          return titleOrder > 0 ? -1 : titleOrder < 0 ? 1 : 0
+          break
+        case "Duration":
+          return d1 > d2 ? -1 : d1 < d2 ? 1 : 0
+          break
+        case "Last modified":
+          return ld1 < ld2 ? -1 : ld1 > ld2 ? 1 : 0
+          break
+        default:
+          return 0
+          break
+      }
+    },
+    setComponent(comp) {
+      this.$store.dispatch("setCurrentComponent", comp)
+      this.hijackGlobalBackEvent()
+    },
+    updateFilter() {
+      let listView = this.$refs.listView.nativeView
+      setTimeout((e) => {
+        listView.filteringFunction = undefined
+        listView.filteringFunction = this.filterFunction
+      }, 1)
+    },
+    filterFunction(item) {
+      if (this.filterFavorites) {
+        return item.isFavorite
+          ? item.title.toLowerCase().includes(this.searchQuery)
+          : false
+      } else if (this.filterMustTry) {
+        return item.tried
+          ? false
+          : item.title.toLowerCase().includes(this.searchQuery)
+      } else if (this.selectedCategory) {
+        return item.category === this.selectedCategory
+          ? item.title.toLowerCase().includes(this.searchQuery)
+          : false
+      } else {
+        return item.title.toLowerCase().includes(this.searchQuery)
+      }
+    },
+
+    setCurrentComponent() {
+      this.filterFavorites
+        ? this.setComponent("Favorites")
+        : this.filterMustTry
+        ? this.setComponent("Must-Try")
+        : this.selectedCategory
+        ? this.setComponent(this.selectedCategory)
+        : this.setComponent("EnRecipes")
+    },
     onSwiping({ data, object }) {
       const swipeLimits = data.swipeLimits
       const swipeView = object
-      const leftItem = swipeView.getViewById("favorite-action")
       const rightItem = swipeView.getViewById("delete-action")
-      swipeLimits.left = leftItem.getMeasuredWidth() - 12
       swipeLimits.right = rightItem.getMeasuredWidth() - 12
-      swipeLimits.threshold = swipeLimits.left - 4
-      if (data.x > swipeLimits.threshold) {
-        this.leftAction = true
-        this.$refs.listView.notifySwipeToExecuteFinished()
-      } else if (data.x < -swipeLimits.threshold) {
+      swipeLimits.threshold = swipeLimits.right - 6
+      if (data.x < -swipeLimits.threshold) {
         this.rightAction = true
-        this.$refs.listView.notifySwipeToExecuteFinished()
+        swipeView.notifySwipeToExecuteFinished()
       }
     },
     onSwipeEnded({ index }) {
-      let context = this.recipes.indexOf(this.filteredRecipes[index])
-      if (this.leftAction) this.toggleFavorite(context)
-      else if (this.rightAction) this.deleteRecipe()
-      this.leftAction = this.rightAction = false
+      if (this.rightAction) this.deleteRecipe(index)
+      this.rightAction = false
     },
-    toggleFavorite(index) {
-      this.$store.dispatch("toggleFavorite", index)
+    deleteRecipe(index) {
+      this.$showModal(ConfirmDialog, {
+        props: {
+          title: "Delete recipe",
+          description: `Are you sure you want to delete the recipe "${this.recipes[index].title}"?`,
+          cancelButtonText: "CANCEL",
+          okButtonText: "DELETE",
+        },
+      }).then((action) => {
+        if (action) {
+          this.$store.dispatch("deleteRecipe", index)
+        }
+      })
     },
-    deleteRecipe() {
-      alert("Are you sure you want to delete?")
-    },
-    // swipeAction(args, index) {
-    //   let vm = this
-    //   args.object.on(gestures.GestureTypes.swipe, function(args) {
-    //     console.log("Swipe Direction: " + args.direction)
-    //     if (args.direction === 1) {
-    //       vm.filteredRecipes[index].isFavorite = !vm.filteredRecipes[index]
-    //         .isFavorite
-    //       console.log(vm.filteredRecipes[index].isFavorite)
-    //     }
-    //   })
-    // },
-    recipeTotalTime(prepTime, cookTime) {
+    getTotalTime(prepTime, cookTime) {
       let pT = prepTime.split(":")
       let cT = cookTime.split(":")
       let hrs = parseInt(pT[0]) + parseInt(cT[0])
@@ -255,42 +347,26 @@ export default {
         hrs += Math.floor(mins / 60)
         mins -= 60
       }
+      return {
+        hrs,
+        mins,
+      }
+    },
+    recipeTotalTime(prepTime, cookTime) {
+      let { hrs, mins } = this.getTotalTime(prepTime, cookTime)
       return hrs ? `${hrs}h ${mins}m` : `${mins}m`
+    },
+    recipeDuration(prepTime, cookTime) {
+      let { hrs, mins } = this.getTotalTime(prepTime, cookTime)
+      return `${hrs}${mins}`
     },
     onScroll(args) {
       args.scrollOffset
         ? (this.viewIsScrolled = true)
         : (this.viewIsScrolled = false)
     },
-    // SearchBar
-    searchBarLoaded() {
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
-        this.backEvent
-      )
-    },
-    backEvent(args) {
-      if (this.showSearch) {
-        args.cancel = true
-        this.closeSearch()
-      }
-      this.removeBackEvent()
-    },
-    removeBackEvent() {
-      application.android.off(
-        application.AndroidApplication.activityBackPressedEvent,
-        this.backEvent
-      )
-    },
-    closeSearch() {
-      this.searchQuery = ""
-      this.showSearch = false
-      utils.ad.dismissSoftInput()
-    },
-    FabTapped() {
-      alert("fab tapped")
-    },
     addRecipe() {
+      this.releaseGlobalBackEvent()
       this.$navigateTo(EditRecipe, {
         transition: {
           name: "slide",
@@ -299,11 +375,11 @@ export default {
         },
         props: {
           viewIsScrolled: this.viewIsScrolled,
+          selectedCategory: this.selectedCategory,
         },
       })
     },
     viewRecipe({ item }) {
-      // console.log(item)
       this.$navigateTo(ViewRecipe, {
         transition: {
           name: "fade",
@@ -311,7 +387,9 @@ export default {
           curve: "easeIn",
         },
         props: {
-          recipe: item,
+          recipeIndex: this.recipes.indexOf(item),
+          hijackGlobalBackEvent: this.hijackGlobalBackEvent,
+          releaseGlobalBackEvent: this.releaseGlobalBackEvent,
         },
       })
     },

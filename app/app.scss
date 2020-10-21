@@ -37,7 +37,8 @@ Page {
 .ns-light {
   Page,
   ActionBar,
-  SearchBar {
+  SearchBar,
+  TabView {
     background: $grayL4;
     color: $grayD4;
   }
@@ -58,8 +59,10 @@ Page {
   .fieldLabel {
     background: $grayL4;
   }
-  .recipe-li,
   .option-highlight {
+    background: $grayL2;
+  }
+  .recipe-li {
     background: white;
   }
   .sd-item,
@@ -102,7 +105,8 @@ Page {
 .ns-dark {
   Page,
   ActionBar,
-  SearchBar {
+  SearchBar,
+  TabView {
     background: $grayD4;
     color: $grayL4;
   }
@@ -169,9 +173,10 @@ Page {
 TextField,
 TextView,
 TimePickerField {
+  width: 100%;
   border-width: 1;
-  font-size: 15;
-  padding: 16;
+  font-size: 14;
+  padding: 14;
   margin: 8 0 0 0;
   border-radius: 4;
   placeholder-color: $gray;
@@ -195,7 +200,8 @@ ActionBar {
   padding: 0;
   height: 64;
   .bx {
-    padding: 16;
+    padding: 16 12;
+    vertical-alignment: center;
   }
   .leftAction {
     padding: 16 16 16 4;
@@ -207,8 +213,8 @@ ActionBar {
   padding: 0;
 }
 SearchBar {
+  width: 100%;
   font-size: 16;
-  margin-top: 4;
 }
 .title {
   padding-left: 8;
@@ -219,15 +225,25 @@ SearchBar {
 // Side Drawer
 .sd-item {
   border-radius: 4;
-  padding: 12 16;
-  font-size: 14;
+  padding: 0 16;
+  height: 48;
+  font-size: 16;
+  vertical-alignment: center;
+  // prettier-ignore
+  .bx, Label {
+    vertical-alignment: center;
+  }
 }
 .sd-group-header {
-  padding: 12;
+  width: 100%;
+  padding: 8 8 16;
   font-size: 12;
 }
 
 // Home
+RadListView {
+  margin-bottom: 128;
+}
 .recipe-li {
   margin: 8 16;
   border-radius: 6;
@@ -235,6 +251,7 @@ SearchBar {
     margin: 4 0;
   }
   .recipe-cat {
+    font-size: 12;
     padding: 0;
     margin: 0;
   }
@@ -248,21 +265,18 @@ SearchBar {
     padding: 0;
   }
   .recipe-favorite {
-    font-size: 14;
-    padding: 14 12 0 0;
+    font-size: 12;
+    padding: 14 8 0 0;
   }
   .recipe-cat,
   .recipe-favorite {
     color: $orange;
   }
-  .recipe-favorite.hide {
-    opacity: 0;
-  }
 }
 
 // Settings
 .group-header {
-  padding: 12;
+  padding: 8;
   color: #ff7043;
 }
 .main-container {
@@ -317,22 +331,27 @@ SearchBar {
 }
 .view-title {
   font-size: 22;
+  line-height: 6;
+  margin-bottom: 16;
 }
 .view-ingredient {
   font-size: 14;
   line-height: 6;
-  margin-top: 12;
+  padding-bottom: 16;
 }
 .view-favorited {
   color: #ff7043;
+}
+.activity-indicator {
+  background: #ff7043;
 }
 
 .view-count {
   font-size: 10;
   width: 20;
   height: 20;
-  padding: 3 0 0;
-  margin-left: 6;
+  padding-top: 3%;
+  margin: 0 0 0 6;
   text-align: center;
   border-radius: 100;
 }
@@ -342,7 +361,7 @@ SearchBar {
 .view-reference {
   font-size: 14;
   line-height: 6;
-  padding: 0 0 12 24;
+  padding: 0 0 16 24;
   margin: 0 0 0 15;
   border-width: 0 0 0 2;
 }
@@ -367,4 +386,8 @@ SearchBar {
   text-align: left;
   padding: 16;
   margin: 8 0 0 0;
+}
+.closeBtn {
+  padding: 4;
+  margin-top: 16;
 }

@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="setCurrentComponent" @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *, auto," class="actionBarContainer">
         <Label
@@ -9,7 +9,8 @@
           col="0"
           @tap="navigateBack"
         />
-        <Label class="title orkm" text="New recipe" col="1" />
+        <Label class="title orkm" :text="title" col="1" />
+
         <Label
           v-if="hasEnoughDetails"
           class="bx"
@@ -46,7 +47,7 @@
               horizontalAlignment="center"
               class="bx"
               fontSize="160"
-              :text="icon.dish"
+              :text="icon.image"
             />
           </StackLayout>
           <StackLayout
@@ -75,17 +76,14 @@
         <StackLayout margin="0 16">
           <AbsoluteLayout class="inputField">
             <TextField
-              width="100%"
               hint="My Healthy Recipe"
               v-model="recipeContent.title"
               autocapitalizationType="words"
-              maxLength="32"
             />
             <Label top="0" class="fieldLabel" text="Title" />
           </AbsoluteLayout>
           <AbsoluteLayout class="inputField">
             <TextField
-              width="100%"
               v-model="recipeContent.category"
               editable="false"
               @tap="showCategories()"
@@ -95,7 +93,6 @@
           <GridLayout columns="*, 8, *">
             <AbsoluteLayout class="inputField" col="0">
               <TimePickerField
-                width="100%"
                 timeFormat="HH:mm"
                 pickerTitle="Approx. preparation time"
                 @timeChange="onPrepTimeChange"
@@ -105,7 +102,6 @@
             </AbsoluteLayout>
             <AbsoluteLayout class="inputField" col="2">
               <TimePickerField
-                width="100%"
                 timeFormat="HH:mm"
                 pickerTitle="Approx. cooking time"
                 @timeChange="onCookTimeChange"
@@ -157,11 +153,8 @@
               @tap="showUnits($event)"
             />
             <Label
-              verticalAlignment="center"
               col="6"
-              padding="4"
-              margin="8 0 0 0"
-              class="bx"
+              class="bx closeBtn"
               :text="icon.close"
               @tap="removeIngredient(index)"
             />
@@ -189,18 +182,9 @@
               v-model="recipeContent.instructions[index]"
               editable="true"
             />
-
-            <!-- <TextField
-              col="0"
-              v-model="recipeContent.instructions[index]"
-              :hint="`Step ${index + 1}`"
-            /> -->
             <Label
-              verticalAlignment="center"
               col="2"
-              padding="4"
-              margin="8 0 0 0"
-              class="bx"
+              class="bx closeBtn"
               :text="icon.close"
               @tap="removeInstruction(index)"
             />
@@ -228,11 +212,8 @@
               editable="true"
             />
             <Label
-              verticalAlignment="center"
               col="2"
-              padding="4"
-              margin="8 0 0 0"
-              class="bx"
+              class="bx closeBtn"
               :text="icon.close"
               @tap="removeNote(index)"
             />
@@ -259,11 +240,8 @@
               hint="Website or Video URL"
             />
             <Label
-              verticalAlignment="center"
               col="2"
-              padding="4"
-              margin="8 0 0 0"
-              class="bx"
+              class="bx closeBtn"
               :text="icon.close"
               @tap="removeReference(index)"
             />
@@ -284,32 +262,17 @@
 import { screen } from "tns-core-modules/platform"
 import { Mediafilepicker } from "nativescript-mediafilepicker"
 import { mapState, mapActions } from "vuex"
+import * as application from "tns-core-modules/application"
+import ActionDialog from "./modal/ActionDialog.vue"
+import PromptDialog from "./modal/PromptDialog.vue"
+import ConfirmDialog from "./modal/ConfirmDialog.vue"
+
 export default {
+  props: ["recipeIndex", "selectedCategory"],
   data() {
     return {
+      title: "New recipe",
       viewIsScrolled: false,
-      units: [
-        "unit",
-        "tsp",
-        "Tbsp",
-        "oz",
-        "cup",
-        "pt",
-        "qt",
-        "lb",
-        "gal",
-        "ml",
-        "L",
-        "mg",
-        "g",
-        "kg",
-        "mm",
-        "cm",
-        "m",
-        "in",
-        "°C",
-        "°F",
-      ],
       recipeContent: {
         imageSrc: null,
         title: null,
@@ -319,7 +282,7 @@ export default {
         portionSize: 1,
         ingredients: [
           {
-            item: null,
+            item: "",
             quantity: null,
             unit: "unit",
           },
@@ -328,71 +291,97 @@ export default {
         notes: [""],
         references: [""],
         isFavorite: false,
+        tried: false,
+        lastModified: null,
       },
-      categories: [
-        "Appetizers",
-        "BBQ",
-        "Beverages",
-        "Breads",
-        "Breakfast",
-        "Desserts",
-        "Dinner",
-        "Drinks",
-        "Healthy",
-        "Lunch",
-        "Main dishes",
-        "Meat",
-        "Noodles",
-        "Pasta",
-        "Poultry",
-        "Rice",
-        "Salads",
-        "Sauces",
-        "Seafood",
-        "Side dishes",
-        "Snacks",
-        "Soups",
-        "Vegan",
-        "Vegetarian",
-        "ADD NEW CATEGORY",
-      ],
+      tempRecipeContent: {},
+      blockModal: false,
     }
   },
   computed: {
-    ...mapState(["icon"]),
+    ...mapState(["icon", "units", "categories", "currentComponent", "recipes"]),
     screenWidth() {
       return screen.mainScreen.widthDIPs
     },
     hasEnoughDetails() {
-      let recipe = this.recipeContent
-      return recipe.title && recipe.category
+      if (this.recipeIndex) {
+        return (
+          JSON.stringify(this.recipeContent) !==
+          JSON.stringify(this.tempRecipeContent)
+        )
+      } else {
+        return this.recipeContent.title
+      }
     },
   },
   methods: {
-    setTime(time) {
-      if (Date.parse(this.recipeContent[time])) {
-        let date = new Date(this.recipeContent[time])
+    setCurrentComponent() {
+      setTimeout((e) => {
+        this.$store.dispatch("setCurrentComponent", "EditRecipe")
+      }, 500)
+      this.title = this.recipeIndex >= 0 ? "Edit recipe" : "New recipe"
+      if (this.recipeIndex >= 0) {
+        Object.assign(this.recipeContent, this.recipes[this.recipeIndex])
+        Object.assign(this.tempRecipeContent, this.recipes[this.recipeIndex])
+      } else {
+        if (this.selectedCategory)
+          this.recipeContent.category = this.selectedCategory
+        Object.assign(this.tempRecipeContent, this.recipeContent)
+      }
+      this.hijackBackEvent()
+    },
+    setTime(key, time) {
+      if (Date.parse(time)) {
+        let date = new Date(time)
         let h = date.getHours()
         let m = date.getMinutes()
 
-        this.recipeContent[time] =
+        this.recipeContent[key] =
           (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m)
       }
-      // console.log(this.recipeContent[time])
+    },
+    clearEmptyFields() {
+      if (!this.recipeContent.portionSize) {
+        this.recipeContent.portionSize = 1
+      }
+      if (!this.recipeContent.category) {
+        this.recipeContent.category = "Undefined"
+      }
+      this.recipeContent.ingredients.forEach((e, i) => {
+        if (!e.item.length) {
+          this.recipeContent.ingredients.splice(i, 1)
+        }
+      })
+      let vm = this
+      function removeEmpty(arr) {
+        vm.recipeContent[arr].forEach((e, i) => {
+          if (!e.length) {
+            vm.recipeContent[arr].splice(i, 1)
+          }
+        })
+      }
+      removeEmpty("instructions")
+      removeEmpty("notes")
+      removeEmpty("references")
     },
     saveRecipe() {
-      this.setTime("prepTime")
-      this.setTime("cookTime")
-      // console.log(this.recipeContent)
-
-      this.$store.dispatch("addRecipe", this.recipeContent)
+      this.clearEmptyFields()
+      this.recipeContent.lastModified = new Date()
+      if (this.recipeIndex >= 0) {
+        this.$store.dispatch("overwriteRecipe", {
+          index: this.recipeIndex,
+          recipe: this.recipeContent,
+        })
+      } else {
+        this.$store.dispatch("addRecipe", this.recipeContent)
+      }
       this.$navigateBack()
     },
     onPrepTimeChange(args) {
-      this.recipeContent.prepTime = args.value
+      this.setTime("prepTime", args.value)
     },
     onCookTimeChange(args) {
-      this.recipeContent.cookTime = args.value
+      this.setTime("cookTime", args.value)
     },
     onScroll(args) {
       args.scrollY
@@ -400,25 +389,77 @@ export default {
         : (this.viewIsScrolled = false)
     },
     showCategories() {
-      action("Select a category", "Cancel", [...this.categories]).then(
-        (result) => {
-          if (result != "Cancel") this.recipeContent.category = result
-        }
-      )
-    },
-    navigateBack() {
-      confirm({
-        message:
-          "Are you sure you want discard unsaved changes to this recipe?",
-        cancelButtonText: "Keep Editing",
-        okButtonText: "Discard",
-      }).then((res) => {
-        if (res) {
-          this.$navigateBack()
+      this.releaseBackEvent()
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Category",
+          list: [...this.categories],
+          height: "75%",
+          action: "NEW CATEGORY",
+        },
+      }).then((action) => {
+        if (action == "NEW CATEGORY") {
+          this.$showModal(PromptDialog, {
+            props: {
+              title: "New category",
+              action: "ADD",
+            },
+          }).then((result) => {
+            this.hijackBackEvent()
+            if (result.length) {
+              this.recipeContent.category = result
+              this.$store.dispatch("addCategory", result)
+            }
+          })
+        } else if (action) {
+          this.recipeContent.category = action
+          this.hijackBackEvent()
+        } else {
+          this.hijackBackEvent()
         }
       })
     },
-
+    navigateBack() {
+      if (this.hasEnoughDetails) {
+        this.blockModal = true
+        this.$showModal(ConfirmDialog, {
+          props: {
+            title: "Discard changes",
+            description:
+              "Are you sure you want discard unsaved changes to this recipe?",
+            cancelButtonText: "KEEP EDITING",
+            okButtonText: "DISCARD",
+          },
+        }).then((action) => {
+          this.blockModal = false
+          if (action) {
+            this.$navigateBack()
+            this.releaseBackEvent()
+          }
+        })
+      } else {
+        this.$navigateBack()
+        this.releaseBackEvent()
+      }
+    },
+    hijackBackEvent() {
+      application.android.on(
+        application.AndroidApplication.activityBackPressedEvent,
+        this.backEvent
+      )
+    },
+    releaseBackEvent() {
+      application.android.off(
+        application.AndroidApplication.activityBackPressedEvent,
+        this.backEvent
+      )
+    },
+    backEvent(args) {
+      if (this.hasEnoughDetails && !this.blockModal) {
+        args.cancel = true
+        this.navigateBack()
+      }
+    },
     takePicture() {
       let mediafilepicker = new Mediafilepicker()
       let vm = this
@@ -462,7 +503,7 @@ export default {
     },
     removePicture() {
       confirm({
-        title: "Delete Recipe Photo",
+        title: "Delete Photo",
         message: "Are you sure you want to delete the recipe photo?",
         okButtonText: "Delete",
         cancelButtonText: "Cancel",
@@ -473,7 +514,7 @@ export default {
 
     addIngredient() {
       this.recipeContent.ingredients.push({
-        item: null,
+        item: "",
         quantity: null,
         unit: "unit",
       })
@@ -504,11 +545,17 @@ export default {
     },
 
     showUnits(e) {
-      action("Select measuring unit", "Cancel", [...this.units]).then(
-        (result) => {
-          if (result != "Cancel") e.object.text = result
-        }
-      )
+      this.releaseBackEvent()
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Unit",
+          list: [...this.units],
+          height: "75%",
+        },
+      }).then((action) => {
+        this.hijackBackEvent()
+        if (action) e.object.text = action
+      })
     },
   },
 }

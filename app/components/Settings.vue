@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="setCurrentComponent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Settings Actionbar -->
       <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
@@ -10,7 +10,7 @@
           @tap="showDrawer"
           col="0"
         />
-        <Label class="title orkm" :text="title" col="1" />
+        <Label class="title orkm" text="Settings" col="1" />
       </GridLayout>
     </ActionBar>
     <ScrollView scrollBarIndicatorVisible="false">
@@ -22,6 +22,7 @@
           class="option"
           @tap="selectThemes"
         >
+          <!-- @tap="selectThemes" -->
           <Label verticalAlignment="center" class="bx" :text="icon.theme" />
           <StackLayout>
             <Label text="Theme" class="option-title" />
@@ -57,16 +58,24 @@
 </template>
 
 <script>
-import { Menu } from "nativescript-menu"
 import * as permissions from "nativescript-permissions"
 import * as application from "tns-core-modules/application"
 
 import { getString, setString } from "application-settings"
 import Theme from "@nativescript/theme"
+import ActionDialog from "./modal/ActionDialog.vue"
+import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
 import { mapState, mapActions } from "vuex"
 export default {
-  props: ["highlight", "viewIsScrolled", "showDrawer", "title"],
+  props: [
+    "highlight",
+    "viewIsScrolled",
+    "showDrawer",
+    "restartApp",
+    "hijackGlobalBackEvent",
+    "releaseGlobalBackEvent",
+  ],
   data() {
     return {
       interface: {
@@ -98,23 +107,44 @@ export default {
     }
   },
   computed: {
-    ...mapState(["icon"]),
+    ...mapState(["icon", "currentComponent"]),
   },
   methods: {
+    setCurrentComponent() {
+      this.$store.dispatch("setCurrentComponent", "Settings")
+      this.releaseGlobalBackEvent()
+    },
+    showDialog(args) {
+      this.highlight(args)
+      this.$showModal(ActionDialog)
+    },
     selectThemes(args) {
       this.highlight(args)
-      let btn = args.object
-      Menu.popup({
-        view: btn,
-        actions: this.themesArray,
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Theme",
+          list: ["Light", "Dark"],
+          height: "96",
+        },
+      }).then((action) => {
+        if (action && action !== "Cancel" && this.themeName !== action) {
+          this.$showModal(ConfirmDialog, {
+            props: {
+              title: "App Reload Required",
+              description:
+                "The app needs to be reloaded for the theme change to take effect.",
+              cancelButtonText: "CANCEL",
+              okButtonText: "RELOAD",
+            },
+          }).then((result) => {
+            if (result) {
+              this.interface.theme.subTitle = this.themeName = action
+              setString("application-theme", action)
+              setTimeout((e) => this.restartApp(), 250)
+            }
+          })
+        }
       })
-        .then((action) => {
-          this.interface.theme.subTitle = this.themeName = action.title
-          console.log(this.themeName)
-          setString("application-theme", action.title)
-          Theme.toggleMode()
-        })
-        .catch(console.log)
     },
     selectBackupDir(args) {
       this.highlight(args)

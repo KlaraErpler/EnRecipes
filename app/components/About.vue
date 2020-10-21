@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <Page @loaded="setCurrentComponent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Settings Actionbar -->
       <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
@@ -10,7 +10,7 @@
           @tap="showDrawer"
           col="0"
         />
-        <Label class="title orkm" :text="title" col="1" />
+        <Label class="title orkm" text="About" col="1" />
       </GridLayout>
     </ActionBar>
     <ScrollView scrollBarIndicatorVisible="false">
@@ -85,9 +85,12 @@ import { mapState, mapActions } from "vuex"
 export default {
   props: ["highlight", "viewIsScrolled", "showDrawer", "title"],
   computed: {
-    ...mapState(["icon"]),
+    ...mapState(["icon",'currentComponent']),
   },
   methods: {
+    setCurrentComponent() {
+      this.$store.dispatch("setCurrentComponent", "About")
+    },
     openURL(args, url) {
       this.highlight(args)
       utils.openUrl(url)
