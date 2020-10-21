@@ -4,11 +4,20 @@
   "description": "A native application built with NativeScript-Vue",
   "author": "Vishnu Raghav B <design@vishnuraghav.com>",
   "license": "GPL",
+  "nativescript": {
+    "id": "com.vishnuraghav.enrecipes",
+    "templateVersion": "v2",
+    "tns-android": {
+      "version": "6.5.0"
+    },
+    "tns-ios": {
+      "version": "6.5.0"
+    }
+  },
   "scripts": {
-    "run": "ns run android"
+    "run": "tns run"
   },
   "dependencies": {
-    "@nativescript/core": "~7.0.0",
     "@nativescript/theme": "^2.2.1",
     "nativescript-camera": "^4.5.0",
     "nativescript-couchbase-plugin": "^0.9.6",
@@ -19,20 +28,18 @@
     "nativescript-ui-listview": "^8.2.0",
     "nativescript-ui-sidedrawer": "^8.0.1",
     "nativescript-vue": "^2.6.1",
-    "tns-core-modules": "^6.5.20",
+    "tns-core-modules": "^6.5.1",
     "vuex": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@nativescript/android": "7.0.1",
-    "@nativescript/webpack": "~3.0.0",
     "@types/node": "^14.0.27",
     "babel-loader": "^8.1.0",
     "nativescript-dev-webpack": "^1.5.1",
     "nativescript-vue-template-compiler": "^2.6.0",
+    "nativescript-worker-loader": "~0.11.0",
     "node-sass": "^4.13.1",
     "vue-loader": "^15.9.1"
-  },
-  "main": "main"
+  }
 }
