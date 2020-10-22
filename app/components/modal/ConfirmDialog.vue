@@ -1,6 +1,9 @@
 <template>
   <Page>
-    <StackLayout class="dialogContainer">
+    <StackLayout
+      class="dialogContainer"
+      :class="isLightTheme ? 'light' : 'dark'"
+    >
       <Label class="dialogTitle orkm" :text="title" />
       <Label class="dialogDescription" :text="description" textWrap="true" />
       <StackLayout
@@ -9,12 +12,12 @@
         horizontalAlignment="right"
       >
         <Label
-          class="action orkm pull-right"
+          class="action orkm"
           :text="cancelButtonText"
           @tap="$modal.close(false)"
         />
         <Label
-          class="action orkm pull-right"
+          class="action orkm"
           :text="okButtonText"
           @tap="$modal.close(true)"
         />
@@ -24,22 +27,16 @@
 </template>
 
 <script>
+import Theme from "@nativescript/theme"
 export default {
   props: ["title", "description", "cancelButtonText", "okButtonText"],
+  data() {
+    return {
+      isLightTheme: true,
+    }
+  },
+  created() {
+    this.isLightTheme = Theme.getMode() == "ns-light" ? true : false
+  },
 }
 </script>
-<style lang="scss" scoped>
-.dialogTitle {
-  padding: 24 24 12;
-  font-size: 20;
-}
-.dialogDescription {
-  font-size: 16;
-  padding: 0 24 16;
-}
-.action {
-  padding: 24 24 24 8;
-  font-size: 12;
-  color: #ff7043;
-}
-</style>

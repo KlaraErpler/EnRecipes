@@ -117,20 +117,23 @@
 </template>
 
 <script>
-import * as utils from "tns-core-modules/utils/utils"
-import * as application from "tns-core-modules/application"
+import {
+  Utils,
+  ApplicationSettings,
+  AndroidApplication,
+} from "@nativescript/core"
 
-import { getString } from "application-settings"
 import Theme from "@nativescript/theme"
 import * as Toast from "nativescript-toast"
-
+import * as application from "tns-core-modules/application"
 import EnRecipes from "./EnRecipes.vue"
 import Settings from "./Settings.vue"
 import About from "./About.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
-import { mapState } from "vuex"
+import { mapState, mapActions } from "vuex"
 
 import { Couchbase, ConcurrencyMode } from "nativescript-couchbase-plugin"
+const cb = new Couchbase("enrecipes")
 
 let page
 export default {
@@ -186,6 +189,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setCurrentComponentAction", "renameCategoryAction"]),
     toggleCatEdit() {
       this.catEditMode = !this.catEditMode
       this.setComponent("EnRecipes")
@@ -194,7 +198,7 @@ export default {
       this.$refs.enrecipes.updateFilter()
     },
     setComponent(comp) {
-      this.$store.dispatch("setCurrentComponent", comp)
+      this.setCurrentComponentAction(comp)
     },
     editCategory(item) {
       this.releaseGlobalBackEvent()
@@ -210,7 +214,7 @@ export default {
           if (this.categories.includes(result)) {
             Toast.makeText("Category already exists!", "long").show()
           } else {
-            this.$store.dispatch("renameCategory", {
+            this.renameCategoryAction({
               current: item,
               updated: result,
             })
@@ -232,14 +236,14 @@ export default {
       this.closeDrawer()
     },
     hijackGlobalBackEvent() {
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.on(
+        AndroidApplication.activityBackPressedEvent,
         this.globalBackEvent
       )
     },
     releaseGlobalBackEvent() {
-      application.android.off(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.off(
+        AndroidApplication.activityBackPressedEvent,
         this.globalBackEvent
       )
     },
@@ -332,12 +336,12 @@ export default {
     },
     donate(args) {
       this.highlight(args)
-      utils.openUrl("https://www.vishnuraghav.com/donate/")
+      Utils.openUrl("https://www.vishnuraghav.com/donate/")
     },
   },
   created() {
-    let themeName = getString("application-theme", "Light")
-    Theme.setMode(Theme[themeName])
+    let themeName = ApplicationSettings.getString("application-theme", "Light")
+    setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
   },
 }
 </script>

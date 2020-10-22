@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="setCurrentComponent">
+  <Page @loaded="initializePage">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Settings Actionbar -->
       <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
@@ -80,20 +80,21 @@
 </template>
 
 <script>
-import * as utils from "tns-core-modules/utils/utils"
+import { Utils } from "@nativescript/core"
 import { mapState, mapActions } from "vuex"
 export default {
   props: ["highlight", "viewIsScrolled", "showDrawer", "title"],
   computed: {
-    ...mapState(["icon",'currentComponent']),
+    ...mapState(["icon", "currentComponent"]),
   },
   methods: {
-    setCurrentComponent() {
-      this.$store.dispatch("setCurrentComponent", "About")
+    ...mapActions(["setCurrentComponentAction"]),
+    initializePage() {
+      this.setCurrentComponentAction("About")
     },
     openURL(args, url) {
       this.highlight(args)
-      utils.openUrl(url)
+      Utils.openUrl(url)
     },
   },
 }

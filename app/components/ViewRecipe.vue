@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="setCurrentComponent">
+  <Page @loaded="initializePage">
     <ActionBar height="128" margin="0" flat="true">
       <GridLayout
         rows="64, 64"
@@ -222,12 +222,12 @@
       <GridLayout id="btnFabContainer" rows="*,88" columns="*,88">
         <Label
           v-if="!busy"
+          @tap="editRecipe"
           row="1"
           col="1"
-          class="bx btnFab"
+          class="bx fab-button"
           :text="icon.edit"
           androidElevation="8"
-          @tap="editRecipe"
         />
         <ActivityIndicator v-else row="1" col="1" :busy="busy" />
       </GridLayout>
@@ -236,14 +236,12 @@
 </template>
 
 <script>
-import { screen } from "tns-core-modules/platform"
-import * as utils from "tns-core-modules/utils/utils"
-import { getNumber, setNumber } from "application-settings"
+import { Screen, Utils } from "@nativescript/core"
 import * as Toast from "nativescript-toast"
 
-import EditRecipe from "./EditRecipe.vue"
-
 import { mapState, mapActions } from "vuex"
+
+import EditRecipe from "./EditRecipe.vue"
 
 export default {
   props: ["recipeIndex", "hijackGlobalBackEvent", "releaseGlobalBackEvent"],
@@ -259,7 +257,7 @@ export default {
       return this.recipes[this.recipeIndex]
     },
     screenWidth() {
-      return screen.mainScreen.widthDIPs
+      return Screen.mainScreen.widthDIPs
     },
     isPortionScalePositive() {
       return this.portionScale && !isNaN(this.portionScale)
@@ -268,6 +266,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      "toggleFavoriteAction",
+      "toggleMustTryAction",
+      "setCurrentComponentAction",
+    ]),
     roundedQuantity(quantity, unit) {
       return Math.round(quantity * this.isPortionScalePositive * 100) / 100
     },
@@ -290,14 +293,14 @@ export default {
         ? Toast.makeText("Removed from Favorites").show()
         : Toast.makeText("Added to Favorites").show()
 
-      this.$store.dispatch("toggleFavorite", this.recipeIndex)
+      this.toggleFavoriteAction(this.recipeIndex)
     },
     toggleMustTry() {
       this.recipe.tried
         ? Toast.makeText("Added to Must-Try").show()
         : Toast.makeText("Removed from Must-Try").show()
 
-      this.$store.dispatch("toggleMustTry", this.recipeIndex)
+      this.toggleMustTryAction(this.recipeIndex)
     },
     getTime(time) {
       let t = time.split(":")
@@ -306,13 +309,13 @@ export default {
       return h !== "00" ? `${h}h ${m}m` : `${m}m`
     },
     openURL(args, url) {
-      utils.openUrl(url)
+      Utils.openUrl(url)
     },
-    setCurrentComponent() {
+    initializePage() {
       this.releaseGlobalBackEvent()
       this.busy = false
       setTimeout((e) => {
-        this.$store.dispatch("setCurrentComponent", "ViewRecipe")
+        this.setCurrentComponentAction("ViewRecipe")
       }, 500)
     },
   },

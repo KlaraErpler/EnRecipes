@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="setCurrentComponent">
+  <Page @loaded="initializePage">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Settings Actionbar -->
       <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
@@ -58,10 +58,9 @@
 </template>
 
 <script>
+import { ApplicationSettings } from "@nativescript/core"
 import * as permissions from "nativescript-permissions"
-import * as application from "tns-core-modules/application"
 
-import { getString, setString } from "application-settings"
 import Theme from "@nativescript/theme"
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
@@ -110,8 +109,9 @@ export default {
     ...mapState(["icon", "currentComponent"]),
   },
   methods: {
-    setCurrentComponent() {
-      this.$store.dispatch("setCurrentComponent", "Settings")
+    ...mapActions(["setCurrentComponentAction"]),
+    initializePage() {
+      this.setCurrentComponentAction("Settings")
       this.releaseGlobalBackEvent()
     },
     showDialog(args) {
@@ -124,7 +124,7 @@ export default {
         props: {
           title: "Theme",
           list: ["Light", "Dark"],
-          height: "96",
+          height: "97",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.themeName !== action) {
@@ -139,7 +139,7 @@ export default {
           }).then((result) => {
             if (result) {
               this.interface.theme.subTitle = this.themeName = action
-              setString("application-theme", action)
+              ApplicationSettings.setString("application-theme", action)
               setTimeout((e) => this.restartApp(), 250)
             }
           })
@@ -184,7 +184,7 @@ export default {
     },
   },
   created() {
-    this.interface.theme.subTitle = this.themeName = getString(
+    this.interface.theme.subTitle = this.themeName = ApplicationSettings.getString(
       "application-theme",
       "Light"
     )

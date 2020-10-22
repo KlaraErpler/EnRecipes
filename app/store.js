@@ -6,178 +6,178 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     recipes: [
-      // {
-      //   imageSrc: null,
-      //   title: "Mediterranean Salad",
-      //   category: "Salads",
-      //   prepTime: "12:25",
-      //   cookTime: "00:30",
-      //   portionSize: 1,
-      //   ingredients: [
-      //     {
-      //       item: "Cucumbers, Seeded And Sliced",
-      //       quantity: 3,
-      //       unit: "unit",
-      //     },
-      //     {
-      //       item: "Crumbled Feta Cheese",
-      //       quantity: 1.5,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Black Olives, Pitted And Sliced",
-      //       quantity: 1,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Roma Tomatoes",
-      //       quantity: 3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
-      //       quantity: 0.3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Onion, Sliced",
-      //       quantity: 1.5,
-      //       unit: "unit",
-      //     },
-      //     {
-      //       item: "Cucumbers, Seeded And Sliced",
-      //       quantity: 3,
-      //       unit: "unit",
-      //     },
-      //     {
-      //       item: "Crumbled Feta Cheese",
-      //       quantity: 1.5,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Black Olives, Pitted And Sliced",
-      //       quantity: 1,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Roma Tomatoes",
-      //       quantity: 3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
-      //       quantity: 0.3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Onion, Sliced",
-      //       quantity: 1.5,
-      //       unit: "unit",
-      //     },
-      //     {
-      //       item: "Cucumbers, Seeded And Sliced",
-      //       quantity: 3,
-      //       unit: "unit",
-      //     },
-      //     {
-      //       item: "Crumbled Feta Cheese",
-      //       quantity: 1.5,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Black Olives, Pitted And Sliced",
-      //       quantity: 1,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Roma Tomatoes",
-      //       quantity: 3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
-      //       quantity: 0.3,
-      //       unit: "cup",
-      //     },
-      //     {
-      //       item: "Onion, Sliced",
-      //       quantity: 1.5,
-      //       unit: "unit",
-      //     },
-      //   ],
-      //   instructions: [
-      //     "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
-      //     "Chill until serving.",
-      //     "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion. In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
-      //     "Chill until serving.",
-      //     "Chill until serving.",
-      //     "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
-      //     "Chill until serving.",
-      //     "Chill until serving.",
-      //     "Chill until serving.",
-      //     "Chill until serving.",
-      //     "Chill until serving.",
-      //   ],
-      //   notes: [
-      //     "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
-      //     "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
-      //     "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
-      //   ],
-      //   references: [
-      //     "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
-      //     "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
-      //     "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
-      //     "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
-      //   ],
-      //   isFavorite: true,
-      //   tried: false,
-      //   lastModified: "2020-10-18T17:37:51.798Z",
-      // },
-      // {
-      //   imageSrc: null,
-      //   title: "Fresh Tomato Sauce",
-      //   category: "Sauces",
-      //   prepTime: "00:45",
-      //   cookTime: "00:35",
-      //   portionSize: 1,
-      //   ingredients: [],
-      //   instructions: [],
-      //   notes: [],
-      //   references: [],
-      //   isFavorite: true,
-      //   tried: true,
-      //   lastModified: "2020-10-15T17:37:51.798Z",
-      // },
-      // {
-      //   imageSrc: null,
-      //   title: "Creamy Mushroom Herb Pasta",
-      //   category: "Lunch",
-      //   prepTime: "00:10",
-      //   cookTime: "00:15",
-      //   portionSize: 1,
-      //   ingredients: [],
-      //   instructions: [],
-      //   notes: [],
-      //   references: [],
-      //   isFavorite: false,
-      //   tried: false,
-      //   lastModified: "2020-10-12T17:37:51.798Z",
-      // },
-      // {
-      //   imageSrc: null,
-      //   title: "Grilled Cheese Sandwich",
-      //   category: "Lunch",
-      //   prepTime: "00:50",
-      //   cookTime: "00:12",
-      //   portionSize: 1,
-      //   ingredients: [],
-      //   instructions: [],
-      //   notes: [],
-      //   references: [],
-      //   isFavorite: false,
-      //   tried: true,
-      //   lastModified: "2020-10-03T17:37:51.798Z",
-      // },
+      {
+        imageSrc: null,
+        title: "Mediterranean Salad",
+        category: "Salads",
+        prepTime: "12:25",
+        cookTime: "00:30",
+        portionSize: 1,
+        ingredients: [
+          {
+            item: "Cucumbers, Seeded And Sliced",
+            quantity: 3,
+            unit: "unit",
+          },
+          {
+            item: "Crumbled Feta Cheese",
+            quantity: 1.5,
+            unit: "cup",
+          },
+          {
+            item: "Black Olives, Pitted And Sliced",
+            quantity: 1,
+            unit: "cup",
+          },
+          {
+            item: "Diced Roma Tomatoes",
+            quantity: 3,
+            unit: "cup",
+          },
+          {
+            item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
+            quantity: 0.3,
+            unit: "cup",
+          },
+          {
+            item: "Onion, Sliced",
+            quantity: 1.5,
+            unit: "unit",
+          },
+          {
+            item: "Cucumbers, Seeded And Sliced",
+            quantity: 3,
+            unit: "unit",
+          },
+          {
+            item: "Crumbled Feta Cheese",
+            quantity: 1.5,
+            unit: "cup",
+          },
+          {
+            item: "Black Olives, Pitted And Sliced",
+            quantity: 1,
+            unit: "cup",
+          },
+          {
+            item: "Diced Roma Tomatoes",
+            quantity: 3,
+            unit: "cup",
+          },
+          {
+            item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
+            quantity: 0.3,
+            unit: "cup",
+          },
+          {
+            item: "Onion, Sliced",
+            quantity: 1.5,
+            unit: "unit",
+          },
+          {
+            item: "Cucumbers, Seeded And Sliced",
+            quantity: 3,
+            unit: "unit",
+          },
+          {
+            item: "Crumbled Feta Cheese",
+            quantity: 1.5,
+            unit: "cup",
+          },
+          {
+            item: "Black Olives, Pitted And Sliced",
+            quantity: 1,
+            unit: "cup",
+          },
+          {
+            item: "Diced Roma Tomatoes",
+            quantity: 3,
+            unit: "cup",
+          },
+          {
+            item: "Diced Oil Packed Sun Dried Tomatoes, Drained, Oil Reserved",
+            quantity: 0.3,
+            unit: "cup",
+          },
+          {
+            item: "Onion, Sliced",
+            quantity: 1.5,
+            unit: "unit",
+          },
+        ],
+        instructions: [
+          "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
+          "Chill until serving.",
+          "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion. In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
+          "Chill until serving.",
+          "Chill until serving.",
+          "In a large salad bowl, toss together the cucumbers, feta cheese, olives, roma tomatoes, sun-dried tomatoes, 2 tablespoons reserved sun-dried tomato oil, and red onion.",
+          "Chill until serving.",
+          "Chill until serving.",
+          "Chill until serving.",
+          "Chill until serving.",
+          "Chill until serving.",
+        ],
+        notes: [
+          "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
+          "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
+          "Per Serving: 130.6 calories; protein 5.5g 11% DV; carbohydrates 9.3g 3% DV; fat 8.8g 14% DV; cholesterol 25mg 8% DV; sodium 486.4mg 20% DV.",
+        ],
+        references: [
+          "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
+          "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
+          "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
+          "https://www.allrecipes.com/recipe/14403/mediterranean-greek-salad/",
+        ],
+        isFavorite: true,
+        tried: false,
+        lastModified: "2020-10-18T17:37:51.798Z",
+      },
+      {
+        imageSrc: null,
+        title: "Fresh Tomato Sauce",
+        category: "Sauces",
+        prepTime: "00:45",
+        cookTime: "00:35",
+        portionSize: 1,
+        ingredients: [],
+        instructions: [],
+        notes: [],
+        references: [],
+        isFavorite: true,
+        tried: true,
+        lastModified: "2020-10-15T17:37:51.798Z",
+      },
+      {
+        imageSrc: null,
+        title: "Creamy Mushroom Herb Pasta",
+        category: "Lunch",
+        prepTime: "00:10",
+        cookTime: "00:15",
+        portionSize: 1,
+        ingredients: [],
+        instructions: [],
+        notes: [],
+        references: [],
+        isFavorite: false,
+        tried: false,
+        lastModified: "2020-10-12T17:37:51.798Z",
+      },
+      {
+        imageSrc: null,
+        title: "Grilled Cheese Sandwich",
+        category: "Lunch",
+        prepTime: "00:50",
+        cookTime: "00:12",
+        portionSize: 1,
+        ingredients: [],
+        instructions: [],
+        notes: [],
+        references: [],
+        isFavorite: false,
+        tried: true,
+        lastModified: "2020-10-03T17:37:51.798Z",
+      },
     ],
     viewIsScrolled: false,
     icon: {
@@ -304,28 +304,28 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    addRecipe({ commit }, recipe) {
+    addRecipeAction({ commit }, recipe) {
       commit("addRecipe", recipe)
     },
-    addCategory({ commit }, category) {
+    addCategoryAction({ commit }, category) {
       commit("addCategory", category)
     },
-    overwriteRecipe({ commit }, updatedRecipe) {
+    overwriteRecipeAction({ commit }, updatedRecipe) {
       commit("overwriteRecipe", updatedRecipe)
     },
-    deleteRecipe({ commit }, index) {
+    deleteRecipeAction({ commit }, index) {
       commit("deleteRecipe", index)
     },
-    toggleFavorite({ commit }, index) {
+    toggleFavoriteAction({ commit }, index) {
       commit("toggleFavorite", index)
     },
-    toggleMustTry({ commit }, index) {
+    toggleMustTryAction({ commit }, index) {
       commit("toggleMustTry", index)
     },
-    setCurrentComponent({ commit }, comp) {
+    setCurrentComponentAction({ commit }, comp) {
       commit("setCurrentComponent", comp)
     },
-    renameCategory({ commit }, category) {
+    renameCategoryAction({ commit }, category) {
       commit("renameCategory", category)
     },
   },

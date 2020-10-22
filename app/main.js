@@ -5,12 +5,17 @@ import store from "./store"
 import RadListView from "nativescript-ui-listview/vue"
 Vue.use(RadListView)
 
-import DateTimePicker from "nativescript-datetimepicker/vue"
+import DateTimePicker from "@nativescript/datetimepicker/vue"
 Vue.use(DateTimePicker)
 
 Vue.registerElement(
   "RadSideDrawer",
   () => require("nativescript-ui-sidedrawer").RadSideDrawer
+)
+
+Vue.registerElement(
+  "Fab",
+  () => require("@nstudio/nativescript-floatingactionbutton").Fab
 )
 
 if (TNS_ENV !== "production") {

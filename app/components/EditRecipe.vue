@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="setCurrentComponent" @unloaded="releaseBackEvent">
+  <Page @loaded="initializePage" @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *, auto," class="actionBarContainer">
         <Label
@@ -57,17 +57,17 @@
           >
             <Label
               v-if="recipeContent.imageSrc"
-              class="bx btnFab"
+              @tap="removePicture"
+              class="bx fab-button"
               :text="icon.close"
               androidElevation="8"
-              @tap="removePicture()"
             />
             <Label
               v-else
-              class="bx btnFab"
+              @tap="takePicture"
+              class="bx fab-button"
               :text="icon.camera"
               androidElevation="8"
-              @tap="takePicture()"
             />
           </StackLayout>
         </AbsoluteLayout>
@@ -93,6 +93,7 @@
           <GridLayout columns="*, 8, *">
             <AbsoluteLayout class="inputField" col="0">
               <TimePickerField
+                titleTextColor="red"
                 timeFormat="HH:mm"
                 pickerTitle="Approx. preparation time"
                 @timeChange="onPrepTimeChange"
@@ -259,10 +260,11 @@
 </template>
 
 <script>
-import { screen } from "tns-core-modules/platform"
+import { Screen, AndroidApplication } from "@nativescript/core"
 import { Mediafilepicker } from "nativescript-mediafilepicker"
+
 import { mapState, mapActions } from "vuex"
-import * as application from "tns-core-modules/application"
+
 import ActionDialog from "./modal/ActionDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
@@ -301,7 +303,7 @@ export default {
   computed: {
     ...mapState(["icon", "units", "categories", "currentComponent", "recipes"]),
     screenWidth() {
-      return screen.mainScreen.widthDIPs
+      return Screen.mainScreen.widthDIPs
     },
     hasEnoughDetails() {
       if (this.recipeIndex) {
@@ -315,9 +317,15 @@ export default {
     },
   },
   methods: {
-    setCurrentComponent() {
+    ...mapActions([
+      "setCurrentComponentAction",
+      "overwriteRecipeAction",
+      "addRecipeAction",
+      "addCategoryAction",
+    ]),
+    initializePage() {
       setTimeout((e) => {
-        this.$store.dispatch("setCurrentComponent", "EditRecipe")
+        this.setCurrentComponentAction("EditRecipe")
       }, 500)
       this.title = this.recipeIndex >= 0 ? "Edit recipe" : "New recipe"
       if (this.recipeIndex >= 0) {
@@ -368,12 +376,12 @@ export default {
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
       if (this.recipeIndex >= 0) {
-        this.$store.dispatch("overwriteRecipe", {
+        this.overwriteRecipeAction({
           index: this.recipeIndex,
           recipe: this.recipeContent,
         })
       } else {
-        this.$store.dispatch("addRecipe", this.recipeContent)
+        this.addRecipeAction(this.recipeContent)
       }
       this.$navigateBack()
     },
@@ -394,7 +402,7 @@ export default {
         props: {
           title: "Category",
           list: [...this.categories],
-          height: "75%",
+          height: "60%",
           action: "NEW CATEGORY",
         },
       }).then((action) => {
@@ -408,7 +416,7 @@ export default {
             this.hijackBackEvent()
             if (result.length) {
               this.recipeContent.category = result
-              this.$store.dispatch("addCategory", result)
+              this.addCategoryAction(result)
             }
           })
         } else if (action) {
@@ -443,14 +451,14 @@ export default {
       }
     },
     hijackBackEvent() {
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.on(
+        AndroidApplication.activityBackPressedEvent,
         this.backEvent
       )
     },
     releaseBackEvent() {
-      application.android.off(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.off(
+        AndroidApplication.activityBackPressedEvent,
         this.backEvent
       )
     },

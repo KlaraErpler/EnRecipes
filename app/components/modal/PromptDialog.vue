@@ -1,6 +1,9 @@
 <template>
   <Page>
-    <StackLayout class="dialogContainer">
+    <StackLayout
+      class="dialogContainer"
+      :class="isLightTheme ? 'light' : 'dark'"
+    >
       <Label class="dialogTitle orkm" :text="title" />
       <TextField
         width="100%"
@@ -21,12 +24,17 @@
 </template>
 
 <script>
+import Theme from "@nativescript/theme"
 export default {
   props: ["title", "hint", "action"],
   data() {
     return {
       category: null,
+      isLightTheme: true,
     }
+  },
+  created() {
+    this.isLightTheme = Theme.getMode() == "ns-light" ? true : false
   },
 }
 </script>

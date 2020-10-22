@@ -1,22 +1,23 @@
 <template>
   <Page>
-    <StackLayout class="dialogContainer">
+    <StackLayout
+      class="dialogContainer"
+      :class="isLightTheme ? 'light' : 'dark'"
+    >
       <Label class="dialogTitle orkm" :text="title" />
-      <StackLayout class="actionsContainer">
-        <ListView
-          width="100%"
-          :height="height"
-          for="item in list"
-          @itemTap="tapAction"
-          separatorColor="transparent"
-        >
-          <v-template>
-            <StackLayout class="actionItem">
-              <Label :text="item" />
-            </StackLayout>
-          </v-template>
-        </ListView>
-      </StackLayout>
+      <ListView
+        width="100%"
+        :height="height"
+        for="item in list"
+        @itemTap="tapAction"
+        separatorColor="transparent"
+      >
+        <v-template>
+          <StackLayout class="actionItem">
+            <Label :text="item" />
+          </StackLayout>
+        </v-template>
+      </ListView>
       <GridLayout rows="auto" columns="auto, *, auto">
         <Label
           v-if="action"
@@ -37,28 +38,21 @@
 </template>
 
 <script>
+import Theme from "@nativescript/theme"
 export default {
   props: ["title", "list", "height", "action"],
+  data() {
+    return {
+      isLightTheme: true,
+    }
+  },
   methods: {
     tapAction({ item }) {
       this.$modal.close(item)
     },
   },
+  created() {
+    this.isLightTheme = Theme.getMode() == "ns-light" ? true : false
+  },
 }
 </script>
-<style lang="scss" scoped>
-.dialogTitle {
-  padding: 24 24 12;
-  font-size: 20;
-}
-.actionItem {
-  width: 100%;
-  font-size: 16;
-  padding: 8 20;
-}
-.cancel {
-  padding: 24;
-  font-size: 12;
-  color: #ff7043;
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="setCurrentComponent">
+  <Page @loaded="initializePage">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Search Actionbar -->
       <GridLayout
@@ -123,7 +123,7 @@
         <Label
           row="1"
           col="1"
-          class="bx btnFab"
+          class="bx fab-button"
           :text="icon.plus"
           androidElevation="8"
           @tap="addRecipe"
@@ -134,12 +134,8 @@
 </template>
 
 <script>
-import * as utils from "tns-core-modules/utils/utils"
-import * as application from "tns-core-modules/application"
-import * as gestures from "tns-core-modules/ui/gestures"
+import { Utils, AndroidApplication } from "@nativescript/core"
 import * as Toast from "nativescript-toast"
-
-import { ObservableArray } from "tns-core-modules/data/observable-array"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
@@ -196,20 +192,21 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setCurrentComponentAction", "deleteRecipeAction"]),
     openSearch() {
       this.showSearch = true
       this.hijackLocalBackEvent()
     },
     hijackLocalBackEvent() {
       this.releaseGlobalBackEvent()
-      application.android.on(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.on(
+        AndroidApplication.activityBackPressedEvent,
         this.searchBackEvent
       )
     },
     releaseLocalBackEvent() {
-      application.android.off(
-        application.AndroidApplication.activityBackPressedEvent,
+      AndroidApplication.off(
+        AndroidApplication.activityBackPressedEvent,
         this.searchBackEvent
       )
       this.hijackGlobalBackEvent()
@@ -220,7 +217,7 @@ export default {
     },
     closeSearch() {
       this.searchQuery = ""
-      utils.ad.dismissSoftInput()
+      Utils.ad.dismissSoftInput()
       this.showSearch = false
       this.updateFilter()
       this.releaseLocalBackEvent()
@@ -231,7 +228,7 @@ export default {
         props: {
           title: "Sort by",
           list: ["Natural order", "Title", "Duration", "Last modified"],
-          height: "auto",
+          height: "195", // 48*4 + 3 1dip separators
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.sortType !== action) {
@@ -272,7 +269,7 @@ export default {
       }
     },
     setComponent(comp) {
-      this.$store.dispatch("setCurrentComponent", comp)
+      this.setCurrentComponentAction(comp)
       this.hijackGlobalBackEvent()
     },
     updateFilter() {
@@ -300,7 +297,7 @@ export default {
       }
     },
 
-    setCurrentComponent() {
+    initializePage() {
       this.filterFavorites
         ? this.setComponent("Favorites")
         : this.filterMustTry
@@ -334,7 +331,7 @@ export default {
         },
       }).then((action) => {
         if (action) {
-          this.$store.dispatch("deleteRecipe", index)
+          this.deleteRecipeAction(index)
         }
       })
     },
