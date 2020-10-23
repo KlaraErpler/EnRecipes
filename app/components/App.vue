@@ -132,8 +132,8 @@ import About from "./About.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import { mapState, mapActions } from "vuex"
 
-import { Couchbase, ConcurrencyMode } from "nativescript-couchbase-plugin"
-const cb = new Couchbase("enrecipes")
+// import { Couchbase, ConcurrencyMode } from "nativescript-couchbase-plugin"
+// const cb = new Couchbase("enrecipes")
 
 let page
 export default {
