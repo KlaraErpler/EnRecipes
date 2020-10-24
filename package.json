@@ -11,6 +11,7 @@
     "@nativescript/core": "~7.0.0",
     "@nativescript/datetimepicker": "^2.0.4",
     "@nativescript/theme": "^3.0.0",
+    "@nativescript/webpack": "3.0.0",
     "@nstudio/nativescript-floatingactionbutton": "^3.0.3",
     "nativescript-camera": "^4.5.0",
     "nativescript-couchbase-plugin": "^0.9.6",
@@ -20,6 +21,7 @@
     "nativescript-ui-listview": "^9.0.4",
     "nativescript-ui-sidedrawer": "^9.0.3",
     "nativescript-vue": "^2.6.1",
+    "nativescript-zip": "^4.0.2",
     "vuex": "^3.3.0"
   },
   "devDependencies": {
@@ -28,7 +30,6 @@
     "@nativescript/android": "7.0.1",
     "@types/node": "^14.0.27",
     "babel-loader": "^8.1.0",
-    "nativescript-dev-webpack": "^1.5.1",
     "nativescript-vue-template-compiler": "^2.6.0",
     "node-sass": "^4.13.1",
     "vue-loader": "^15.9.1"

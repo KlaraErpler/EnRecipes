@@ -34,6 +34,7 @@
             class="sd-group-header orkm"
             rows="auto"
             columns="*, auto"
+            v-if="categories.length"
           >
             <Label col="0" text="Categories" />
             <Label
@@ -103,6 +104,7 @@
           <!-- Home  -->
           <EnRecipes
             ref="enrecipes"
+            :passedRecipes="recipes"
             :filterFavorites="filterFavorites"
             :filterMustTry="filterMustTry"
             :selectedCategory="selectedCategory"
@@ -132,8 +134,9 @@ import About from "./About.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import { mapState, mapActions } from "vuex"
 
-// import { Couchbase, ConcurrencyMode } from "nativescript-couchbase-plugin"
-// const cb = new Couchbase("enrecipes")
+import { Couchbase } from "nativescript-couchbase-plugin"
+const cb = new Couchbase("enrecipes")
+const cbCat = new Couchbase("categories")
 
 let page
 export default {
@@ -177,10 +180,11 @@ export default {
         },
       ],
       catEditMode: false,
+      recipes: null,
     }
   },
   computed: {
-    ...mapState(["recipes", "categories", "icon", "currentComponent"]),
+    ...mapState(["icon", "currentComponent"]),
     categories() {
       let arr = this.recipes.map((e) => {
         return e.category
@@ -214,9 +218,20 @@ export default {
           if (this.categories.includes(result)) {
             Toast.makeText("Category already exists!", "long").show()
           } else {
-            this.renameCategoryAction({
-              current: item,
-              updated: result,
+            let categories = cbCat.getDocument("categories").categories
+            console.log(categories, categories.indexOf(item))
+            categories.splice(categories.indexOf(item), 1)
+            categories.push(result)
+            categories.sort()
+            categories = [...new Set(categories)]
+            cbCat.updateDocument("categories", {
+              categories: [...categories],
+            })
+            this.recipes.forEach((e, i) => {
+              if (e.category == item) {
+                e.category = result
+                cb.updateDocument(e.id, e)
+              }
             })
             this.catEditMode = false
           }
@@ -293,6 +308,7 @@ export default {
           backstackVisible: false,
         })
         this.closeDrawer()
+        this.catEditMode = false
       } else if (!this.catEditMode) {
         this.releaseGlobalBackEvent()
         this.hijackGlobalBackEvent()
@@ -342,40 +358,10 @@ export default {
   created() {
     let themeName = ApplicationSettings.getString("application-theme", "Light")
     setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
+    this.recipes = cb.query({ select: [] })
+    cb.addDatabaseChangeListener((e) => {
+      this.recipes = cb.query({ select: [] })
+    })
   },
 }
 </script>
-
-<style lang="scss">
-.noResults {
-  width: 100%;
-  padding: 16;
-  font-size: 16;
-  line-height: 8;
-}
-.swipe-item {
-  margin: 0 8;
-  background: #ff7043;
-  color: #fff;
-  height: 128;
-  border-radius: 6;
-}
-
-#btnFabContainer {
-  width: 100%;
-  height: 100%;
-}
-.btnFab {
-  width: 56;
-  height: 56;
-  padding: 16;
-  background-color: #ff7043;
-  color: #fff;
-  border-radius: 28;
-  text-align: center;
-}
-// prettier-ignore
-Button {
-  color: #ff7043;
-}
-</style>

@@ -58,8 +58,15 @@
 </template>
 
 <script>
-import { ApplicationSettings } from "@nativescript/core"
+import {
+  ApplicationSettings,
+  path,
+  getFileAccess,
+  knownFolders,
+  Application,
+} from "@nativescript/core"
 import * as permissions from "nativescript-permissions"
+import { Zip } from "nativescript-zip"
 
 import Theme from "@nativescript/theme"
 import ActionDialog from "./modal/ActionDialog.vue"
@@ -164,7 +171,24 @@ export default {
       permissions
         .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         .then(() => {
-          alert("Backup successful!")
+          const sdDownloadPath = android.os.Environment.getExternalStoragePublicDirectory(
+            android.os.Environment.DIRECTORY_DOWNLOADS
+          ).toString()
+          let fromPath = path.join(knownFolders.documents().path, "enrecipes")
+          let destPath = path.join(sdDownloadPath, "enrecipes.zip")
+          console.log(fromPath, destPath, sdDownloadPath)
+          Zip.zip({
+            directory: fromPath,
+            archive: destPath,
+          })
+            .then((success) => {
+              console.log("success:" + success)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+          // console.log(fromPath, destPath, sdDownloadPath)
+          // alert("Backup successful!")
         })
         .catch(() => {
           console.log("Uh oh, no permissions - plan B time!")

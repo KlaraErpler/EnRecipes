@@ -1,16 +1,14 @@
 <template>
   <Page>
-    <StackLayout
-      class="dialogContainer"
-      :class="isLightTheme ? 'light' : 'dark'"
-    >
+    <StackLayout class="dialogContainer" :class="isLightMode">
       <Label class="dialogTitle orkm" :text="title" />
-      <TextField
-        width="100%"
-        :hint="hint"
-        v-model="category"
-        autocapitalizationType="words"
-      />
+      <StackLayout class="dialogInputField">
+        <TextField
+          :hint="hint"
+          v-model="category"
+          autocapitalizationType="words"
+        />
+      </StackLayout>
       <StackLayout orientation="horizontal" horizontalAlignment="right">
         <Label class="action orkm" text="CANCEL" @tap="$modal.close(false)" />
         <Label
@@ -24,34 +22,18 @@
 </template>
 
 <script>
-import Theme from "@nativescript/theme"
+import { Application } from "@nativescript/core"
 export default {
   props: ["title", "hint", "action"],
   data() {
     return {
       category: null,
-      isLightTheme: true,
     }
   },
-  created() {
-    this.isLightTheme = Theme.getMode() == "ns-light" ? true : false
+  computed: {
+    isLightMode() {
+      return Application.systemAppearance()
+    },
   },
 }
 </script>
-<style lang="scss" scoped>
-TextField {
-  margin: 0 24 16;
-}
-.dialogContainer {
-  padding: 0 24;
-}
-.dialogTitle {
-  padding: 24 0 12;
-  font-size: 20;
-}
-.action {
-  padding: 24 0 24 32;
-  font-size: 12;
-  color: #ff7043;
-}
-</style>

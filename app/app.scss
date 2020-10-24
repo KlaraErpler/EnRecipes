@@ -71,7 +71,8 @@ Page {
       color: $grayD4;
     }
   }
-  .view-imageHolder {
+  .view-imageHolder,
+  .recipeImgContainer {
     color: $grayL1;
     background: $grayL2;
   }
@@ -126,7 +127,8 @@ Page {
       color: $grayL4;
     }
   }
-  .view-imageHolder {
+  .view-imageHolder,
+  .recipeImgContainer {
     color: $grayD4;
     background: #111;
   }
@@ -239,7 +241,7 @@ RadListView {
   margin: 8 16;
   border-radius: 6;
   .recipe-info {
-    margin: 4 0;
+    margin: 4;
   }
   .recipe-cat {
     font-size: 12;
@@ -255,13 +257,29 @@ RadListView {
   .recipe-time {
     padding: 0;
   }
-  .recipe-favorite {
-    font-size: 12;
-    padding: 14 8 0 0;
-  }
-  .recipe-cat,
-  .recipe-favorite {
+  .recipe-cat {
     color: $orange;
+  }
+}
+.noResults {
+  width: 100%;
+  font-size: 16;
+  line-height: 8;
+  padding: 32 16;
+  text-align: center;
+}
+.swipe-item {
+  margin: 0 8;
+  background: #c62828;
+  color: #fff;
+  height: 128;
+  border-radius: 6;
+}
+.recipeImgContainer {
+  vertical-alignment: center;
+  // prettier-ignore
+  Image {
+    border-radius: 6 0 0 6;
   }
 }
 
@@ -372,13 +390,13 @@ RadListView {
 }
 // Edit Recipe
 .fab-button {
-  color: white;
+  color: #fff;
   height: 56;
   width: 56;
   background-color: #ff7043;
   horizontal-align: center;
   vertical-align: center;
-  border-radius: 100;
+  border-radius: 28;
   padding: 16;
   margin: 16;
 }
@@ -410,6 +428,9 @@ RadListView {
   .dialogTitle {
     padding: 24 24 12;
     font-size: 20;
+  }
+  .dialogInputField {
+    padding: 0 24 16;
   }
   .dialogDescription {
     font-size: 16;

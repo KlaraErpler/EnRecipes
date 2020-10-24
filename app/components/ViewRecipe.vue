@@ -95,9 +95,15 @@
             </StackLayout>
           </ScrollView>
         </TabViewItem>
-        <TabViewItem title="Ingredients" v-if="recipe.ingredients.length">
+        <TabViewItem title="Ingredients">
           <ScrollView scrollBarIndicatorVisible="false">
-            <StackLayout padding="16 16 124">
+            <Label
+              v-if="!recipe.ingredients.length"
+              class="noResults"
+              text="Click the edit button to add ingredients to this recipe"
+              textWrap="true"
+            />
+            <StackLayout v-else padding="16 16 124">
               <AbsoluteLayout class="inputField">
                 <TextField
                   width="50%"
@@ -135,9 +141,15 @@
             </StackLayout>
           </ScrollView>
         </TabViewItem>
-        <TabViewItem title="Instructions" v-if="recipe.instructions.length">
+        <TabViewItem title="Instructions">
           <ScrollView scrollBarIndicatorVisible="false">
-            <StackLayout padding="32 16 132">
+            <Label
+              v-if="!recipe.instructions.length"
+              class="noResults"
+              text="Click the edit button to add instructions to this recipe"
+              textWrap="true"
+            />
+            <StackLayout v-else padding="32 16 132">
               <GridLayout
                 columns="auto ,*"
                 v-for="(instruction, index) in recipe.instructions"
@@ -165,9 +177,15 @@
             </StackLayout>
           </ScrollView>
         </TabViewItem>
-        <TabViewItem title="Notes" v-if="recipe.notes.length">
+        <TabViewItem title="Notes">
           <ScrollView scrollBarIndicatorVisible="false">
-            <StackLayout padding="32 16 132">
+            <Label
+              v-if="!recipe.notes.length"
+              class="noResults"
+              text="Click the edit button to add notes to this recipe"
+              textWrap="true"
+            />
+            <StackLayout v-else padding="32 16 132">
               <GridLayout
                 columns="auto ,*"
                 v-for="(note, index) in recipe.notes"
@@ -191,9 +209,15 @@
             </StackLayout>
           </ScrollView>
         </TabViewItem>
-        <TabViewItem title="References" v-if="recipe.references.length">
+        <TabViewItem title="References">
           <ScrollView scrollBarIndicatorVisible="false">
-            <StackLayout padding="32 16 132">
+            <Label
+              v-if="!recipe.references.length"
+              class="noResults"
+              text="Click the edit button to add references to this recipe"
+              textWrap="true"
+            />
+            <StackLayout v-else padding="32 16 132">
               <GridLayout
                 columns="auto ,*"
                 v-for="(reference, index) in recipe.references"
@@ -243,19 +267,20 @@ import { mapState, mapActions } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
 
+import { Couchbase } from "nativescript-couchbase-plugin"
+const cb = new Couchbase("enrecipes")
+
 export default {
-  props: ["recipeIndex", "hijackGlobalBackEvent", "releaseGlobalBackEvent"],
+  props: ["recipeID", "hijackGlobalBackEvent", "releaseGlobalBackEvent"],
   data() {
     return {
       busy: false,
       portionScale: 1,
+      recipe: null,
     }
   },
   computed: {
-    ...mapState(["icon", "recipes"]),
-    recipe() {
-      return this.recipes[this.recipeIndex]
-    },
+    ...mapState(["icon"]),
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
@@ -266,11 +291,15 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      "toggleFavoriteAction",
-      "toggleMustTryAction",
-      "setCurrentComponentAction",
-    ]),
+    ...mapActions(["toggleMustTryAction", "setCurrentComponentAction"]),
+    initializePage() {
+      this.recipe = cb.getDocument(this.recipeID)
+      this.releaseGlobalBackEvent()
+      this.busy = false
+      setTimeout((e) => {
+        this.setCurrentComponentAction("ViewRecipe")
+      }, 500)
+    },
     roundedQuantity(quantity, unit) {
       return Math.round(quantity * this.isPortionScalePositive * 100) / 100
     },
@@ -283,24 +312,27 @@ export default {
           curve: "easeIn",
         },
         props: {
-          recipeIndex: this.recipeIndex,
+          recipeID: this.recipeID,
         },
         // backstackVisible: false,
       })
+    },
+    toggle(key) {
+      this.recipe[key] = !this.recipe[key]
+      cb.updateDocument(this.recipeID, this.recipe)
+      this.recipe = cb.getDocument(this.recipeID)
     },
     toggleFavorite() {
       this.recipe.isFavorite
         ? Toast.makeText("Removed from Favorites").show()
         : Toast.makeText("Added to Favorites").show()
-
-      this.toggleFavoriteAction(this.recipeIndex)
+      this.toggle("isFavorite")
     },
     toggleMustTry() {
       this.recipe.tried
         ? Toast.makeText("Added to Must-Try").show()
         : Toast.makeText("Removed from Must-Try").show()
-
-      this.toggleMustTryAction(this.recipeIndex)
+      this.toggle("tried")
     },
     getTime(time) {
       let t = time.split(":")
@@ -311,13 +343,9 @@ export default {
     openURL(args, url) {
       Utils.openUrl(url)
     },
-    initializePage() {
-      this.releaseGlobalBackEvent()
-      this.busy = false
-      setTimeout((e) => {
-        this.setCurrentComponentAction("ViewRecipe")
-      }, 500)
-    },
+  },
+  created() {
+    this.recipe = cb.getDocument(this.recipeID)
   },
 }
 </script>

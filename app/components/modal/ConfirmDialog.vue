@@ -1,9 +1,6 @@
 <template>
   <Page>
-    <StackLayout
-      class="dialogContainer"
-      :class="isLightTheme ? 'light' : 'dark'"
-    >
+    <StackLayout class="dialogContainer" :class="isLightMode">
       <Label class="dialogTitle orkm" :text="title" />
       <Label class="dialogDescription" :text="description" textWrap="true" />
       <StackLayout
@@ -27,16 +24,13 @@
 </template>
 
 <script>
-import Theme from "@nativescript/theme"
+import { Application } from "@nativescript/core"
 export default {
   props: ["title", "description", "cancelButtonText", "okButtonText"],
-  data() {
-    return {
-      isLightTheme: true,
-    }
-  },
-  created() {
-    this.isLightTheme = Theme.getMode() == "ns-light" ? true : false
+  computed: {
+    isLightMode() {
+      return Application.systemAppearance()
+    },
   },
 }
 </script>

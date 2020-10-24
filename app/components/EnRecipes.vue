@@ -39,15 +39,27 @@
           col="0"
         />
         <Label class="title orkm" :text="currentComponent" col="1" />
-        <Label class="bx" :text="icon.search" col="2" @tap="openSearch" />
-        <Label class="bx" :text="icon.sort" col="3" @tap="sortDialog" />
+        <Label
+          v-if="passedRecipes.length"
+          class="bx"
+          :text="icon.search"
+          col="2"
+          @tap="openSearch"
+        />
+        <Label
+          v-if="passedRecipes.length"
+          class="bx"
+          :text="icon.sort"
+          col="3"
+          @tap="sortDialog"
+        />
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
       <RadListView
         ref="listView"
         itemHeight="112"
-        for="recipe in recipes"
+        for="recipe in passedRecipes"
         swipeActions="true"
         @itemSwipeProgressChanged="onSwiping"
         @itemSwipeProgressEnded="onSwipeEnded"
@@ -63,7 +75,24 @@
             columns="112, *"
             androidElevation="1"
           >
-            <Image col="0" src="res://icon" stretch="fill" />
+            <GridLayout class="recipeImgContainer" rows="112" columns="112">
+              <Image
+                row="0"
+                col="0"
+                v-if="recipe.imageSrc"
+                :src="recipe.imageSrc"
+                stretch="aspectFill"
+              />
+              <Label
+                row="0"
+                col="0"
+                v-else
+                horizontalAlignment="center"
+                class="bx"
+                fontSize="56"
+                :text="icon.image"
+              />
+            </GridLayout>
             <StackLayout class="recipe-info" col="1">
               <Label :text="recipe.category" class="orkm recipe-cat" />
               <Label :text="recipe.title" class="orkm recipe-title" />
@@ -86,37 +115,29 @@
         </v-template>
       </RadListView>
       <Label
-        v-if="!recipes.length && !filterFavorites && !filterMustTry"
+        v-if="!passedRecipes.length && !filterFavorites && !filterMustTry"
         class="noResults"
-        horizontalAlignment="center"
         text='Click the "+" icon to add a new recipe.'
-        textAlignment="center"
         textWrap="true"
       />
       <Label
         v-if="!filteredRecipes.length && searchQuery"
         class="noResults"
-        horizontalAlignment="center"
         :text="
           `Your search &quot;${searchQuery}&quot; did not match any recipes in this category.`
         "
-        textAlignment="center"
         textWrap="true"
       />
       <Label
         v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
         class="noResults"
-        horizontalAlignment="center"
         text="Your favorite recipes will be listed here."
-        textAlignment="center"
         textWrap="true"
       />
       <Label
         v-if="!filteredRecipes.length && filterMustTry && !searchQuery"
         class="noResults"
-        horizontalAlignment="center"
-        text="Your Must-Try recipes will be listed here."
-        textAlignment="center"
+        text="Your must-try recipes will be listed here."
         textWrap="true"
       />
       <GridLayout id="btnFabContainer" rows="*,88" columns="*,88">
@@ -143,8 +164,12 @@ import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import { mapState, mapActions } from "vuex"
 
+import { Couchbase } from "nativescript-couchbase-plugin"
+const cb = new Couchbase("enrecipes")
+
 export default {
   props: [
+    "passedRecipes",
     "filterFavorites",
     "filterMustTry",
     "selectedCategory",
@@ -161,31 +186,31 @@ export default {
       searchQuery: "",
       viewIsScrolled: false,
       showSearch: false,
-      // leftAction: false,
       rightAction: false,
       sortType: "Natural order",
+      deletionDialogActive: false,
     }
   },
   computed: {
-    ...mapState(["recipes", "icon", "currentComponent"]),
+    ...mapState(["icon", "currentComponent"]),
     filteredRecipes() {
       if (this.filterFavorites) {
-        return this.recipes.filter(
+        return this.passedRecipes.filter(
           (e) =>
             e.isFavorite && e.title.toLowerCase().includes(this.searchQuery)
         )
       } else if (this.filterMustTry) {
-        return this.recipes.filter(
+        return this.passedRecipes.filter(
           (e) => !e.tried && e.title.toLowerCase().includes(this.searchQuery)
         )
       } else if (this.selectedCategory) {
-        return this.recipes.filter(
+        return this.passedRecipes.filter(
           (e) =>
             e.category === this.selectedCategory &&
             e.title.toLowerCase().includes(this.searchQuery)
         )
       } else {
-        return this.recipes.filter((e) =>
+        return this.passedRecipes.filter((e) =>
           e.title.toLowerCase().includes(this.searchQuery)
         )
       }
@@ -193,6 +218,15 @@ export default {
   },
   methods: {
     ...mapActions(["setCurrentComponentAction", "deleteRecipeAction"]),
+    initializePage() {
+      this.filterFavorites
+        ? this.setComponent("Favorites")
+        : this.filterMustTry
+        ? this.setComponent("Must-Try")
+        : this.selectedCategory
+        ? this.setComponent(this.selectedCategory)
+        : this.setComponent("EnRecipes")
+    },
     openSearch() {
       this.showSearch = true
       this.hijackLocalBackEvent()
@@ -297,15 +331,6 @@ export default {
       }
     },
 
-    initializePage() {
-      this.filterFavorites
-        ? this.setComponent("Favorites")
-        : this.filterMustTry
-        ? this.setComponent("Must-Try")
-        : this.selectedCategory
-        ? this.setComponent(this.selectedCategory)
-        : this.setComponent("EnRecipes")
-    },
     onSwiping({ data, object }) {
       const swipeLimits = data.swipeLimits
       const swipeView = object
@@ -318,21 +343,25 @@ export default {
       }
     },
     onSwipeEnded({ index }) {
-      if (this.rightAction) this.deleteRecipe(index)
+      let recipeID = this.passedRecipes[index].id
+      if (this.rightAction && !this.deletionDialogActive)
+        this.deleteRecipe(index, recipeID)
       this.rightAction = false
     },
-    deleteRecipe(index) {
+    deleteRecipe(index, recipeID) {
+      this.deletionDialogActive = true
       this.$showModal(ConfirmDialog, {
         props: {
           title: "Delete recipe",
-          description: `Are you sure you want to delete the recipe "${this.recipes[index].title}"?`,
+          description: `Are you sure you want to delete the recipe "${this.passedRecipes[index].title}"?`,
           cancelButtonText: "CANCEL",
           okButtonText: "DELETE",
         },
       }).then((action) => {
         if (action) {
-          this.deleteRecipeAction(index)
+          cb.deleteDocument(recipeID)
         }
+        this.deletionDialogActive = false
       })
     },
     getTotalTime(prepTime, cookTime) {
@@ -384,7 +413,7 @@ export default {
           curve: "easeIn",
         },
         props: {
-          recipeIndex: this.recipes.indexOf(item),
+          recipeID: item.id,
           hijackGlobalBackEvent: this.hijackGlobalBackEvent,
           releaseGlobalBackEvent: this.releaseGlobalBackEvent,
         },
