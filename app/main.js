@@ -13,10 +13,10 @@ Vue.registerElement(
   () => require("nativescript-ui-sidedrawer").RadSideDrawer
 )
 
-Vue.registerElement(
-  "Fab",
-  () => require("@nstudio/nativescript-floatingactionbutton").Fab
-)
+// Vue.registerElement(
+//   "Fab",
+//   () => require("@nstudio/nativescript-floatingactionbutton").Fab
+// )
 
 if (TNS_ENV !== "production") {
   // Vue.use(VueDevtools)

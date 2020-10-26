@@ -27,7 +27,13 @@
             verticalAlignment="bottom"
           />
         </ScrollView>
-        <Label row="0" col="2" class="bx" :text="icon.share" @tap="" />
+        <Label
+          row="0"
+          col="2"
+          class="bx"
+          :text="icon.share"
+          @tap="shareRecipe"
+        />
         <Label
           row="0"
           col="3"
@@ -260,18 +266,21 @@
 </template>
 
 <script>
-import { Screen, Utils } from "@nativescript/core"
+import { Screen, Utils, ImageSource, Device } from "@nativescript/core"
 import * as Toast from "nativescript-toast"
+import * as SocialShare from "nativescript-social-share"
 
 import { mapState, mapActions } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
 
-import { Couchbase } from "nativescript-couchbase-plugin"
-const cb = new Couchbase("enrecipes")
-
 export default {
-  props: ["recipeID", "hijackGlobalBackEvent", "releaseGlobalBackEvent"],
+  props: [
+    "recipeIndex",
+    "recipeID",
+    "hijackGlobalBackEvent",
+    "releaseGlobalBackEvent",
+  ],
   data() {
     return {
       busy: false,
@@ -280,7 +289,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["icon"]),
+    ...mapState(["icon", "recipes"]),
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
@@ -291,17 +300,23 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["toggleMustTryAction", "setCurrentComponentAction"]),
+    ...mapActions(["toggleStateAction", "setCurrentComponentAction"]),
     initializePage() {
-      this.recipe = cb.getDocument(this.recipeID)
       this.releaseGlobalBackEvent()
       this.busy = false
       setTimeout((e) => {
         this.setCurrentComponentAction("ViewRecipe")
       }, 500)
+      this.portionScale = this.recipe.portionSize
     },
-    roundedQuantity(quantity, unit) {
-      return Math.round(quantity * this.isPortionScalePositive * 100) / 100
+    roundedQuantity(quantity) {
+      return (
+        Math.round(
+          (quantity / this.recipe.portionSize) *
+            this.isPortionScalePositive *
+            100
+        ) / 100
+      )
     },
     editRecipe() {
       this.busy = true
@@ -312,15 +327,28 @@ export default {
           curve: "easeIn",
         },
         props: {
+          recipeIndex: this.recipeIndex,
           recipeID: this.recipeID,
         },
         // backstackVisible: false,
       })
     },
     toggle(key) {
-      this.recipe[key] = !this.recipe[key]
-      cb.updateDocument(this.recipeID, this.recipe)
-      this.recipe = cb.getDocument(this.recipeID)
+      this.toggleStateAction({
+        index: this.recipeIndex,
+        id: this.recipeID,
+        recipe: this.recipe,
+        key,
+      })
+    },
+    shareRecipe() {
+      // if (this.recipe.imageSrc) {
+      //   let image = ImageSource.fromFile(this.recipe.imageSrc)
+      //   SocialShare.shareImage(image)
+      // } else {
+      //   SocialShare.shareText("Text only")
+      // }
+      alert(Device.sdkVersion)
     },
     toggleFavorite() {
       this.recipe.isFavorite
@@ -345,7 +373,7 @@ export default {
     },
   },
   created() {
-    this.recipe = cb.getDocument(this.recipeID)
+    this.recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
   },
 }
 </script>

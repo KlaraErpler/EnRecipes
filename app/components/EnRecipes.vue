@@ -40,14 +40,14 @@
         />
         <Label class="title orkm" :text="currentComponent" col="1" />
         <Label
-          v-if="passedRecipes.length"
+          v-if="recipes.length"
           class="bx"
           :text="icon.search"
           col="2"
           @tap="openSearch"
         />
         <Label
-          v-if="passedRecipes.length"
+          v-if="recipes.length"
           class="bx"
           :text="icon.sort"
           col="3"
@@ -59,7 +59,7 @@
       <RadListView
         ref="listView"
         itemHeight="112"
-        for="recipe in passedRecipes"
+        for="recipe in recipes"
         swipeActions="true"
         @itemSwipeProgressChanged="onSwiping"
         @itemSwipeProgressEnded="onSwipeEnded"
@@ -115,7 +115,7 @@
         </v-template>
       </RadListView>
       <Label
-        v-if="!passedRecipes.length && !filterFavorites && !filterMustTry"
+        v-if="!recipes.length && !filterFavorites && !filterMustTry"
         class="noResults"
         text='Click the "+" icon to add a new recipe.'
         textWrap="true"
@@ -156,7 +156,6 @@
 
 <script>
 import { Utils, AndroidApplication } from "@nativescript/core"
-import * as Toast from "nativescript-toast"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
@@ -164,12 +163,8 @@ import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import { mapState, mapActions } from "vuex"
 
-import { Couchbase } from "nativescript-couchbase-plugin"
-const cb = new Couchbase("enrecipes")
-
 export default {
   props: [
-    "passedRecipes",
     "filterFavorites",
     "filterMustTry",
     "selectedCategory",
@@ -192,25 +187,25 @@ export default {
     }
   },
   computed: {
-    ...mapState(["icon", "currentComponent"]),
+    ...mapState(["icon", "recipes", "currentComponent"]),
     filteredRecipes() {
       if (this.filterFavorites) {
-        return this.passedRecipes.filter(
+        return this.recipes.filter(
           (e) =>
             e.isFavorite && e.title.toLowerCase().includes(this.searchQuery)
         )
       } else if (this.filterMustTry) {
-        return this.passedRecipes.filter(
+        return this.recipes.filter(
           (e) => !e.tried && e.title.toLowerCase().includes(this.searchQuery)
         )
       } else if (this.selectedCategory) {
-        return this.passedRecipes.filter(
+        return this.recipes.filter(
           (e) =>
             e.category === this.selectedCategory &&
             e.title.toLowerCase().includes(this.searchQuery)
         )
       } else {
-        return this.passedRecipes.filter((e) =>
+        return this.recipes.filter((e) =>
           e.title.toLowerCase().includes(this.searchQuery)
         )
       }
@@ -343,7 +338,7 @@ export default {
       }
     },
     onSwipeEnded({ index }) {
-      let recipeID = this.passedRecipes[index].id
+      let recipeID = this.recipes[index].id
       if (this.rightAction && !this.deletionDialogActive)
         this.deleteRecipe(index, recipeID)
       this.rightAction = false
@@ -353,13 +348,13 @@ export default {
       this.$showModal(ConfirmDialog, {
         props: {
           title: "Delete recipe",
-          description: `Are you sure you want to delete the recipe "${this.passedRecipes[index].title}"?`,
+          description: `Are you sure you want to delete the recipe "${this.recipes[index].title}"?`,
           cancelButtonText: "CANCEL",
           okButtonText: "DELETE",
         },
       }).then((action) => {
         if (action) {
-          cb.deleteDocument(recipeID)
+          this.deleteRecipeAction({ index, id: recipeID })
         }
         this.deletionDialogActive = false
       })
@@ -405,7 +400,7 @@ export default {
         },
       })
     },
-    viewRecipe({ item }) {
+    viewRecipe({ item, index }) {
       this.$navigateTo(ViewRecipe, {
         transition: {
           name: "fade",
@@ -413,6 +408,7 @@ export default {
           curve: "easeIn",
         },
         props: {
+          recipeIndex: index,
           recipeID: item.id,
           hijackGlobalBackEvent: this.hijackGlobalBackEvent,
           releaseGlobalBackEvent: this.releaseGlobalBackEvent,

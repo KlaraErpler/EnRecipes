@@ -15,7 +15,7 @@
 
 android {
   defaultConfig {
-    minSdkVersion 23
+    minSdkVersion 25
     generatedDensities = []
     ndk {
       abiFilters.clear()

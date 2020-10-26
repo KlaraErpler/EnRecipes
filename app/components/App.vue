@@ -76,6 +76,14 @@
         <StackLayout row="1">
           <StackLayout class="hr m-10"></StackLayout>
           <StackLayout
+            orientation="horizontal"
+            class="sd-item orkm"
+            @tap="donate"
+          >
+            <Label class="bx" :text="icon.donate" margin="0 24 0 0" />
+            <Label text="Donate" />
+          </StackLayout>
+          <StackLayout
             @tap="navigateTo(item.component, true, false)"
             v-for="(item, index) in bottommenu"
             :key="index"
@@ -88,14 +96,6 @@
             <Label class="bx" :text="icon[item.icon]" margin="0 24 0 0" />
             <Label :text="item.title" />
           </StackLayout>
-          <StackLayout
-            orientation="horizontal"
-            class="sd-item orkm"
-            @tap="donate"
-          >
-            <Label class="bx" :text="icon.donate" margin="0 24 0 0" />
-            <Label text="Donate" />
-          </StackLayout>
         </StackLayout>
       </GridLayout>
 
@@ -104,7 +104,6 @@
           <!-- Home  -->
           <EnRecipes
             ref="enrecipes"
-            :passedRecipes="recipes"
             :filterFavorites="filterFavorites"
             :filterMustTry="filterMustTry"
             :selectedCategory="selectedCategory"
@@ -134,10 +133,6 @@ import About from "./About.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import { mapState, mapActions } from "vuex"
 
-import { Couchbase } from "nativescript-couchbase-plugin"
-const cb = new Couchbase("enrecipes")
-const cbCat = new Couchbase("categories")
-
 let page
 export default {
   components: {
@@ -145,6 +140,7 @@ export default {
     Settings,
     About,
   },
+
   data() {
     return {
       selectedCategory: null,
@@ -180,11 +176,10 @@ export default {
         },
       ],
       catEditMode: false,
-      recipes: null,
     }
   },
   computed: {
-    ...mapState(["icon", "currentComponent"]),
+    ...mapState(["icon", "recipes", "currentComponent"]),
     categories() {
       let arr = this.recipes.map((e) => {
         return e.category
@@ -193,7 +188,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setCurrentComponentAction", "renameCategoryAction"]),
+    ...mapActions([
+      "setCurrentComponentAction",
+      "initializeRecipes",
+      "initializeCategories",
+      "renameCategoryAction",
+    ]),
     toggleCatEdit() {
       this.catEditMode = !this.catEditMode
       this.setComponent("EnRecipes")
@@ -204,37 +204,19 @@ export default {
     setComponent(comp) {
       this.setCurrentComponentAction(comp)
     },
-    editCategory(item) {
+    editCategory(category) {
       this.releaseGlobalBackEvent()
       this.$showModal(PromptDialog, {
         props: {
           title: `Rename category`,
-          hint: item,
+          hint: category,
           action: "RENAME",
         },
-      }).then((result) => {
+      }).then((newCategory) => {
         this.hijackGlobalBackEvent()
-        if (result.length) {
-          if (this.categories.includes(result)) {
-            Toast.makeText("Category already exists!", "long").show()
-          } else {
-            let categories = cbCat.getDocument("categories").categories
-            console.log(categories, categories.indexOf(item))
-            categories.splice(categories.indexOf(item), 1)
-            categories.push(result)
-            categories.sort()
-            categories = [...new Set(categories)]
-            cbCat.updateDocument("categories", {
-              categories: [...categories],
-            })
-            this.recipes.forEach((e, i) => {
-              if (e.category == item) {
-                e.category = result
-                cb.updateDocument(e.id, e)
-              }
-            })
-            this.catEditMode = false
-          }
+        if (newCategory.length) {
+          this.renameCategoryAction({ current: category, updated: newCategory })
+          this.catEditMode = false
         }
       })
     },
@@ -308,8 +290,7 @@ export default {
           backstackVisible: false,
         })
         this.closeDrawer()
-        this.catEditMode = false
-      } else if (!this.catEditMode) {
+      } else if (!this.catEditMode || !isCategory) {
         this.releaseGlobalBackEvent()
         this.hijackGlobalBackEvent()
         this.setComponent(to)
@@ -320,6 +301,7 @@ export default {
         this.$refs.enrecipes.updateFilter()
         this.closeDrawer()
       }
+      this.catEditMode = false
     },
     restartApp() {
       // Code from nativescript-master-technology
@@ -358,10 +340,8 @@ export default {
   created() {
     let themeName = ApplicationSettings.getString("application-theme", "Light")
     setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
-    this.recipes = cb.query({ select: [] })
-    cb.addDatabaseChangeListener((e) => {
-      this.recipes = cb.query({ select: [] })
-    })
+    if (!this.recipes.length) this.initializeRecipes()
+    if (!this.categories.length) this.initializeCategories()
   },
 }
 </script>

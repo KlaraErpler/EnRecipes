@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="initializePage" @unloaded="releaseBackEvent">
+  <Page @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *, auto," class="actionBarContainer">
         <Label
@@ -62,13 +62,22 @@
               :text="icon.close"
               androidElevation="8"
             />
-            <Label
-              v-else
-              @tap="takePicture"
-              class="bx fab-button"
-              :text="icon.camera"
-              androidElevation="8"
-            />
+            <GridLayout v-else rows="auto" columns="*, auto, auto, *">
+              <Label
+                col="1"
+                @tap="takePicture"
+                class="bx fab-button"
+                :text="icon.camera"
+                androidElevation="8"
+              />
+              <Label
+                col="2"
+                @tap="selectPicture"
+                class="bx fab-button"
+                :text="icon.image"
+                androidElevation="8"
+              />
+            </GridLayout>
           </StackLayout>
         </AbsoluteLayout>
 
@@ -268,7 +277,8 @@ import {
   getFileAccess,
   knownFolders,
 } from "@nativescript/core"
-import { Mediafilepicker } from "nativescript-mediafilepicker"
+import * as imagepicker from "nativescript-imagepicker"
+import * as camera from "@nativescript/camera"
 
 import { mapState, mapActions } from "vuex"
 
@@ -276,13 +286,8 @@ import ActionDialog from "./modal/ActionDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
-import { Couchbase } from "nativescript-couchbase-plugin"
-import { load } from "@nativescript/core/ui/builder"
-const cb = new Couchbase("enrecipes")
-const cbCat = new Couchbase("categories")
-
 export default {
-  props: ["recipeID", "selectedCategory"],
+  props: ["recipeIndex", "recipeID", "selectedCategory"],
   data() {
     return {
       title: "New recipe",
@@ -308,63 +313,33 @@ export default {
         tried: false,
         lastModified: null,
       },
-      tempRecipeContent: {},
-      units: [
-        "unit",
-        "tsp",
-        "Tbsp",
-        "oz",
-        "cup",
-        "pt",
-        "qt",
-        "lb",
-        "gal",
-        "ml",
-        "L",
-        "mg",
-        "g",
-        "kg",
-        "mm",
-        "cm",
-        "m",
-        "in",
-        "°C",
-        "°F",
-      ],
-      categories: [
-        "Appetizers",
-        "BBQ",
-        "Beverages",
-        "Breads",
-        "Breakfast",
-        "Desserts",
-        "Dinner",
-        "Drinks",
-        "Healthy",
-        "Lunch",
-        "Main dishes",
-        "Meat",
-        "Noodles",
-        "Pasta",
-        "Poultry",
-        "Rice",
-        "Salads",
-        "Sauces",
-        "Seafood",
-        "Side dishes",
-        "Snacks",
-        "Soups",
-        "Undefined",
-        "Vegan",
-        "Vegetarian",
-      ],
+      tempRecipeContent: {
+        imageSrc: null,
+        title: null,
+        category: null,
+        prepTime: "00:00",
+        cookTime: "00:00",
+        portionSize: 1,
+        ingredients: [
+          {
+            item: "",
+            quantity: null,
+            unit: "unit",
+          },
+        ],
+        instructions: [""],
+        notes: [""],
+        references: [""],
+        isFavorite: false,
+        tried: false,
+        lastModified: null,
+      },
       blockModal: false,
-      cbCat: [],
       newRecipeID: null,
     }
   },
   computed: {
-    ...mapState(["icon", "currentComponent"]),
+    ...mapState(["icon", "units", "recipes", "categories", "currentComponent"]),
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
@@ -380,31 +355,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setCurrentComponentAction"]),
-    initializePage() {
-      setTimeout((e) => {
-        this.setCurrentComponentAction("EditRecipe")
-      }, 500)
-      this.title = this.recipeID ? "Edit recipe" : "New recipe"
-      if (this.recipeID) {
-        let recipe = cb.getDocument(this.recipeID)
-        Object.assign(this.recipeContent, recipe)
-        Object.assign(this.tempRecipeContent, recipe)
-      } else {
-        if (this.selectedCategory)
-          this.recipeContent.category = this.selectedCategory
-        Object.assign(this.tempRecipeContent, this.recipeContent)
-        this.newRecipeID = this.getRandomID()
-      }
-      this.hijackBackEvent()
-
-      let isCategoriesStored = cbCat.query({ select: [] }).length
-      if (isCategoriesStored) {
-        this.categories = cbCat.getDocument("categories").categories
-      } else {
-        cbCat.createDocument({ categories: [...this.categories] }, "categories")
-      }
-    },
+    ...mapActions([
+      "setCurrentComponentAction",
+      "addRecipeAction",
+      "overwriteRecipeAction",
+      "addCategoryAction",
+    ]),
     getRandomID() {
       let res = ""
       let chars = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -451,10 +407,20 @@ export default {
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
       if (this.recipeID) {
-        cb.updateDocument(this.recipeID, this.recipeContent)
+        this.overwriteRecipeAction({
+          index: this.recipeIndex,
+          id: this.recipeID,
+          recipe: this.recipeContent,
+        })
       } else {
         this.recipeContent.id = this.newRecipeID
-        cb.createDocument(this.recipeContent, this.newRecipeID)
+        this.addRecipeAction({
+          id: this.newRecipeID,
+          recipe: this.recipeContent,
+        })
+      }
+      if (this.tempRecipeContent.imageSrc && !this.recipeContent.imageSrc) {
+        getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
       }
       this.$navigateBack()
     },
@@ -485,15 +451,11 @@ export default {
               title: "New category",
               action: "ADD",
             },
-          }).then((result) => {
+          }).then((category) => {
             this.hijackBackEvent()
-            if (result.length) {
-              this.recipeContent.category = result
-              this.categories.push(result)
-              this.categories.sort()
-              cbCat.updateDocument("categories", {
-                categories: [...this.categories],
-              })
+            if (category.length) {
+              this.recipeContent.category = category
+              this.addCategoryAction(category)
             }
           })
         } else if (action) {
@@ -546,56 +508,58 @@ export default {
       }
     },
     takePicture() {
-      let mediafilepicker = new Mediafilepicker()
-      let vm = this
-      const options = {
-        width: this.screenWidth,
-        height: this.screenWidth,
-        lockSquare: true,
-      }
-      const androidOptions = {
-        isFreeStyleCropEnabled: true,
-        statusBarColor: "black",
-        setAspectRatioOptions: {
-          defaultIndex: 0,
-          aspectRatios: [
-            {
-              aspectRatioTitle: "1:1",
-              aspectRatioX: 1,
-              aspectRatioY: 1,
-            },
-            {
-              aspectRatioTitle: "16:9",
-              aspectRatioX: 16,
-              aspectRatioY: 9,
-            },
-            {
-              aspectRatioTitle: "18:9",
-              aspectRatioX: 18,
-              aspectRatioY: 9,
-            },
-          ],
+      const vm = this
+      camera.requestPermissions().then(
+        () => {
+          camera
+            .takePicture({
+              width: vm.screenWidth,
+              height: vm.screenWidth,
+              keepAspectRatio: false,
+              saveToGallery: false,
+            })
+            .then((imageAsset) => {
+              let result = imageAsset._android
+              ImageSource.fromFile(result).then((savedImg) => {
+                let savedImgPath = path.join(
+                  knownFolders.documents().getFolder("enrecipes").path,
+                  `${vm.getRandomID()}.jpg`
+                )
+                savedImg.saveToFile(savedImgPath, "jpg")
+                vm.recipeContent.imageSrc = savedImgPath
+              })
+            })
+            .catch((err) => {
+              console.log("Error -> " + err.message)
+            })
         },
-      }
-      mediafilepicker.openImagePicker({
-        android: {
-          isCaptureMood: false, // if true then camera will open directly.
-          isNeedCamera: true,
-          maxNumberFiles: 1,
-          isNeedFolderList: false,
-        },
+        () => {
+          console.log("permission request rejected")
+        }
+      )
+    },
+    selectPicture() {
+      let context = imagepicker.create({
+        mode: "single",
+        mediaType: "Image",
       })
-      mediafilepicker.on("getFiles", function(res) {
-        let result = res.object.get("results")[0].file
-        ImageSource.fromFile(result).then((savedImg) => {
-          let savedImgPath = path.join(
-            knownFolders.documents().getFolder("enrecipes").path,
-            `${vm.getRandomID()}.jpg`
-          )
-          savedImg.saveToFile(savedImgPath, "jpg")
-          vm.recipeContent.imageSrc = savedImgPath
+      context
+        .authorize()
+        .then(() => context.present())
+        .then((selection) => {
+          let result = selection[0]._android
+          ImageSource.fromFile(result).then((savedImg) => {
+            let savedImgPath = path.join(
+              knownFolders.documents().getFolder("enrecipes").path,
+              `${this.getRandomID()}.jpg`
+            )
+            savedImg.saveToFile(savedImgPath, "jpg")
+            this.recipeContent.imageSrc = savedImgPath
+          })
         })
-      })
+        .catch(function(e) {
+          console.log(e)
+        })
     },
     removePicture() {
       confirm({
@@ -605,7 +569,6 @@ export default {
         cancelButtonText: "Cancel",
       }).then((e) => {
         if (e) {
-          getFileAccess().deleteFile(this.recipeContent.imageSrc)
           this.recipeContent.imageSrc = null
         }
       })
@@ -656,6 +619,22 @@ export default {
         if (action) e.object.text = action
       })
     },
+  },
+  created() {
+    setTimeout((e) => {
+      this.setCurrentComponentAction("EditRecipe")
+    }, 500)
+    this.title = this.recipeID ? "Edit recipe" : "New recipe"
+    if (this.recipeID) {
+      let recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
+      Object.assign(this.recipeContent, recipe)
+      Object.assign(this.tempRecipeContent, recipe)
+    } else {
+      if (this.selectedCategory)
+        this.recipeContent.category = this.selectedCategory
+      this.newRecipeID = this.getRandomID()
+    }
+    this.hijackBackEvent()
   },
 }
 </script>

@@ -181,6 +181,10 @@ TabView {
     background: $grayD4;
   }
 }
+.ns-dark .date-time-picker-spinners {
+  color: $grayL4;
+  background: $grayD4;
+}
 // ActionBar
 ActionBar {
   width: 100%;

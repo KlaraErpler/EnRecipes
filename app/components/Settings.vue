@@ -67,6 +67,9 @@ import {
 } from "@nativescript/core"
 import * as permissions from "nativescript-permissions"
 import { Zip } from "nativescript-zip"
+import * as Toast from "nativescript-toast"
+
+import * as filepicker from "nativescript-plugin-filepicker"
 
 import Theme from "@nativescript/theme"
 import ActionDialog from "./modal/ActionDialog.vue"
@@ -174,14 +177,22 @@ export default {
           const sdDownloadPath = android.os.Environment.getExternalStoragePublicDirectory(
             android.os.Environment.DIRECTORY_DOWNLOADS
           ).toString()
+          let date = new Date()
           let fromPath = path.join(knownFolders.documents().path, "enrecipes")
-          let destPath = path.join(sdDownloadPath, "enrecipes.zip")
+          let destPath = path.join(
+            sdDownloadPath,
+            `enrecipes_${date.toString()}.zip`
+          )
           console.log(fromPath, destPath, sdDownloadPath)
           Zip.zip({
             directory: fromPath,
             archive: destPath,
           })
             .then((success) => {
+              Toast.makeText(
+                "Backup file successfully saved to Downloads",
+                "long"
+              ).show()
               console.log("success:" + success)
             })
             .catch((err) => {
@@ -197,13 +208,22 @@ export default {
     restoreData(args) {
       let btn = args.object
       this.highlight(args)
-      permissions
-        .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .then(() => {
-          alert("Restore successful!")
+      let vm = this
+      let context = filepicker.create({
+        mode: "single", // use "multiple" for multiple selection
+        extensions: ["zip"],
+      })
+      context
+        .authorize()
+        .then(function() {
+          return context.present()
         })
-        .catch(() => {
-          console.log("Uh oh, no permissions - plan B time!")
+        .then(function(selection) {
+          let result = selection
+          console.log(result)
+        })
+        .catch(function(e) {
+          console.log(e)
         })
     },
   },
