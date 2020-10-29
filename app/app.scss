@@ -53,6 +53,10 @@ Page {
   .fieldLabel {
     background: $grayL4;
   }
+  .view-reference-text,
+  .view-reference-container {
+    background: white;
+  }
   .option-highlight {
     background: $grayL2;
   }
@@ -108,7 +112,9 @@ Page {
     background: $grayD4;
   }
   .recipe-li,
-  .option-highlight {
+  .option-highlight,
+  .view-reference-text,
+  .view-reference-container {
     background: $grayD3;
   }
   .sd-item,
@@ -151,7 +157,7 @@ TimePickerField {
   width: 100%;
   border-width: 1;
   font-size: 14;
-  padding: 14;
+  padding: 14 14 13;
   margin: 8 0 0 0;
   border-radius: 4;
   border-color: $gray;
@@ -188,7 +194,7 @@ TabView {
 // ActionBar
 ActionBar {
   width: 100%;
-  margin: 0;
+  margin: 24 0 0 0;
   padding: 0;
   height: 64;
   .bx {
@@ -215,6 +221,10 @@ SearchBar {
 }
 
 // Side Drawer
+.sd {
+  margin-top: 24;
+}
+
 .sd-item {
   border-radius: 4;
   padding: 0 16;
@@ -238,7 +248,7 @@ SearchBar {
 
 // Home
 RadListView {
-  margin-bottom: 128;
+  margin: 8 0 128;
 }
 .recipe-li {
   background: white;
@@ -265,12 +275,29 @@ RadListView {
     color: $orange;
   }
 }
+.emptyState {
+  width: 100%;
+  height: 100%;
+}
 .noResults {
   width: 100%;
+  height: 100%;
   font-size: 16;
   line-height: 8;
-  padding: 32 16;
+  padding: 64 16;
   text-align: center;
+  horizontal-alignment: center;
+  // vertical-alignment: center;
+  .title {
+    font-size: 20;
+    text-align: center;
+  }
+  .bx {
+    font-size: 64;
+    text-align: center;
+    color: $gray;
+    margin-bottom: 16;
+  }
 }
 .swipe-item {
   margin: 0 8;
@@ -336,11 +363,11 @@ RadListView {
 // View Recipe
 
 .view-cat {
-  font-size: 14;
+  font-size: 16;
   color: #ff7043;
 }
 .view-other {
-  font-size: 14;
+  font-size: 16;
 }
 .view-title {
   font-size: 22;
@@ -348,46 +375,71 @@ RadListView {
   margin-bottom: 16;
 }
 .view-ingredient {
-  font-size: 14;
+  font-size: 16;
   line-height: 6;
-  padding-bottom: 16;
-}
-.view-favorited {
-  color: #ff7043;
+  padding-bottom: 12;
 }
 .activity-indicator {
   background: #ff7043;
 }
 
 .view-count {
-  font-size: 10;
-  width: 20;
-  height: 20;
-  padding-top: 3%;
-  margin: 0 0 0 6;
+  font-size: 12;
+  width: 24;
+  height: 24;
+  padding-top: 4%;
+  margin: 0 0 0 8;
   text-align: center;
   border-radius: 100;
+  &.note {
+    clip-path: polygon(
+      5% 0,
+      95% 0,
+      100% 5%,
+      100% 65%,
+      65% 100%,
+      5% 100%,
+      0 95%,
+      0 5%
+    );
+  }
 }
-
 .view-instruction,
 .view-note,
 .view-reference {
-  font-size: 14;
+  font-size: 16;
   line-height: 6;
-  padding: 0 0 16 24;
-  margin: 0 0 0 15;
+  padding: 2 0 14 36;
+  margin: 0 0 0 19;
   border-width: 0 0 0 2;
 }
 .view-instruction.instructionWOBorder {
   border-color: transparent;
 }
-
 .view-note {
   border-width: 0;
 }
+
+.view-reference-container {
+  padding: 14 16;
+  margin: 8 16 8;
+  border-radius: 6;
+}
 .view-reference {
+  padding: 0 16 0 0;
+  margin: 0;
   border-width: 0;
 }
+.view-reference-text {
+  font-size: 16;
+  line-height: 6;
+  padding: 16;
+  margin: 8 16 8;
+  border-radius: 6;
+}
+// .view-copyReference {
+//   color: #ff7043;
+// }
 #btnFabContainer {
   width: 100%;
   height: 100%;
@@ -398,11 +450,15 @@ RadListView {
   height: 56;
   width: 56;
   background-color: #ff7043;
-  horizontal-align: center;
-  vertical-align: center;
+  vertical-alignment: center;
+  // horizontal-alignment: center;
   border-radius: 28;
   padding: 16;
   margin: 16;
+  android-elevation: 6;
+  &.negative {
+    background-color: #e53935;
+  }
 }
 .sectionTitle {
   font-size: 20;
@@ -421,6 +477,7 @@ RadListView {
 
 // Dialogs
 .dialogContainer {
+  width: 100%;
   &.light {
     color: $grayD4;
     background: $grayL4;
@@ -438,6 +495,7 @@ RadListView {
   }
   .dialogDescription {
     font-size: 16;
+    line-height: 4;
     padding: 0 24 16;
   }
   .action {
@@ -454,5 +512,67 @@ RadListView {
     padding: 24;
     font-size: 12;
     color: #ff7043;
+  }
+}
+ActivityIndicator {
+  color: #ff7043;
+  padding: 16 12;
+  margin: 16 10 16 8;
+}
+
+// Vue Transitions
+.bounce-enter-active {
+  animation-name: bounce-in;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+.bounce-leave-active {
+  animation-name: bounce-in;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+  animation-direction: reverse;
+  animation-timing-function: ease-in;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+.dolly-enter-active {
+  animation-name: dolly;
+  animation-duration: 1s;
+  animation-delay: 0.25s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+.dolly-leave-active {
+  opacity: 0;
+}
+@keyframes dolly {
+  0% {
+    transform: rotate(20deg);
+  }
+  25% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }

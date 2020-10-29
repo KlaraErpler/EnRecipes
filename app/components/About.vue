@@ -42,10 +42,18 @@
           <Label class="bx" :text="icon.link" />
           <Label text="View project on GitHub" class="option-title" />
         </StackLayout>
-        <StackLayout orientation="horizontal" class="icon-option">
+        <StackLayout
+          orientation="horizontal"
+          class="icon-option"
+          @tap="openURL($event, 'https://t.me/enrecipes')"
+        >
+          <Label class="bx" :text="icon.telegram" />
+          <Label text="Join the telegram group" class="option-title" />
+        </StackLayout>
+        <!-- <StackLayout orientation="horizontal" class="icon-option">
           <Label class="bx" :text="icon.file" />
           <Label text="Licenses" class="option-title" />
-        </StackLayout>
+        </StackLayout> -->
 
         <StackLayout class="hr m-10"></StackLayout>
 

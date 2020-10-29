@@ -33,7 +33,7 @@
         <StackLayout class="hr m-10"></StackLayout>
 
         <Label text="Backup/Restore" class="group-header" />
-        <StackLayout
+        <!-- <StackLayout
           orientation="horizontal"
           class="option"
           @tap="selectBackupDir"
@@ -43,7 +43,7 @@
             <Label text="EnRecipes Backup Directory" class="option-title" />
             <Label text="/storage/emulated/0/EnRecipes" class="option-info" />
           </StackLayout>
-        </StackLayout>
+        </StackLayout> -->
         <StackLayout orientation="horizontal" class="option" @tap="backupData">
           <Label class="bx" :text="icon.backup" />
           <Label text="Backup Data" class="option-title" />
@@ -63,7 +63,6 @@ import {
   path,
   getFileAccess,
   knownFolders,
-  Application,
 } from "@nativescript/core"
 import * as permissions from "nativescript-permissions"
 import { Zip } from "nativescript-zip"

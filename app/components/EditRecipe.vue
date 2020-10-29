@@ -1,7 +1,7 @@
 <template>
-  <Page @unloaded="releaseBackEvent">
+  <Page @loaded="initialize" @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
-      <GridLayout rows="*" columns="auto, *, auto," class="actionBarContainer">
+      <GridLayout rows="*" columns="auto, *, auto" class="actionBarContainer">
         <Label
           class="bx leftAction"
           :text="icon.back"
@@ -10,7 +10,6 @@
           @tap="navigateBack"
         />
         <Label class="title orkm" :text="title" col="1" />
-
         <Label
           v-if="hasEnoughDetails"
           class="bx"
@@ -20,251 +19,237 @@
         />
       </GridLayout>
     </ActionBar>
-    <ScrollView
-      width="100%"
-      height="100%"
-      @scroll="onScroll($event)"
-      scrollBarIndicatorVisible="false"
-    >
-      <StackLayout width="100%">
-        <!-- Image and camera btn -->
-        <AbsoluteLayout>
-          <StackLayout
-            width="100%"
-            :height="screenWidth"
-            class="view-imageHolder"
-            verticalAlignment="center"
-          >
-            <Image
-              v-if="recipeContent.imageSrc"
-              :src="recipeContent.imageSrc"
-              stretch="aspectFill"
+    <AbsoluteLayout>
+      <ScrollView
+        width="100%"
+        height="100%"
+        @scroll="onScroll($event)"
+        scrollBarIndicatorVisible="false"
+      >
+        <StackLayout width="100%" padding="0 0 128">
+          <!-- Image and camera btn -->
+          <AbsoluteLayout>
+            <StackLayout
               width="100%"
               :height="screenWidth"
-            />
-            <Label
-              v-else
-              horizontalAlignment="center"
-              class="bx"
-              fontSize="160"
-              :text="icon.image"
-            />
-          </StackLayout>
-          <StackLayout
-            width="100%"
-            horizontalAlignment="center"
-            :top="screenWidth - 42"
-          >
-            <Label
-              v-if="recipeContent.imageSrc"
-              @tap="removePicture"
-              class="bx fab-button"
-              :text="icon.close"
-              androidElevation="8"
-            />
-            <GridLayout v-else rows="auto" columns="*, auto, auto, *">
+              class="view-imageHolder"
+              verticalAlignment="center"
+            >
+              <Image
+                v-if="recipeContent.imageSrc"
+                :src="recipeContent.imageSrc"
+                stretch="aspectFill"
+                width="100%"
+                :height="screenWidth"
+              />
               <Label
-                col="1"
-                @tap="takePicture"
-                class="bx fab-button"
-                :text="icon.camera"
-                androidElevation="8"
+                v-else
+                horizontalAlignment="center"
+                class="bx"
+                fontSize="160"
+                :text="icon.image"
+              />
+            </StackLayout>
+            <StackLayout width="100%" :top="screenWidth - 42">
+              <transition :name="recipeContent.imageSrc ? 'null' : 'bounce'">
+                <Label
+                  v-if="showFab"
+                  horizontalAlignment="right"
+                  @tap="photoHandler"
+                  class="bx fab-button"
+                  :text="icon.camera"
+                  androidElevation="6"
+                />
+              </transition>
+            </StackLayout>
+          </AbsoluteLayout>
+
+          <!-- Primary information -->
+          <StackLayout margin="0 16">
+            <AbsoluteLayout class="inputField">
+              <TextField
+                hint="My Healthy Recipe"
+                v-model="recipeContent.title"
+                autocapitalizationType="words"
+              />
+              <Label top="0" class="fieldLabel" text="Title" />
+            </AbsoluteLayout>
+            <AbsoluteLayout class="inputField">
+              <TextField
+                v-model="recipeContent.category"
+                editable="false"
+                @tap="showCategories()"
+              />
+              <Label top="0" class="fieldLabel" text="Category" />
+            </AbsoluteLayout>
+            <GridLayout columns="*, 8, *">
+              <AbsoluteLayout class="inputField" col="0">
+                <TimePickerField
+                  titleTextColor="red"
+                  timeFormat="HH:mm"
+                  pickerTitle="Approx. preparation time"
+                  @timeChange="onPrepTimeChange"
+                  :time="recipeContent.prepTime"
+                ></TimePickerField>
+                <Label top="0" class="fieldLabel" text="Preparation time" />
+              </AbsoluteLayout>
+              <AbsoluteLayout class="inputField" col="2">
+                <TimePickerField
+                  timeFormat="HH:mm"
+                  pickerTitle="Approx. cooking time"
+                  @timeChange="onCookTimeChange"
+                  :time="recipeContent.cookTime"
+                ></TimePickerField>
+                <Label top="0" class="fieldLabel" text="Cooking time" />
+              </AbsoluteLayout>
+            </GridLayout>
+            <GridLayout columns="*, 16, *">
+              <AbsoluteLayout class="inputField" col="0">
+                <TextField
+                  width="100%"
+                  keyboardType="number"
+                  v-model="recipeContent.portionSize"
+                />
+                <Label top="0" class="fieldLabel" text="Portion size" />
+              </AbsoluteLayout>
+            </GridLayout>
+            <StackLayout class="hr" margin="24 16"></StackLayout>
+          </StackLayout>
+
+          <!-- Ingredients section -->
+          <StackLayout margin="0 16">
+            <Label text="Ingredients" class="sectionTitle" />
+            <GridLayout
+              columns="*,8,auto,8,auto,8,auto"
+              v-for="(ingredient, index) in recipeContent.ingredients"
+              :key="index"
+            >
+              <TextField
+                col="0"
+                v-model="recipeContent.ingredients[index].item"
+                :hint="`Item ${index + 1}`"
+                autocapitalizationType="words"
+              />
+              <TextField
+                width="72"
+                col="2"
+                v-model="recipeContent.ingredients[index].quantity"
+                hint="1.000"
+                keyboardType="number"
+              />
+              <TextField
+                width="64"
+                col="4"
+                v-model="recipeContent.ingredients[index].unit"
+                hint="Unit"
+                editable="false"
+                @tap="showUnits($event)"
+              />
+              <Label
+                col="6"
+                class="bx closeBtn"
+                :text="icon.close"
+                @tap="removeIngredient(index)"
+              />
+            </GridLayout>
+            <Label
+              class="sec-btn pull-left orkm"
+              text="+ ADD INGREDIENT"
+              @tap="addIngredient()"
+            />
+
+            <StackLayout class="hr" margin="24 16"></StackLayout>
+          </StackLayout>
+
+          <!-- Instructions section -->
+          <StackLayout margin="0 16">
+            <Label text="Instructions" class="sectionTitle" />
+            <GridLayout
+              columns="*,8,auto"
+              v-for="(instruction, index) in recipeContent.instructions"
+              :key="index"
+            >
+              <TextView
+                col="0"
+                :hint="`Step ${index + 1}`"
+                v-model="recipeContent.instructions[index]"
+                editable="true"
               />
               <Label
                 col="2"
-                @tap="selectPicture"
-                class="bx fab-button"
-                :text="icon.image"
-                androidElevation="8"
+                class="bx closeBtn"
+                :text="icon.close"
+                @tap="removeInstruction(index)"
               />
             </GridLayout>
+            <Label
+              class="sec-btn pull-left orkm"
+              text="+ ADD STEP"
+              @tap="addInstruction()"
+            />
+            <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
-        </AbsoluteLayout>
 
-        <!-- Primary information -->
-        <StackLayout margin="0 16">
-          <AbsoluteLayout class="inputField">
-            <TextField
-              hint="My Healthy Recipe"
-              v-model="recipeContent.title"
-              autocapitalizationType="words"
-            />
-            <Label top="0" class="fieldLabel" text="Title" />
-          </AbsoluteLayout>
-          <AbsoluteLayout class="inputField">
-            <TextField
-              v-model="recipeContent.category"
-              editable="false"
-              @tap="showCategories()"
-            />
-            <Label top="0" class="fieldLabel" text="Category" />
-          </AbsoluteLayout>
-          <GridLayout columns="*, 8, *">
-            <AbsoluteLayout class="inputField" col="0">
-              <TimePickerField
-                titleTextColor="red"
-                timeFormat="HH:mm"
-                pickerTitle="Approx. preparation time"
-                @timeChange="onPrepTimeChange"
-                :time="recipeContent.prepTime"
-              ></TimePickerField>
-              <Label top="0" class="fieldLabel" text="Preparation time" />
-            </AbsoluteLayout>
-            <AbsoluteLayout class="inputField" col="2">
-              <TimePickerField
-                timeFormat="HH:mm"
-                pickerTitle="Approx. cooking time"
-                @timeChange="onCookTimeChange"
-                :time="recipeContent.cookTime"
-              ></TimePickerField>
-              <Label top="0" class="fieldLabel" text="Cooking time" />
-            </AbsoluteLayout>
-          </GridLayout>
-          <GridLayout columns="*, 16, *">
-            <AbsoluteLayout class="inputField" col="0">
-              <TextField
-                width="100%"
-                keyboardType="number"
-                v-model="recipeContent.portionSize"
+          <!-- Notes section -->
+          <StackLayout margin="0 16">
+            <Label text="Notes" class="sectionTitle" />
+            <GridLayout
+              columns="*,8,auto"
+              v-for="(note, index) in recipeContent.notes"
+              :key="index"
+            >
+              <TextView
+                col="0"
+                v-model="recipeContent.notes[index]"
+                :hint="`Note ${index + 1}`"
+                editable="true"
               />
-              <Label top="0" class="fieldLabel" text="Portion size" />
-            </AbsoluteLayout>
-          </GridLayout>
-          <StackLayout class="hr" margin="24 16"></StackLayout>
-        </StackLayout>
-
-        <!-- Ingredients section -->
-        <StackLayout margin="0 16">
-          <Label text="Ingredients" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto,8,auto,8,auto"
-            v-for="(ingredient, index) in recipeContent.ingredients"
-            :key="index"
-          >
-            <TextField
-              col="0"
-              v-model="recipeContent.ingredients[index].item"
-              :hint="`Item ${index + 1}`"
-              autocapitalizationType="words"
-            />
-            <TextField
-              width="72"
-              col="2"
-              v-model="recipeContent.ingredients[index].quantity"
-              hint="1.000"
-              keyboardType="number"
-            />
-            <TextField
-              width="64"
-              col="4"
-              v-model="recipeContent.ingredients[index].unit"
-              hint="Unit"
-              editable="false"
-              @tap="showUnits($event)"
-            />
+              <Label
+                col="2"
+                class="bx closeBtn"
+                :text="icon.close"
+                @tap="removeNote(index)"
+              />
+            </GridLayout>
             <Label
-              col="6"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeIngredient(index)"
+              class="sec-btn pull-left orkm"
+              text="+ ADD NOTE"
+              @tap="addNote()"
             />
-          </GridLayout>
-          <Label
-            class="sec-btn pull-left orkm"
-            text="+ ADD INGREDIENT"
-            @tap="addIngredient()"
-          />
+            <StackLayout class="hr" margin="24 16"></StackLayout>
+          </StackLayout>
 
-          <StackLayout class="hr" margin="24 16"></StackLayout>
-        </StackLayout>
-
-        <!-- Instructions section -->
-        <StackLayout margin="0 16">
-          <Label text="Instructions" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto"
-            v-for="(instruction, index) in recipeContent.instructions"
-            :key="index"
-          >
-            <TextView
-              col="0"
-              :hint="`Step ${index + 1}`"
-              v-model="recipeContent.instructions[index]"
-              editable="true"
-            />
+          <!-- References section -->
+          <StackLayout margin="0 16">
+            <Label text="References" class="sectionTitle" />
+            <GridLayout
+              columns="*,8,auto"
+              v-for="(reference, index) in recipeContent.references"
+              :key="index"
+            >
+              <TextView
+                col="0"
+                v-model="recipeContent.references[index]"
+                hint="Text or Website/Video URL"
+                editable="true"
+              />
+              <Label
+                col="2"
+                class="bx closeBtn"
+                :text="icon.close"
+                @tap="removeReference(index)"
+              />
+            </GridLayout>
             <Label
-              col="2"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeInstruction(index)"
+              class="sec-btn pull-left orkm"
+              text="+ ADD REFERENCE"
+              @tap="addReference()"
             />
-          </GridLayout>
-          <Label
-            class="sec-btn pull-left orkm"
-            text="+ ADD STEP"
-            @tap="addInstruction()"
-          />
-          <StackLayout class="hr" margin="24 16"></StackLayout>
+            <StackLayout margin="32"></StackLayout>
+          </StackLayout>
         </StackLayout>
-
-        <!-- Notes section -->
-        <StackLayout margin="0 16">
-          <Label text="Notes" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto"
-            v-for="(note, index) in recipeContent.notes"
-            :key="index"
-          >
-            <TextView
-              col="0"
-              v-model="recipeContent.notes[index]"
-              :hint="`Note ${index + 1}`"
-              editable="true"
-            />
-            <Label
-              col="2"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeNote(index)"
-            />
-          </GridLayout>
-          <Label
-            class="sec-btn pull-left orkm"
-            text="+ ADD NOTE"
-            @tap="addNote()"
-          />
-          <StackLayout class="hr" margin="24 16"></StackLayout>
-        </StackLayout>
-
-        <!-- References section -->
-        <StackLayout margin="0 16">
-          <Label text="References" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto"
-            v-for="(reference, index) in recipeContent.references"
-            :key="index"
-          >
-            <TextField
-              col="0"
-              v-model="recipeContent.references[index]"
-              hint="Website or Video URL"
-            />
-            <Label
-              col="2"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeReference(index)"
-            />
-          </GridLayout>
-          <Label
-            class="sec-btn pull-left orkm"
-            text="+ ADD REFERENCE"
-            @tap="addReference()"
-          />
-          <StackLayout margin="32"></StackLayout>
-        </StackLayout>
-      </StackLayout>
-    </ScrollView>
+      </ScrollView>
+    </AbsoluteLayout>
   </Page>
 </template>
 
@@ -277,14 +262,13 @@ import {
   getFileAccess,
   knownFolders,
 } from "@nativescript/core"
-import * as imagepicker from "nativescript-imagepicker"
-import * as camera from "@nativescript/camera"
+import { Mediafilepicker } from "nativescript-mediafilepicker"
 
 import { mapState, mapActions } from "vuex"
 
 import ActionDialog from "./modal/ActionDialog.vue"
-import PromptDialog from "./modal/PromptDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
+import PromptDialog from "./modal/PromptDialog.vue"
 
 export default {
   props: ["recipeIndex", "recipeID", "selectedCategory"],
@@ -294,15 +278,15 @@ export default {
       viewIsScrolled: false,
       recipeContent: {
         imageSrc: null,
-        title: null,
-        category: null,
+        title: undefined,
+        category: "Undefined",
         prepTime: "00:00",
         cookTime: "00:00",
         portionSize: 1,
         ingredients: [
           {
             item: "",
-            quantity: null,
+            quantity: undefined,
             unit: "unit",
           },
         ],
@@ -313,29 +297,10 @@ export default {
         tried: false,
         lastModified: null,
       },
-      tempRecipeContent: {
-        imageSrc: null,
-        title: null,
-        category: null,
-        prepTime: "00:00",
-        cookTime: "00:00",
-        portionSize: 1,
-        ingredients: [
-          {
-            item: "",
-            quantity: null,
-            unit: "unit",
-          },
-        ],
-        instructions: [""],
-        notes: [""],
-        references: [""],
-        isFavorite: false,
-        tried: false,
-        lastModified: null,
-      },
+      tempRecipeContent: {},
       blockModal: false,
       newRecipeID: null,
+      showFab: false,
     }
   },
   computed: {
@@ -344,14 +309,10 @@ export default {
       return Screen.mainScreen.widthDIPs
     },
     hasEnoughDetails() {
-      if (this.recipeID) {
-        return (
-          JSON.stringify(this.recipeContent) !==
-          JSON.stringify(this.tempRecipeContent)
-        )
-      } else {
-        return this.recipeContent.title
-      }
+      return (
+        JSON.stringify(this.recipeContent) !==
+        JSON.stringify(this.tempRecipeContent)
+      )
     },
   },
   methods: {
@@ -361,6 +322,9 @@ export default {
       "overwriteRecipeAction",
       "addCategoryAction",
     ]),
+    initialize() {
+      this.showFab = true
+    },
     getRandomID() {
       let res = ""
       let chars = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -380,11 +344,11 @@ export default {
       }
     },
     clearEmptyFields() {
+      if (!this.recipeContent.title) {
+        this.recipeContent.title = "Untitled Recipe"
+      }
       if (!this.recipeContent.portionSize) {
         this.recipeContent.portionSize = 1
-      }
-      if (!this.recipeContent.category) {
-        this.recipeContent.category = "Undefined"
       }
       this.recipeContent.ingredients.forEach((e, i) => {
         if (!e.item.length) {
@@ -404,6 +368,10 @@ export default {
       removeEmpty("references")
     },
     saveRecipe() {
+      console.log(
+        JSON.stringify(this.recipeContent),
+        JSON.stringify(this.tempRecipeContent)
+      )
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
       if (this.recipeID) {
@@ -471,15 +439,17 @@ export default {
         this.blockModal = true
         this.$showModal(ConfirmDialog, {
           props: {
-            title: "Discard changes",
+            title: "Unsaved changes",
             description:
-              "Are you sure you want discard unsaved changes to this recipe?",
-            cancelButtonText: "KEEP EDITING",
-            okButtonText: "DISCARD",
+              "Do you want to save the changes you made in this recipe?",
+            cancelButtonText: "DISCARD",
+            okButtonText: "SAVE",
           },
         }).then((action) => {
           this.blockModal = false
           if (action) {
+            this.saveRecipe()
+          } else if (action != null) {
             this.$navigateBack()
             this.releaseBackEvent()
           }
@@ -507,59 +477,59 @@ export default {
         this.navigateBack()
       }
     },
+    photoHandler() {
+      if (this.recipeContent.imageSrc) {
+        this.blockModal = true
+        this.$showModal(ConfirmDialog, {
+          props: {
+            title: "Recipe photo",
+            cancelButtonText: "REMOVE",
+            okButtonText: "REPLACE PHOTO",
+          },
+        }).then((action) => {
+          this.blockModal = false
+          if (action) {
+            this.takePicture()
+          } else if (action != null) {
+            this.removePicture()
+            this.releaseBackEvent()
+          }
+        })
+      } else {
+        this.takePicture()
+      }
+    },
     takePicture() {
       const vm = this
-      camera.requestPermissions().then(
-        () => {
-          camera
-            .takePicture({
-              width: vm.screenWidth,
-              height: vm.screenWidth,
-              keepAspectRatio: false,
-              saveToGallery: false,
-            })
-            .then((imageAsset) => {
-              let result = imageAsset._android
-              ImageSource.fromFile(result).then((savedImg) => {
-                let savedImgPath = path.join(
-                  knownFolders.documents().getFolder("enrecipes").path,
-                  `${vm.getRandomID()}.jpg`
-                )
-                savedImg.saveToFile(savedImgPath, "jpg")
-                vm.recipeContent.imageSrc = savedImgPath
-              })
-            })
-            .catch((err) => {
-              console.log("Error -> " + err.message)
-            })
+      const mediafilepicker = new Mediafilepicker()
+      mediafilepicker.openImagePicker({
+        android: {
+          isCaptureMood: false, // if true then camera will open directly.
+          isNeedCamera: true,
+          maxNumberFiles: 1,
+          isNeedFolderList: true,
         },
-        () => {
-          console.log("permission request rejected")
-        }
-      )
-    },
-    selectPicture() {
-      let context = imagepicker.create({
-        mode: "single",
-        mediaType: "Image",
       })
-      context
-        .authorize()
-        .then(() => context.present())
-        .then((selection) => {
-          let result = selection[0]._android
-          ImageSource.fromFile(result).then((savedImg) => {
-            let savedImgPath = path.join(
-              knownFolders.documents().getFolder("enrecipes").path,
-              `${this.getRandomID()}.jpg`
-            )
-            savedImg.saveToFile(savedImgPath, "jpg")
-            this.recipeContent.imageSrc = savedImgPath
-          })
+      mediafilepicker.on("getFiles", (image) => {
+        let result = image.object.get("results")[0].file
+        ImageSource.fromFile(result).then((savedImg) => {
+          let savedImgPath = path.join(
+            knownFolders.documents().getFolder("enrecipes").path,
+            `${vm.getRandomID()}.jpg`
+          )
+          savedImg.saveToFile(savedImgPath, "jpg")
+          vm.recipeContent.imageSrc = savedImgPath
         })
-        .catch(function(e) {
-          console.log(e)
-        })
+      })
+      mediafilepicker.on("error", function(res) {
+        let msg = res.object.get("msg")
+        console.log(msg)
+      })
+
+      mediafilepicker.on("cancel", function(res) {
+        let msg = res.object.get("msg")
+        console.log(msg)
+      })
     },
     removePicture() {
       confirm({
@@ -627,9 +597,13 @@ export default {
     this.title = this.recipeID ? "Edit recipe" : "New recipe"
     if (this.recipeID) {
       let recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
-      Object.assign(this.recipeContent, recipe)
-      Object.assign(this.tempRecipeContent, recipe)
+      Object.assign(this.recipeContent, JSON.parse(JSON.stringify(recipe)))
+      Object.assign(this.tempRecipeContent, JSON.parse(JSON.stringify(recipe)))
     } else {
+      Object.assign(
+        this.tempRecipeContent,
+        JSON.parse(JSON.stringify(this.recipeContent))
+      )
       if (this.selectedCategory)
         this.recipeContent.category = this.selectedCategory
       this.newRecipeID = this.getRandomID()

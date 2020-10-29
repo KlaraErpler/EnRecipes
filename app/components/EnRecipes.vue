@@ -15,7 +15,6 @@
           col="0"
           @tap="closeSearch"
         />
-        <!-- @loaded="searchBarLoaded" -->
         <SearchBar
           col="1"
           hint="Search"
@@ -114,41 +113,92 @@
           <StackLayout height="128"></StackLayout>
         </v-template>
       </RadListView>
-      <Label
-        v-if="!recipes.length && !filterFavorites && !filterMustTry"
-        class="noResults"
-        text='Click the "+" icon to add a new recipe.'
-        textWrap="true"
-      />
-      <Label
-        v-if="!filteredRecipes.length && searchQuery"
-        class="noResults"
-        :text="
-          `Your search &quot;${searchQuery}&quot; did not match any recipes in this category.`
-        "
-        textWrap="true"
-      />
-      <Label
-        v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
-        class="noResults"
-        text="Your favorite recipes will be listed here."
-        textWrap="true"
-      />
-      <Label
-        v-if="!filteredRecipes.length && filterMustTry && !searchQuery"
-        class="noResults"
-        text="Your must-try recipes will be listed here."
-        textWrap="true"
-      />
-      <GridLayout id="btnFabContainer" rows="*,88" columns="*,88">
-        <Label
-          row="1"
-          col="1"
-          class="bx fab-button"
-          :text="icon.plus"
-          androidElevation="8"
-          @tap="addRecipe"
-        />
+      <GridLayout rows="*" columns="*" class="emptyState">
+        <StackLayout
+          col="0"
+          row="0"
+          class="noResults"
+          v-if="!recipes.length && !filterFavorites && !filterTrylater"
+          verticalAlignment="center"
+        >
+          <Label
+            @tap="addRecipe"
+            class="bx"
+            :text="icon.plusCircle"
+            textWrap="true"
+          />
+          <Label
+            class="title orkb"
+            text="Start adding your recipes!"
+            textWrap="true"
+          />
+          <Label text='Tap the "+" icon to add a new recipe' textWrap="true" />
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="0"
+          class="noResults"
+          v-if="!filteredRecipes.length && searchQuery"
+          verticalAlignment="top"
+        >
+          <Label class="bx" :text="icon.search" textWrap="true" />
+          <Label class="title orkb" text="No recipes found" textWrap="true" />
+          <Label
+            :text="
+              `Your search &quot;${searchQuery}&quot; did not match any recipes${
+                filterFavorites || filterTrylater || selectedCategory
+                  ? ' in this category'
+                  : ''
+              }`
+            "
+            textWrap="true"
+          />
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="0"
+          class="noResults"
+          verticalAlignment="center"
+          v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
+        >
+          <Label class="bx" :text="icon.heartOutline" textWrap="true" />
+          <Label class="title orkb" text="No favorites yet!" textWrap="true" />
+          <Label
+            text="Your favorited recipes will be listed here"
+            textWrap="true"
+          />
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="0"
+          class="noResults"
+          verticalAlignment="center"
+          v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
+        >
+          <Label class="bx" :text="icon.trylaterOutline" textWrap="true" />
+          <Label
+            class="title orkb"
+            text="No recipes here to try!"
+            textWrap="true"
+          />
+          <!-- text="Your Try later recipes will be listed here" -->
+          <Label
+            text="Your recipes to try later will be listed here"
+            textWrap="true"
+          />
+        </StackLayout>
+      </GridLayout>
+      <GridLayout id="btnFabContainer" rows="*,auto" columns="*,auto">
+        <transition name="bounce">
+          <Label
+            v-if="showFAB"
+            row="1"
+            col="1"
+            class="bx fab-button"
+            :text="icon.plus"
+            @tap="addRecipe"
+          />
+        </transition>
       </GridLayout>
     </AbsoluteLayout>
   </Page>
@@ -166,7 +216,7 @@ import { mapState, mapActions } from "vuex"
 export default {
   props: [
     "filterFavorites",
-    "filterMustTry",
+    "filterTrylater",
     "selectedCategory",
     "showDrawer",
     "hijackGlobalBackEvent",
@@ -184,6 +234,7 @@ export default {
       rightAction: false,
       sortType: "Natural order",
       deletionDialogActive: false,
+      showFAB: false,
     }
   },
   computed: {
@@ -194,7 +245,7 @@ export default {
           (e) =>
             e.isFavorite && e.title.toLowerCase().includes(this.searchQuery)
         )
-      } else if (this.filterMustTry) {
+      } else if (this.filterTrylater) {
         return this.recipes.filter(
           (e) => !e.tried && e.title.toLowerCase().includes(this.searchQuery)
         )
@@ -216,11 +267,12 @@ export default {
     initializePage() {
       this.filterFavorites
         ? this.setComponent("Favorites")
-        : this.filterMustTry
-        ? this.setComponent("Must-Try")
+        : this.filterTrylater
+        ? this.setComponent("Try later")
         : this.selectedCategory
         ? this.setComponent(this.selectedCategory)
         : this.setComponent("EnRecipes")
+      this.showFAB = true
     },
     openSearch() {
       this.showSearch = true
@@ -313,7 +365,7 @@ export default {
         return item.isFavorite
           ? item.title.toLowerCase().includes(this.searchQuery)
           : false
-      } else if (this.filterMustTry) {
+      } else if (this.filterTrylater) {
         return item.tried
           ? false
           : item.title.toLowerCase().includes(this.searchQuery)
@@ -387,13 +439,14 @@ export default {
         : (this.viewIsScrolled = false)
     },
     addRecipe() {
+      this.showFAB = false
       this.releaseGlobalBackEvent()
       this.$navigateTo(EditRecipe, {
-        transition: {
-          name: "slide",
-          duration: 250,
-          curve: "easeIn",
-        },
+        // transition: {
+        //   name: "slide",
+        //   duration: 250,
+        //   curve: "easeIn",
+        // },
         props: {
           viewIsScrolled: this.viewIsScrolled,
           selectedCategory: this.selectedCategory,
@@ -401,13 +454,15 @@ export default {
       })
     },
     viewRecipe({ item, index }) {
+      this.showFAB = false
       this.$navigateTo(ViewRecipe, {
-        transition: {
-          name: "fade",
-          duration: 250,
-          curve: "easeIn",
-        },
+        // transition: {
+        //   name: "fade",
+        //   duration: 250,
+        //   curve: "easeIn",
+        // },
         props: {
+          filterTrylater: this.filterTrylater,
           recipeIndex: index,
           recipeID: item.id,
           hijackGlobalBackEvent: this.hijackGlobalBackEvent,
@@ -415,6 +470,9 @@ export default {
         },
       })
     },
+  },
+  mounted() {
+    this.showFAB = true
   },
 }
 </script>

@@ -14,9 +14,9 @@ Vue.registerElement(
 )
 
 // Vue.registerElement(
-//   "Fab",
-//   () => require("@nstudio/nativescript-floatingactionbutton").Fab
-// )
+//   'Fab',
+//   () => require('@nstudio/nativescript-floatingactionbutton').Fab
+// );
 
 if (TNS_ENV !== "production") {
   // Vue.use(VueDevtools)

@@ -34,7 +34,7 @@
             class="sd-group-header orkm"
             rows="auto"
             columns="*, auto"
-            v-if="categories.length"
+            v-if="categoriesWithRecipes.length"
           >
             <Label col="0" text="Categories" />
             <Label
@@ -47,7 +47,7 @@
             <StackLayout>
               <GridLayout
                 @tap="navigateTo(item, false, true)"
-                v-for="(item, index) in categories"
+                v-for="(item, index) in categoriesWithRecipes"
                 :key="index"
                 class="sd-item orkm"
                 :class="{
@@ -75,14 +75,14 @@
         </StackLayout>
         <StackLayout row="1">
           <StackLayout class="hr m-10"></StackLayout>
-          <StackLayout
+          <!-- <StackLayout
             orientation="horizontal"
             class="sd-item orkm"
             @tap="donate"
           >
             <Label class="bx" :text="icon.donate" margin="0 24 0 0" />
             <Label text="Donate" />
-          </StackLayout>
+          </StackLayout> -->
           <StackLayout
             @tap="navigateTo(item.component, true, false)"
             v-for="(item, index) in bottommenu"
@@ -105,7 +105,7 @@
           <EnRecipes
             ref="enrecipes"
             :filterFavorites="filterFavorites"
-            :filterMustTry="filterMustTry"
+            :filterTrylater="filterTrylater"
             :selectedCategory="selectedCategory"
             :showDrawer="showDrawer"
             :hijackGlobalBackEvent="hijackGlobalBackEvent"
@@ -145,7 +145,7 @@ export default {
     return {
       selectedCategory: null,
       filterFavorites: false,
-      filterMustTry: false,
+      filterTrylater: false,
       topmenu: [
         {
           title: "Home",
@@ -158,9 +158,9 @@ export default {
           icon: "heart",
         },
         {
-          title: "Must-Try",
-          component: "Must-Try",
-          icon: "musttry",
+          title: "Try later",
+          component: "Try later",
+          icon: "trylater",
         },
       ],
       bottommenu: [
@@ -179,8 +179,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["icon", "recipes", "currentComponent"]),
-    categories() {
+    ...mapState(["icon", "recipes", "categories", "currentComponent"]),
+    categoriesWithRecipes() {
       let arr = this.recipes.map((e) => {
         return e.category
       })
@@ -197,7 +197,7 @@ export default {
     toggleCatEdit() {
       this.catEditMode = !this.catEditMode
       this.setComponent("EnRecipes")
-      this.filterFavorites = this.filterMustTry = false
+      this.filterFavorites = this.filterTrylater = false
       this.selectedCategory = null
       this.$refs.enrecipes.updateFilter()
     },
@@ -223,9 +223,7 @@ export default {
     highlight(args) {
       let temp = args.object.className
       args.object.className = `${temp} option-highlight`
-      setTimeout(() => {
-        args.object.className = temp
-      }, 100)
+      setTimeout(() => (args.object.className = temp), 100)
     },
     // Navigation
     setSelectedCategory(e) {
@@ -252,8 +250,8 @@ export default {
       function isFiltered() {
         vm.filterFavorites
           ? vm.setComponent("Favorites")
-          : vm.filterMustTry
-          ? vm.setComponent("Must-Try")
+          : vm.filterTrylater
+          ? vm.setComponent("Try later")
           : vm.selectedCategory
           ? vm.setComponent(vm.selectedCategory)
           : vm.setComponent("EnRecipes")
@@ -263,13 +261,13 @@ export default {
         this.closeDrawer()
         this.catEditMode = false
       } else if (
-        ["Favorites", "Must-Try", this.selectedCategory].includes(
+        ["Favorites", "Try later", this.selectedCategory].includes(
           this.currentComponent
         )
       ) {
         preventDefault()
         this.setComponent("EnRecipes")
-        this.filterFavorites = this.filterMustTry = false
+        this.filterFavorites = this.filterTrylater = false
         this.selectedCategory = null
         this.$refs.enrecipes.updateFilter()
         this.releaseGlobalBackEvent()
@@ -296,7 +294,7 @@ export default {
         this.setComponent(to)
         this.$navigateBack({ frame: "main-frame", backstackVisible: false })
         this.filterFavorites = to === "Favorites" ? true : false
-        this.filterMustTry = to === "Must-Try" ? true : false
+        this.filterTrylater = to === "Try later" ? true : false
         this.selectedCategory = isCategory ? to : null
         this.$refs.enrecipes.updateFilter()
         this.closeDrawer()

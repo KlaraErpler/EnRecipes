@@ -2,7 +2,7 @@
   <Page>
     <StackLayout class="dialogContainer" :class="isLightMode">
       <Label class="dialogTitle orkm" :text="title" />
-      <Label class="dialogDescription" :text="description" textWrap="true" />
+      <Label v-if="description" class="dialogDescription" :text="description" textWrap="true" />
       <StackLayout
         orientation="horizontal"
         class="actionsContainer"
