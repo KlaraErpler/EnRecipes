@@ -5,11 +5,10 @@
       <GridLayout
         v-if="showSearch"
         columns="auto, *"
-        class="actionBarContainer"
         verticalAlignment="center"
       >
         <Label
-          class="bx leftAction"
+          class="bx"
           :text="icon.back"
           automationText="Back"
           col="0"
@@ -25,15 +24,11 @@
         />
       </GridLayout>
       <!-- Home Actionbar -->
-      <GridLayout
-        v-else
-        columns="auto, *, auto, auto"
-        class="actionBarContainer"
-      >
+      <GridLayout v-else columns="auto, *, auto, auto">
         <Label
-          class="bx leftAction"
+          class="bx"
           :text="icon.menu"
-          automationText="Menu"
+          automationText="Back"
           @tap="showDrawer"
           col="0"
         />
@@ -62,19 +57,19 @@
         swipeActions="true"
         @itemSwipeProgressChanged="onSwiping"
         @itemSwipeProgressEnded="onSwipeEnded"
-        @scrolled="onScroll($event)"
+        @scrolled="onScroll"
         @itemTap="viewRecipe"
         :filteringFunction="filterFunction"
         :sortingFunction="sortFunction"
       >
         <v-template>
           <GridLayout
-            class="recipe-li"
+            class="recipeItem"
             rows="112"
             columns="112, *"
-            androidElevation="1"
+            androidElevation="2"
           >
-            <GridLayout class="recipeImgContainer" rows="112" columns="112">
+            <GridLayout class="imageHolder" rows="112" columns="112">
               <Image
                 row="0"
                 col="0"
@@ -89,16 +84,19 @@
                 horizontalAlignment="center"
                 class="bx"
                 fontSize="56"
-                :text="icon.image"
+                :text="icon.food"
               />
             </GridLayout>
-            <StackLayout class="recipe-info" col="1">
-              <Label :text="recipe.category" class="orkm recipe-cat" />
-              <Label :text="recipe.title" class="orkm recipe-title" />
-              <Label
-                :text="recipeTotalTime(recipe.prepTime, recipe.cookTime)"
-                class="h4 recipe-time"
-              />
+            <StackLayout class="recipeInfo" col="1">
+              <Label :text="recipe.category" class="orkm category" />
+              <Label :text="recipe.title" class="orkm title" />
+              <StackLayout class="timeContainer" orientation="horizontal">
+                <Label class="bx small" :text="icon.time" />
+                <Label
+                  class="time"
+                  :text="`${formattedTime(recipe.timeRequired).time}`"
+                />
+              </StackLayout>
             </StackLayout>
           </GridLayout>
         </v-template>
@@ -117,32 +115,30 @@
         <StackLayout
           col="0"
           row="0"
-          class="noResults"
+          class="noResult"
           v-if="!recipes.length && !filterFavorites && !filterTrylater"
-          verticalAlignment="center"
         >
+          <Label class="bx icon" :text="icon.plusCircle" textWrap="true" />
           <Label
-            @tap="addRecipe"
-            class="bx"
-            :text="icon.plusCircle"
-            textWrap="true"
-          />
-          <Label
-            class="title orkb"
+            class="title orkm"
             text="Start adding your recipes!"
             textWrap="true"
           />
-          <Label text='Tap the "+" icon to add a new recipe' textWrap="true" />
+          <StackLayout orientation="horizontal" horizontalAlignment="center">
+            <Label text="Use the " textWrap="true" />
+            <Label class="bx" :text="icon.plus" />
+            <Label text=" button to add a new recipe" textWrap="true" />
+          </StackLayout>
         </StackLayout>
         <StackLayout
           col="0"
           row="0"
-          class="noResults"
+          class="noResult"
           v-if="!filteredRecipes.length && searchQuery"
           verticalAlignment="top"
         >
-          <Label class="bx" :text="icon.search" textWrap="true" />
-          <Label class="title orkb" text="No recipes found" textWrap="true" />
+          <Label class="bx icon" :text="icon.search" textWrap="true" />
+          <Label class="title orkm" text="No recipes found" textWrap="true" />
           <Label
             :text="
               `Your search &quot;${searchQuery}&quot; did not match any recipes${
@@ -157,12 +153,11 @@
         <StackLayout
           col="0"
           row="0"
-          class="noResults"
-          verticalAlignment="center"
+          class="noResult"
           v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
         >
-          <Label class="bx" :text="icon.heartOutline" textWrap="true" />
-          <Label class="title orkb" text="No favorites yet!" textWrap="true" />
+          <Label class="bx icon" :text="icon.heartOutline" textWrap="true" />
+          <Label class="title orkm" text="No favorites yet!" textWrap="true" />
           <Label
             text="Your favorited recipes will be listed here"
             textWrap="true"
@@ -171,19 +166,18 @@
         <StackLayout
           col="0"
           row="0"
-          class="noResults"
-          verticalAlignment="center"
+          class="noResult"
           v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
         >
-          <Label class="bx" :text="icon.trylaterOutline" textWrap="true" />
+          <Label class="bx icon" :text="icon.trylaterOutline" textWrap="true" />
           <Label
-            class="title orkb"
-            text="No recipes here to try!"
+            class="title orkm"
+            text="Nothing to try next!"
             textWrap="true"
           />
           <!-- text="Your Try later recipes will be listed here" -->
           <Label
-            text="Your recipes to try later will be listed here"
+            text="Recipes you wanted to try later will be listed here"
             textWrap="true"
           />
         </StackLayout>
@@ -297,10 +291,10 @@ export default {
       this.closeSearch()
     },
     closeSearch() {
+      if (this.searchQuery) this.updateFilter()
       this.searchQuery = ""
       Utils.ad.dismissSoftInput()
       this.showSearch = false
-      this.updateFilter()
       this.releaseLocalBackEvent()
     },
     sortDialog() {
@@ -309,7 +303,7 @@ export default {
         props: {
           title: "Sort by",
           list: ["Natural order", "Title", "Duration", "Last modified"],
-          height: "195", // 48*4 + 3 1dip separators
+          height: "216", // 54*4
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.sortType !== action) {
@@ -330,8 +324,8 @@ export default {
         .localeCompare(otherItem.title.toLowerCase(), "en", {
           ignorePunctuation: true,
         })
-      let d1 = this.recipeDuration(item.prepTime, item.cookTime)
-      let d2 = this.recipeDuration(otherItem.prepTime, otherItem.cookTime)
+      let d1 = this.formattedTime(item.timeRequired).duration
+      let d2 = this.formattedTime(otherItem.timeRequired).duration
       let ld1 = new Date(item.lastModified)
       let ld2 = new Date(otherItem.lastModified)
       switch (this.sortType) {
@@ -411,27 +405,28 @@ export default {
         this.deletionDialogActive = false
       })
     },
-    getTotalTime(prepTime, cookTime) {
-      let pT = prepTime.split(":")
-      let cT = cookTime.split(":")
-      let hrs = parseInt(pT[0]) + parseInt(cT[0])
-      let mins = parseInt(pT[1]) + parseInt(cT[1])
-      if (mins > 60) {
-        hrs += Math.floor(mins / 60)
-        mins -= 60
-      }
+    // getTotalTime(prepTime, timeRequired) {
+    //   let pT = prepTime.split(":")
+    //   let cT = timeRequired.split(":")
+    //   let hrs = parseInt(pT[0]) + parseInt(cT[0])
+    //   let mins = parseInt(pT[1]) + parseInt(cT[1])
+    //   if (mins > 60) {
+    //     hrs += Math.floor(mins / 60)
+    //     mins -= 60
+    //   }
+    //   return {
+    //     hrs,
+    //     mins,
+    //   }
+    // },
+    formattedTime(time) {
+      let t = time.split(":")
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
       return {
-        hrs,
-        mins,
+        time: h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`,
+        duration: `${h}${m}`,
       }
-    },
-    recipeTotalTime(prepTime, cookTime) {
-      let { hrs, mins } = this.getTotalTime(prepTime, cookTime)
-      return hrs ? `${hrs}h ${mins}m` : `${mins}m`
-    },
-    recipeDuration(prepTime, cookTime) {
-      let { hrs, mins } = this.getTotalTime(prepTime, cookTime)
-      return `${hrs}${mins}`
     },
     onScroll(args) {
       args.scrollOffset
@@ -448,7 +443,6 @@ export default {
         //   curve: "easeIn",
         // },
         props: {
-          viewIsScrolled: this.viewIsScrolled,
           selectedCategory: this.selectedCategory,
         },
       })

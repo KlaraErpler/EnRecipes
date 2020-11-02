@@ -1,7 +1,6 @@
 <template>
   <Page>
     <StackLayout class="dialogContainer" :class="isLightMode">
-      <!-- :class="isLightTheme ? 'light' : 'dark'" -->
       <Label class="dialogTitle orkm" :text="title" />
       <ListView
         width="100%"
@@ -11,22 +10,20 @@
         separatorColor="transparent"
       >
         <v-template>
-          <StackLayout class="actionItem">
-            <Label :text="item" />
-          </StackLayout>
+          <Label class="actionItem" :text="item" />
         </v-template>
       </ListView>
-      <GridLayout rows="auto" columns="auto, *, auto">
+      <GridLayout rows="auto" columns="auto, *, auto" class="actionsContainer">
         <Label
           v-if="action"
           col="0"
-          class="cancel orkm pull-left"
+          class="action orkm pull-left"
           :text="action"
           @tap="$modal.close(action)"
         />
         <Label
           col="2"
-          class="cancel orkm pull-right"
+          class="action orkm pull-right"
           text="CANCEL"
           @tap="$modal.close(false)"
         />

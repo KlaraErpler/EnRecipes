@@ -2,27 +2,38 @@
   <Page>
     <StackLayout class="dialogContainer" :class="isLightMode">
       <Label class="dialogTitle orkm" :text="title" />
-      <StackLayout class="dialogInputField">
+      <StackLayout class="dialogInput">
         <TextField
+          @loaded="focusField"
           :hint="hint"
           v-model="category"
           autocapitalizationType="words"
         />
       </StackLayout>
-      <StackLayout orientation="horizontal" horizontalAlignment="right">
-        <Label class="action orkm" text="CANCEL" @tap="$modal.close(false)" />
+      <GridLayout
+        rows="auto"
+        columns="*, auto, 32, auto"
+        class="actionsContainer"
+      >
         <Label
+          col="1"
+          class="action orkm"
+          text="CANCEL"
+          @tap="$modal.close(false)"
+        />
+        <Label
+          col="3"
           class="action orkm"
           :text="action"
           @tap="$modal.close(category)"
         />
-      </StackLayout>
+      </GridLayout>
     </StackLayout>
   </Page>
 </template>
 
 <script>
-import { Application } from "@nativescript/core"
+import { Application, Utils } from "@nativescript/core"
 export default {
   props: ["title", "hint", "action"],
   data() {
@@ -33,6 +44,12 @@ export default {
   computed: {
     isLightMode() {
       return Application.systemAppearance()
+    },
+  },
+  methods: {
+    focusField(args) {
+      args.object.focus()
+      setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 1)
     },
   },
 }

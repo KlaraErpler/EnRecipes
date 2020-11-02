@@ -1,56 +1,40 @@
 <template>
   <Page @loaded="initializePage">
     <ActionBar :flat="viewIsScrolled ? false : true">
-      <!-- Settings Actionbar -->
-      <GridLayout rows="*" columns="auto, *" class="actionBarContainer">
+      <GridLayout rows="*" columns="auto, *">
         <Label
-          class="bx leftAction"
+          class="bx"
           :text="icon.menu"
-          automationText="Menu"
+          automationText="Back"
           @tap="showDrawer"
           col="0"
         />
         <Label class="title orkm" text="Settings" col="1" />
       </GridLayout>
     </ActionBar>
-    <ScrollView scrollBarIndicatorVisible="false">
+    <ScrollView scrollBarIndicatorVisible="false" @scroll="onScroll">
       <StackLayout class="main-container">
         <Label text="Interface" class="group-header" />
-
         <StackLayout
           orientation="horizontal"
           class="option"
           @tap="selectThemes"
         >
-          <!-- @tap="selectThemes" -->
           <Label verticalAlignment="center" class="bx" :text="icon.theme" />
           <StackLayout>
             <Label text="Theme" class="option-title" />
             <Label :text="themeName" class="option-info" textWrap="true" />
           </StackLayout>
         </StackLayout>
-
         <StackLayout class="hr m-10"></StackLayout>
-
         <Label text="Backup/Restore" class="group-header" />
-        <!-- <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="selectBackupDir"
-        >
-          <Label verticalAlignment="center" class="bx" :text="icon.folder" />
-          <StackLayout>
-            <Label text="EnRecipes Backup Directory" class="option-title" />
-            <Label text="/storage/emulated/0/EnRecipes" class="option-info" />
-          </StackLayout>
-        </StackLayout> -->
         <StackLayout orientation="horizontal" class="option" @tap="backupData">
-          <Label class="bx" :text="icon.backup" />
-          <Label text="Backup Data" class="option-title" />
+          <Label class="bx" :text="icon.save" />
+          <Label text="Backup data" />
         </StackLayout>
         <StackLayout orientation="horizontal" class="option" @tap="restoreData">
           <Label class="bx" :text="icon.restore" />
-          <Label text="Restore Data" class="option-title" />
+          <Label text="Restore data" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -78,7 +62,6 @@ import { mapState, mapActions } from "vuex"
 export default {
   props: [
     "highlight",
-    "viewIsScrolled",
     "showDrawer",
     "restartApp",
     "hijackGlobalBackEvent",
@@ -86,6 +69,7 @@ export default {
   ],
   data() {
     return {
+      viewIsScrolled: false,
       interface: {
         theme: {
           title: "Theme",
@@ -123,9 +107,10 @@ export default {
       this.setCurrentComponentAction("Settings")
       this.releaseGlobalBackEvent()
     },
-    showDialog(args) {
-      this.highlight(args)
-      this.$showModal(ActionDialog)
+    onScroll(args) {
+      args.scrollY
+        ? (this.viewIsScrolled = true)
+        : (this.viewIsScrolled = false)
     },
     selectThemes(args) {
       this.highlight(args)
@@ -133,7 +118,7 @@ export default {
         props: {
           title: "Theme",
           list: ["Light", "Dark"],
-          height: "97",
+          height: "108",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.themeName !== action) {
@@ -177,10 +162,11 @@ export default {
             android.os.Environment.DIRECTORY_DOWNLOADS
           ).toString()
           let date = new Date()
+          let formattedDate = `${date.getFullYear()}${date.getMonth()}${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`
           let fromPath = path.join(knownFolders.documents().path, "enrecipes")
           let destPath = path.join(
             sdDownloadPath,
-            `enrecipes_${date.toString()}.zip`
+            `EnRecipes-${formattedDate}.zip`
           )
           console.log(fromPath, destPath, sdDownloadPath)
           Zip.zip({

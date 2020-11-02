@@ -12,6 +12,7 @@
     "@nativescript/datetimepicker": "^2.0.4",
     "@nativescript/theme": "^3.0.0",
     "@nativescript/webpack": "3.0.0",
+    "@nstudio/nativescript-checkbox": "^2.0.4",
     "nativescript-clipboard": "^2.0.0",
     "nativescript-couchbase-plugin": "^0.9.6",
     "nativescript-feedback": "^2.0.0",

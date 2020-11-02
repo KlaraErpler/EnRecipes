@@ -8,27 +8,22 @@
       gesturesEnabled="true"
       drawerTransition="SlideInOnTopTransition"
     >
-      <GridLayout
-        rows="*, auto"
-        columns="*"
-        ~drawerContent
-        padding="8"
-        class="sd"
-      >
+      <GridLayout rows="*, auto" columns="*" ~drawerContent class="sd">
         <StackLayout row="0">
-          <StackLayout
+          <GridLayout
+            rows="48"
+            columns="auto, 24, *"
             v-for="(item, index) in topmenu"
             :key="index"
             @tap="navigateTo(item.component, false, false)"
-            orientation="horizontal"
             class="sd-item orkm"
             :class="{
               'selected-sd-item': currentComponent === item.component,
             }"
           >
-            <Label class="bx" :text="icon[item.icon]" margin="0 24 0 0" />
-            <Label :text="item.title" />
-          </StackLayout>
+            <Label col="0" row="0" class="bx" :text="icon[item.icon]" />
+            <Label col="2" row="0" :text="item.title" />
+          </GridLayout>
           <StackLayout class="hr m-10"></StackLayout>
           <GridLayout
             class="sd-group-header orkm"
@@ -64,7 +59,7 @@
                 <Label col="1" :text="item" />
                 <Label
                   v-if="catEditMode"
-                  @tap="editCategory(item)"
+                  @tap="renameCategory(item)"
                   col="2"
                   class="bx"
                   :text="icon.edit"
@@ -100,7 +95,7 @@
       </GridLayout>
 
       <GridLayout ~mainContent rows="*" columns="*">
-        <Frame ref="mainFrame" id="main-frame">
+        <Frame row="0" col="0" ref="mainFrame" id="main-frame">
           <!-- Home  -->
           <EnRecipes
             ref="enrecipes"
@@ -179,7 +174,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["icon", "recipes", "categories", "currentComponent"]),
+    ...mapState([
+      "icon",
+      "recipes",
+      "categories",
+      "yieldUnits",
+      "currentComponent",
+    ]),
     categoriesWithRecipes() {
       let arr = this.recipes.map((e) => {
         return e.category
@@ -192,11 +193,12 @@ export default {
       "setCurrentComponentAction",
       "initializeRecipes",
       "initializeCategories",
+      "initializeYieldUnits",
       "renameCategoryAction",
     ]),
     toggleCatEdit() {
       this.catEditMode = !this.catEditMode
-      this.setComponent("EnRecipes")
+      if (this.selectedCategory) this.setComponent("EnRecipes")
       this.filterFavorites = this.filterTrylater = false
       this.selectedCategory = null
       this.$refs.enrecipes.updateFilter()
@@ -204,7 +206,7 @@ export default {
     setComponent(comp) {
       this.setCurrentComponentAction(comp)
     },
-    editCategory(category) {
+    renameCategory(category) {
       this.releaseGlobalBackEvent()
       this.$showModal(PromptDialog, {
         props: {
@@ -217,6 +219,7 @@ export default {
         if (newCategory.length) {
           this.renameCategoryAction({ current: category, updated: newCategory })
           this.catEditMode = false
+          this.navigateTo(newCategory, false, true)
         }
       })
     },
@@ -279,7 +282,6 @@ export default {
           frame: "main-frame",
           props: {
             highlight: this.highlight,
-            viewIsScrolled: this.viewIsScrolled,
             showDrawer: this.showDrawer,
             restartApp: this.restartApp,
             hijackGlobalBackEvent: this.hijackGlobalBackEvent,
@@ -340,6 +342,7 @@ export default {
     setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
     if (!this.recipes.length) this.initializeRecipes()
     if (!this.categories.length) this.initializeCategories()
+    if (!this.yieldUnits.length) this.initializeYieldUnits()
   },
 }
 </script>

@@ -1,15 +1,11 @@
 <template>
   <Page @loaded="initializePage">
-    <ActionBar height="152" margin="0" flat="true">
-      <GridLayout
-        rows="24, 64, 64"
-        columns="auto, *, auto,auto, auto"
-        class="actionBarContainer"
-      >
+    <ActionBar height="152" margin="0" flat="true" visibility="collapse">
+      <GridLayout rows="24, 64, 64" columns="auto, *, auto,auto, auto">
         <Label
           row="1"
           col="0"
-          class="bx leftAction"
+          class="bx"
           :text="icon.back"
           automationText="Back"
           @tap="$navigateBack()"
@@ -50,11 +46,18 @@
           :text="icon.edit"
           @tap="editRecipe"
         />
-        <ActivityIndicator v-else row="1" col="4" :busy="busy" />
+        <ActivityIndicator v-else row="1" col="2" :busy="busy" />
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
-      <TabView androidElevation="0" width="100%" height="100%">
+      <TabView
+        :selectedIndex="selectedTabIndex"
+        @selectedIndexChange="selectedIndexChange"
+        androidElevation="0"
+        width="100%"
+        height="100%"
+        class="viewRecipe"
+      >
         <TabViewItem title="Overview">
           <ScrollView scrollBarIndicatorVisible="false">
             <StackLayout>
@@ -62,7 +65,7 @@
                 width="100%"
                 :height="screenWidth"
                 verticalAlignment="center"
-                class="view-imageHolder"
+                class="imageHolder"
               >
                 <Image
                   v-if="recipe.imageSrc"
@@ -76,69 +79,181 @@
                   horizontalAlignment="center"
                   class="bx"
                   fontSize="160"
-                  :text="icon.image"
+                  :text="icon.food"
                 />
               </StackLayout>
-              <StackLayout margin="16 16 144">
-                <Label class="view-cat orkm" :text="recipe.category" />
+              <StackLayout margin="16 8 144">
+                <Label class="category orkm" :text="recipe.category" />
                 <Label
-                  class="view-title orkm"
+                  margin="0 8"
+                  class="title orkm"
                   :text="recipe.title"
                   textWrap="true"
                 />
-                <Label
-                  class="view-other"
-                  :text="`Preparation time: ${getTime(recipe.prepTime)}`"
-                />
-                <Label
-                  class="view-other"
-                  :text="`Cooking time: ${getTime(recipe.cookTime)}`"
-                />
+                <Label class="time">
+                  <FormattedString>
+                    <Span text="Time required:"></Span>
+                    <Span
+                      :text="` ${formattedTime(recipe.timeRequired)}`"
+                    ></Span>
+                  </FormattedString>
+                </Label>
+                <GridLayout
+                  rows="auto,  auto"
+                  columns="*,  *"
+                  class="overviewContainer"
+                >
+                  <StackLayout
+                    class="overviewItem"
+                    row="0"
+                    col="0"
+                    @tap="selectedTabIndex = 1"
+                  >
+                    <Label class="bx" :text="icon.item" />
+                    <Label
+                      class="itemCount"
+                      :text="
+                        `${recipe.ingredients.length} ${
+                          recipe.ingredients.length == 1
+                            ? 'Ingredient'
+                            : 'Ingredients'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </StackLayout>
+                  <StackLayout
+                    class="overviewItem"
+                    row="0"
+                    col="1"
+                    @tap="selectedTabIndex = 2"
+                  >
+                    <Label class="bx" :text="icon.step" />
+                    <Label
+                      class="itemCount"
+                      :text="
+                        `${recipe.instructions.length} ${
+                          recipe.instructions.length == 1 ? 'Step' : 'Steps'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </StackLayout>
+                  <StackLayout
+                    class="overviewItem"
+                    row="1"
+                    col="0"
+                    @tap="selectedTabIndex = 3"
+                  >
+                    <Label class="bx" :text="icon.note" />
+                    <Label
+                      class="itemCount"
+                      :text="
+                        `${recipe.notes.length} ${
+                          recipe.notes.length == 1 ? 'Note' : 'Notes'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </StackLayout>
+                  <StackLayout
+                    class="overviewItem"
+                    row="1"
+                    col="1"
+                    @tap="selectedTabIndex = 4"
+                  >
+                    <Label class="bx" :text="icon.source" />
+                    <Label
+                      class="itemCount"
+                      :text="
+                        `${recipe.references.length} ${
+                          recipe.references.length == 1
+                            ? 'Reference'
+                            : 'References'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </StackLayout>
+                </GridLayout>
               </StackLayout>
             </StackLayout>
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="Ingredients">
           <ScrollView scrollBarIndicatorVisible="false">
-            <Label
+            <GridLayout
               v-if="!recipe.ingredients.length"
-              class="noResults"
-              text="Click the edit button to add ingredients to this recipe"
-              textWrap="true"
-            />
-            <StackLayout v-else padding="16 16 124">
+              rows="*"
+              columns="*"
+              class="emptyState"
+            >
+              <StackLayout col="0" row="0" class="noResult">
+                <Label class="bx icon" :text="icon.item" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some ingredients" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
+            <StackLayout v-else padding="16 16 134">
               <AbsoluteLayout class="inputField">
                 <TextField
-                  width="165"
-                  v-model="portionScale"
+                  width="50%"
+                  v-model="yieldMultiplier"
                   keyboardType="number"
                 />
-                <Label top="0" class="fieldLabel" text="Set portion size" />
-              </AbsoluteLayout>
-              <StackLayout margin="24 0 8 0">
                 <Label
-                  class="view-title orkm"
+                  top="0"
+                  class="fieldLabel"
+                  :text="`Required ${recipe.yield.unit.toLowerCase()}`"
+                />
+              </AbsoluteLayout>
+              <StackLayout margin="24 0 16 0">
+                <Label
+                  class="title orkm"
                   :text="
-                    `Ingredients for ${portionScale}${
-                      portionScale > 1
-                        ? ' portions'
-                        : portionScale == 0
-                        ? '1 portion'
-                        : ' portion'
-                    }`
+                    `Ingredients for ${
+                      yieldMultiplier ? yieldMultiplier : 1
+                    } ${recipe.yield.unit.toLowerCase()}`
                   "
                   textWrap="true"
                 />
-                <Label
-                  class="view-ingredient"
-                  v-for="(item, index) in recipe.ingredients"
-                  :key="index"
+              </StackLayout>
+              <StackLayout
+                v-for="(item, index) in recipe.ingredients"
+                :key="index"
+              >
+                <check-box
+                  v-if="filterTrylater"
+                  class="ingredient-check"
+                  checkPadding="16"
+                  :fillColor="`${isLightMode ? '#ff5722' : '#ff7043'}`"
                   :text="
-                    `${roundedQuantity(item.quantity)}${
-                      item.unit ? ' ' + item.unit : ''
-                    } ${item.item}`
+                    `${
+                      roundedQuantity(item.quantity)
+                        ? roundedQuantity(item.quantity) + ' '
+                        : ''
+                    }${roundedQuantity(item.quantity) ? item.unit + ' ' : ''}${
+                      item.item
+                    }`
                   "
+                />
+                <Label
+                  v-else
+                  class="ingredient"
                   textWrap="true"
+                  :text="
+                    `${
+                      roundedQuantity(item.quantity)
+                        ? roundedQuantity(item.quantity) + ' '
+                        : ''
+                    }${roundedQuantity(item.quantity) ? item.unit + ' ' : ''}${
+                      item.item
+                    }`
+                  "
                 />
               </StackLayout>
             </StackLayout>
@@ -146,12 +261,22 @@
         </TabViewItem>
         <TabViewItem title="Instructions">
           <ScrollView scrollBarIndicatorVisible="false">
-            <Label
+            <GridLayout
               v-if="!recipe.instructions.length"
-              class="noResults"
-              text="Click the edit button to add instructions to this recipe"
-              textWrap="true"
-            />
+              rows="*"
+              columns="*"
+              class="emptyState"
+            >
+              <StackLayout col="0" row="0" class="noResult">
+                <Label class="bx icon" :text="icon.step" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some instructions" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
             <StackLayout v-else padding="32 16 132">
               <GridLayout
                 columns="auto ,*"
@@ -161,10 +286,9 @@
                 <Label
                   col="0"
                   colSpan="2"
-                  class="view-instruction"
+                  class="instruction"
                   :class="{
-                    instructionWOBorder:
-                      index === recipe.instructions.length - 1,
+                    noBorder: index === recipe.instructions.length - 1,
                   }"
                   :text="instruction"
                   textWrap="true"
@@ -172,7 +296,7 @@
                 <Label
                   verticalAlignment="top"
                   horizontalAlignment="center"
-                  class="view-count orkb"
+                  class="count orkb"
                   col="0"
                   :text="index + 1"
                 />
@@ -182,12 +306,22 @@
         </TabViewItem>
         <TabViewItem title="Notes">
           <ScrollView scrollBarIndicatorVisible="false">
-            <Label
+            <GridLayout
               v-if="!recipe.notes.length"
-              class="noResults"
-              text="Click the edit button to add notes to this recipe"
-              textWrap="true"
-            />
+              rows="*"
+              columns="*"
+              class="emptyState"
+            >
+              <StackLayout col="0" row="0" class="noResult">
+                <Label class="bx icon" :text="icon.note" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some notes" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
             <StackLayout v-else padding="32 16 132">
               <GridLayout
                 columns="auto ,*"
@@ -197,14 +331,14 @@
                 <Label
                   col="0"
                   colSpan="2"
-                  class="view-note"
+                  class="note"
                   :text="note"
                   textWrap="true"
                 />
                 <Label
                   verticalAlignment="top"
                   horizontalAlignment="center"
-                  class="view-count note orkb"
+                  class="count square orkb"
                   col="0"
                   :text="index + 1"
                 />
@@ -214,12 +348,22 @@
         </TabViewItem>
         <TabViewItem title="References">
           <ScrollView scrollBarIndicatorVisible="false">
-            <Label
+            <GridLayout
               v-if="!recipe.references.length"
-              class="noResults"
-              text="Click the edit button to add references to this recipe"
-              textWrap="true"
-            />
+              rows="*"
+              columns="*"
+              class="emptyState"
+            >
+              <StackLayout col="0" row="0" class="noResult">
+                <Label class="bx icon" :text="icon.source" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some references" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
             <StackLayout v-else padding="10 0 132">
               <StackLayout
                 v-for="(reference, index) in recipe.references"
@@ -228,27 +372,27 @@
                 <GridLayout
                   v-if="isValidURL(reference)"
                   columns="*, auto"
-                  class="view-reference-container"
+                  class="referenceItem"
                   androidElevation="1"
+                  @longPress="copyURL($event, reference)"
                 >
                   <Label
                     col="0"
                     verticalAlignment="center"
-                    class="view-reference"
+                    class="recipeLink"
                     :text="reference"
                     textWrap="false"
-                    @tap="openURL($event, reference)"
                   />
                   <Label
                     col="1"
-                    class="view-copyReference bx"
-                    :text="icon.copy"
-                    @tap="copyURL($event, reference)"
+                    class="bx"
+                    :text="icon.source"
+                    @tap="openURL($event, reference)"
                   />
                 </GridLayout>
                 <Label
                   v-else
-                  class="view-reference-text"
+                  class="recipeText"
                   :text="reference"
                   textWrap="true"
                 />
@@ -262,7 +406,7 @@
           row="1"
           col="1"
           class="bx fab-button"
-          :text="icon.unchecked"
+          :text="icon.check"
           @tap="recipeTried"
           v-if="filterTrylater"
         />
@@ -282,12 +426,19 @@
 </template>
 
 <script>
-import { Screen, Utils, ImageSource, Device, File } from "@nativescript/core"
+import {
+  Screen,
+  Utils,
+  ImageSource,
+  Device,
+  File,
+  Color,
+} from "@nativescript/core"
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
-import * as application from "tns-core-modules/application"
 import * as Toast from "nativescript-toast"
 import * as SocialShare from "nativescript-social-share-ns-7"
 import { setText } from "nativescript-clipboard"
+import { Application } from "@nativescript/core"
 
 import { mapState, mapActions } from "vuex"
 
@@ -304,9 +455,10 @@ export default {
   data() {
     return {
       busy: false,
-      portionScale: 1,
+      yieldMultiplier: 1,
       recipe: null,
       showFab: false,
+      selectedTabIndex: 0,
     }
   },
   computed: {
@@ -314,10 +466,14 @@ export default {
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
-    isPortionScalePositive() {
-      return this.portionScale && !isNaN(this.portionScale)
-        ? parseFloat(this.portionScale)
+    isYieldMultiplierPositive() {
+      return this.yieldMultiplier && !isNaN(this.yieldMultiplier)
+        ? parseFloat(this.yieldMultiplier)
         : 1
+    },
+    isLightMode() {
+      console.log(Application.systemAppearance())
+      return Application.systemAppearance() === "light"
     },
   },
   methods: {
@@ -328,42 +484,38 @@ export default {
       setTimeout((e) => {
         this.setCurrentComponentAction("ViewRecipe")
       }, 500)
-      this.portionScale = this.recipe.portionSize
+      this.yieldMultiplier = this.recipe.yield.quantity
       this.showFab = true
-      this.showInfo()
     },
     niceDates(time) {
-      let date = new Date(time)
-      let diff = (new Date().getTime() - date.getTime()) / 1000
-      console.log(diff)
+      let lastTried = new Date(time).getTime()
+      let now = new Date().getTime()
+      let midnight = new Date().setHours(0, 0, 0, 0)
+      let diff = (now - lastTried) / 1000
       let dayDiff = Math.ceil(diff / 86400)
-      console.log(dayDiff)
-
       if (isNaN(dayDiff) || dayDiff < 0) return ""
-
       return (
-        (dayDiff == 0 &&
-          ((diff < 60 && "just now") ||
-            (diff < 120 && "1 minute ago") ||
-            (diff < 3600 && Math.floor(diff / 60) + " minutes ago") ||
-            (diff < 7200 && "1 hour ago") ||
-            (diff < 86400 && Math.floor(diff / 3600) + " hours ago"))) ||
+        (diff < 86400 && lastTried > midnight && "today") ||
         (dayDiff == 1 && "yesterday") ||
         (dayDiff < 7 && dayDiff + " days ago") ||
-        (dayDiff < 31 && Math.ceil(dayDiff / 7) + " week(s) ago") ||
-        (dayDiff > 30 &&
-          dayDiff < 365 &&
-          Math.round(dayDiff / 30) + " month(s) ago") ||
-        (dayDiff > 364 && Math.round(dayDiff / 365) + " year(s) ago")
+        (dayDiff < 31 && Math.round(dayDiff / 7) + " week(s) ago") ||
+        (dayDiff < 366 && Math.round(dayDiff / 30) + " month(s) ago") ||
+        (dayDiff > 365 && "long time ago")
       )
+    },
+    selectedIndexChange(args) {
+      this.selectedTabIndex = args.object.selectedIndex
     },
     showInfo() {
       let feedback = new Feedback()
       feedback.show({
-        type: FeedbackType.Info,
-        message: `You tried this recipe ${this.niceDates(
-          this.recipe.triedOn
+        title: `You tried this recipe ${this.niceDates(
+          this.recipe.lastTried
         )}!`,
+        titleColor: new Color(`${this.isLightMode ? "#fff" : "#111"}`),
+        backgroundColor: new Color(
+          `${this.isLightMode ? "#ff5722" : "#ff7043"}`
+        ),
       })
     },
     highlight(args) {
@@ -374,8 +526,8 @@ export default {
     roundedQuantity(quantity) {
       return (
         Math.round(
-          (quantity / this.recipe.portionSize) *
-            this.isPortionScalePositive *
+          (quantity / this.recipe.yield.quantity) *
+            this.isYieldMultiplierPositive *
             100
         ) / 100
       )
@@ -399,14 +551,14 @@ export default {
     shareRecipe() {
       let overview = `${
         this.recipe.title
-      } Recipe\n\nPreparation time: ${this.getTime(
-        this.recipe.prepTime
-      )}\nCooking time: ${this.getTime(this.recipe.cookTime)}\n`
+      } Recipe\n\nApprox. cooking time: ${this.formattedTime(
+        this.recipe.timeRequired
+      )}\n`
       let shareContent = overview
       if (this.recipe.ingredients.length) {
-        let ingredients = `\n\nIngredients for ${this.recipe.portionSize} ${
-          this.recipe.portionSize === 1 ? "postion:" : "portions:"
-        }\n\n`
+        let ingredients = `\n\nIngredients for ${
+          this.yieldMultiplier
+        } ${this.recipe.yield.unit.toLowerCase()}\n\n`
         this.recipe.ingredients.forEach((e) => {
           ingredients += `- ${this.roundedQuantity(e.quantity)} ${e.unit} ${
             e.item
@@ -417,7 +569,7 @@ export default {
       if (this.recipe.instructions.length) {
         let instructions = `\n\nInstructions:\n\n`
         this.recipe.instructions.forEach((e, i) => {
-          instructions += `${i + 1}. ${e}\n\n`
+          instructions += `Step ${i + 1}: ${e}\n\n`
         })
         shareContent += instructions
       }
@@ -445,12 +597,13 @@ export default {
         "How would you like to share this recipe?"
       )
     },
-    toggle(key) {
+    toggle(key, setDate) {
       this.toggleStateAction({
         index: this.recipeIndex,
         id: this.recipeID,
         recipe: this.recipe,
         key,
+        setDate,
       })
     },
     toggleFavorite() {
@@ -471,14 +624,14 @@ export default {
       this.toggle("tried")
     },
     recipeTried() {
-      this.toggle("tried")
+      this.toggle("tried", true)
       this.$navigateBack()
     },
-    getTime(time) {
+    formattedTime(time) {
       let t = time.split(":")
-      let h = t[0]
-      let m = t[1]
-      return h !== "00" ? `${h}h ${m}m` : `${m}m`
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
+      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
     },
     isValidURL(string) {
       let pattern = new RegExp("^https?|www", "ig")
@@ -499,6 +652,7 @@ export default {
   },
   mounted() {
     this.showFab = true
+    setTimeout((e) => this.recipe.tried && this.showInfo(), 2000)
   },
 }
 </script>

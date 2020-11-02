@@ -1,9 +1,9 @@
 <template>
   <Page @loaded="initialize" @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
-      <GridLayout rows="*" columns="auto, *, auto" class="actionBarContainer">
+      <GridLayout rows="*" columns="auto, *, auto">
         <Label
-          class="bx leftAction"
+          class="bx"
           :text="icon.back"
           automationText="Back"
           col="0"
@@ -11,19 +11,20 @@
         />
         <Label class="title orkm" :text="title" col="1" />
         <Label
-          v-if="hasEnoughDetails"
+          v-if="hasEnoughDetails && !imageLoading"
           class="bx"
           :text="icon.save"
           col="2"
-          @tap="saveRecipe"
+          @tap="saveOperation"
         />
+        <ActivityIndicator col="2" v-if="imageLoading" :busy="imageLoading" />
       </GridLayout>
     </ActionBar>
-    <AbsoluteLayout>
+    <GridLayout rows="*" columns="*">
       <ScrollView
-        width="100%"
-        height="100%"
-        @scroll="onScroll($event)"
+        row="0"
+        col="0"
+        @scroll="onScroll"
         scrollBarIndicatorVisible="false"
       >
         <StackLayout width="100%" padding="0 0 128">
@@ -32,7 +33,7 @@
             <StackLayout
               width="100%"
               :height="screenWidth"
-              class="view-imageHolder"
+              class="imageHolder"
               verticalAlignment="center"
             >
               <Image
@@ -47,7 +48,7 @@
                 horizontalAlignment="center"
                 class="bx"
                 fontSize="160"
-                :text="icon.image"
+                :text="icon.food"
               />
             </StackLayout>
             <StackLayout width="100%" :top="screenWidth - 42">
@@ -55,7 +56,7 @@
                 <Label
                   v-if="showFab"
                   horizontalAlignment="right"
-                  @tap="photoHandler"
+                  @tap="imageHandler"
                   class="bx fab-button"
                   :text="icon.camera"
                   androidElevation="6"
@@ -76,43 +77,41 @@
             </AbsoluteLayout>
             <AbsoluteLayout class="inputField">
               <TextField
-                v-model="recipeContent.category"
+                :text="recipeContent.category"
                 editable="false"
-                @tap="showCategories()"
+                @tap="showCategories"
               />
               <Label top="0" class="fieldLabel" text="Category" />
             </AbsoluteLayout>
             <GridLayout columns="*, 8, *">
               <AbsoluteLayout class="inputField" col="0">
-                <TimePickerField
-                  titleTextColor="red"
-                  timeFormat="HH:mm"
-                  pickerTitle="Approx. preparation time"
-                  @timeChange="onPrepTimeChange"
-                  :time="recipeContent.prepTime"
-                ></TimePickerField>
-                <Label top="0" class="fieldLabel" text="Preparation time" />
+                <TextField
+                  v-model="recipeContent.yield.quantity"
+                  hint="1"
+                  keyboardType="number"
+                />
+                <Label top="0" class="fieldLabel" text="Yield quantity" />
               </AbsoluteLayout>
               <AbsoluteLayout class="inputField" col="2">
-                <TimePickerField
-                  timeFormat="HH:mm"
-                  pickerTitle="Approx. cooking time"
-                  @timeChange="onCookTimeChange"
-                  :time="recipeContent.cookTime"
-                ></TimePickerField>
-                <Label top="0" class="fieldLabel" text="Cooking time" />
+                <TextField
+                  :text="recipeContent.yield.unit"
+                  editable="false"
+                  @tap="showYieldUnits"
+                />
+                <Label top="0" class="fieldLabel" text="Yield measured in" />
               </AbsoluteLayout>
             </GridLayout>
-            <GridLayout columns="*, 16, *">
+            <GridLayout columns="*, 8, *">
               <AbsoluteLayout class="inputField" col="0">
                 <TextField
-                  width="100%"
-                  keyboardType="number"
-                  v-model="recipeContent.portionSize"
+                  :text="formattedTimeRequired"
+                  editable="false"
+                  @tap="setTimeRequired"
                 />
-                <Label top="0" class="fieldLabel" text="Portion size" />
+                <Label top="0" class="fieldLabel" text="Time required" />
               </AbsoluteLayout>
             </GridLayout>
+
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
@@ -125,6 +124,7 @@
               :key="index"
             >
               <TextField
+                @loaded="focusField"
                 col="0"
                 v-model="recipeContent.ingredients[index].item"
                 :hint="`Item ${index + 1}`"
@@ -153,7 +153,7 @@
               />
             </GridLayout>
             <Label
-              class="sec-btn pull-left orkm"
+              class="text-btn orkm"
               text="+ ADD INGREDIENT"
               @tap="addIngredient()"
             />
@@ -170,6 +170,7 @@
               :key="index"
             >
               <TextView
+                @loaded="focusField"
                 col="0"
                 :hint="`Step ${index + 1}`"
                 v-model="recipeContent.instructions[index]"
@@ -183,7 +184,7 @@
               />
             </GridLayout>
             <Label
-              class="sec-btn pull-left orkm"
+              class="text-btn orkm"
               text="+ ADD STEP"
               @tap="addInstruction()"
             />
@@ -199,6 +200,7 @@
               :key="index"
             >
               <TextView
+                @loaded="focusField"
                 col="0"
                 v-model="recipeContent.notes[index]"
                 :hint="`Note ${index + 1}`"
@@ -211,11 +213,7 @@
                 @tap="removeNote(index)"
               />
             </GridLayout>
-            <Label
-              class="sec-btn pull-left orkm"
-              text="+ ADD NOTE"
-              @tap="addNote()"
-            />
+            <Label class="text-btn orkm" text="+ ADD NOTE" @tap="addNote()" />
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
@@ -228,6 +226,7 @@
               :key="index"
             >
               <TextView
+                @loaded="focusField"
                 col="0"
                 v-model="recipeContent.references[index]"
                 hint="Text or Website/Video URL"
@@ -241,7 +240,7 @@
               />
             </GridLayout>
             <Label
-              class="sec-btn pull-left orkm"
+              class="text-btn orkm"
               text="+ ADD REFERENCE"
               @tap="addReference()"
             />
@@ -249,11 +248,14 @@
           </StackLayout>
         </StackLayout>
       </ScrollView>
-    </AbsoluteLayout>
+    </GridLayout>
   </Page>
 </template>
 
 <script>
+import { WorkerService } from "../worker.service"
+var workerService = new WorkerService()
+
 import {
   Screen,
   AndroidApplication,
@@ -261,14 +263,20 @@ import {
   path,
   getFileAccess,
   knownFolders,
+  Utils,
+  File,
 } from "@nativescript/core"
 import { Mediafilepicker } from "nativescript-mediafilepicker"
+
+import { DateTimePicker, TimePickerField } from "@nativescript/datetimepicker"
 
 import { mapState, mapActions } from "vuex"
 
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
+import ListPicker from "./modal/ListPicker.vue"
+import { create } from "domain"
 
 export default {
   props: ["recipeIndex", "recipeID", "selectedCategory"],
@@ -280,31 +288,36 @@ export default {
         imageSrc: null,
         title: undefined,
         category: "Undefined",
-        prepTime: "00:00",
-        cookTime: "00:00",
-        portionSize: 1,
-        ingredients: [
-          {
-            item: "",
-            quantity: undefined,
-            unit: "unit",
-          },
-        ],
-        instructions: [""],
-        notes: [""],
-        references: [""],
+        timeRequired: "00:00",
+        yield: {
+          quantity: undefined,
+          unit: "Servings",
+        },
+        ingredients: [],
+        instructions: [],
+        notes: [],
+        references: [],
         isFavorite: false,
         tried: false,
+        lastTried: null,
         lastModified: null,
       },
       tempRecipeContent: {},
       blockModal: false,
       newRecipeID: null,
       showFab: false,
+      imageLoading: false,
     }
   },
   computed: {
-    ...mapState(["icon", "units", "recipes", "categories", "currentComponent"]),
+    ...mapState([
+      "icon",
+      "units",
+      "yieldUnits",
+      "recipes",
+      "categories",
+      "currentComponent",
+    ]),
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
@@ -314,6 +327,12 @@ export default {
         JSON.stringify(this.tempRecipeContent)
       )
     },
+    formattedTimeRequired() {
+      let t = this.recipeContent.timeRequired.split(":")
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
+      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
+    },
   },
   methods: {
     ...mapActions([
@@ -321,9 +340,18 @@ export default {
       "addRecipeAction",
       "overwriteRecipeAction",
       "addCategoryAction",
+      "addYieldUnitAction",
     ]),
     initialize() {
       this.showFab = true
+    },
+
+    // HELPERS
+    focusField(args) {
+      if (!args.object.text) {
+        args.object.focus()
+        setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 1)
+      }
     },
     getRandomID() {
       let res = ""
@@ -333,87 +361,41 @@ export default {
       }
       return res
     },
-    setTime(key, time) {
-      if (Date.parse(time)) {
-        let date = new Date(time)
-        let h = date.getHours()
-        let m = date.getMinutes()
-
-        this.recipeContent[key] =
-          (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m)
-      }
-    },
-    clearEmptyFields() {
-      if (!this.recipeContent.title) {
-        this.recipeContent.title = "Untitled Recipe"
-      }
-      if (!this.recipeContent.portionSize) {
-        this.recipeContent.portionSize = 1
-      }
-      this.recipeContent.ingredients.forEach((e, i) => {
-        if (!e.item.length) {
-          this.recipeContent.ingredients.splice(i, 1)
+    setTimeRequired() {
+      let time = this.recipeContent.timeRequired.split(":")
+      let hr = time[0]
+      let min = time[1]
+      this.$showModal(ListPicker, {
+        props: {
+          title: "Approx. time required",
+          action: "SET",
+          selectedHr: hr,
+          selectedMin: min,
+        },
+      }).then((result) => {
+        if (result) {
+          this.recipeContent.timeRequired = result
         }
       })
-      let vm = this
-      function removeEmpty(arr) {
-        vm.recipeContent[arr].forEach((e, i) => {
-          if (!e.length) {
-            vm.recipeContent[arr].splice(i, 1)
-          }
-        })
-      }
-      removeEmpty("instructions")
-      removeEmpty("notes")
-      removeEmpty("references")
-    },
-    saveRecipe() {
-      console.log(
-        JSON.stringify(this.recipeContent),
-        JSON.stringify(this.tempRecipeContent)
-      )
-      this.clearEmptyFields()
-      this.recipeContent.lastModified = new Date()
-      if (this.recipeID) {
-        this.overwriteRecipeAction({
-          index: this.recipeIndex,
-          id: this.recipeID,
-          recipe: this.recipeContent,
-        })
-      } else {
-        this.recipeContent.id = this.newRecipeID
-        this.addRecipeAction({
-          id: this.newRecipeID,
-          recipe: this.recipeContent,
-        })
-      }
-      if (this.tempRecipeContent.imageSrc && !this.recipeContent.imageSrc) {
-        getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
-      }
-      this.$navigateBack()
-    },
-    onPrepTimeChange(args) {
-      this.setTime("prepTime", args.value)
-    },
-    onCookTimeChange(args) {
-      this.setTime("cookTime", args.value)
     },
     onScroll(args) {
       args.scrollY
         ? (this.viewIsScrolled = true)
         : (this.viewIsScrolled = false)
     },
+
+    // DATA LIST
     showCategories() {
       this.releaseBackEvent()
       this.$showModal(ActionDialog, {
         props: {
           title: "Category",
           list: [...this.categories],
-          height: "60%",
-          action: "NEW CATEGORY",
+          height: "408",
+          action: "CREATE NEW",
         },
       }).then((action) => {
-        if (action == "NEW CATEGORY") {
+        if (action == "CREATE NEW") {
           this.$showModal(PromptDialog, {
             props: {
               title: "New category",
@@ -434,6 +416,52 @@ export default {
         }
       })
     },
+    showYieldUnits() {
+      this.releaseBackEvent()
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Yield measured in",
+          list: [...this.yieldUnits],
+          height: "408",
+          action: "CREATE NEW",
+        },
+      }).then((action) => {
+        if (action == "CREATE NEW") {
+          this.$showModal(PromptDialog, {
+            props: {
+              title: "New yield unit",
+              action: "ADD",
+            },
+          }).then((yieldUnit) => {
+            this.hijackBackEvent()
+            if (yieldUnit.length) {
+              this.recipeContent.yield.unit = yieldUnit
+              this.addYieldUnitAction(yieldUnit)
+            }
+          })
+        } else if (action) {
+          this.recipeContent.yield.unit = action
+          this.hijackBackEvent()
+        } else {
+          this.hijackBackEvent()
+        }
+      })
+    },
+    showUnits(e) {
+      this.releaseBackEvent()
+      this.$showModal(ActionDialog, {
+        props: {
+          title: "Unit",
+          list: [...this.units],
+          height: "408",
+        },
+      }).then((action) => {
+        this.hijackBackEvent()
+        if (action) e.object.text = action
+      })
+    },
+
+    // NAVIGATION HANDLERS
     navigateBack() {
       if (this.hasEnoughDetails) {
         this.blockModal = true
@@ -448,7 +476,7 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.saveRecipe()
+            this.saveOperation()
           } else if (action != null) {
             this.$navigateBack()
             this.releaseBackEvent()
@@ -477,7 +505,9 @@ export default {
         this.navigateBack()
       }
     },
-    photoHandler() {
+
+    // DATA HANDLERS
+    imageHandler() {
       if (this.recipeContent.imageSrc) {
         this.blockModal = true
         this.$showModal(ConfirmDialog, {
@@ -489,17 +519,17 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.takePicture()
+            this.imagePicker()
           } else if (action != null) {
-            this.removePicture()
+            this.recipeContent.imageSrc = null
             this.releaseBackEvent()
           }
         })
       } else {
-        this.takePicture()
+        this.imagePicker()
       }
     },
-    takePicture() {
+    imagePicker() {
       const vm = this
       const mediafilepicker = new Mediafilepicker()
       mediafilepicker.openImagePicker({
@@ -511,36 +541,7 @@ export default {
         },
       })
       mediafilepicker.on("getFiles", (image) => {
-        let result = image.object.get("results")[0].file
-        ImageSource.fromFile(result).then((savedImg) => {
-          let savedImgPath = path.join(
-            knownFolders.documents().getFolder("enrecipes").path,
-            `${vm.getRandomID()}.jpg`
-          )
-          savedImg.saveToFile(savedImgPath, "jpg")
-          vm.recipeContent.imageSrc = savedImgPath
-        })
-      })
-      mediafilepicker.on("error", function(res) {
-        let msg = res.object.get("msg")
-        console.log(msg)
-      })
-
-      mediafilepicker.on("cancel", function(res) {
-        let msg = res.object.get("msg")
-        console.log(msg)
-      })
-    },
-    removePicture() {
-      confirm({
-        title: "Delete Photo",
-        message: "Are you sure you want to delete the recipe photo?",
-        okButtonText: "Delete",
-        cancelButtonText: "Cancel",
-      }).then((e) => {
-        if (e) {
-          this.recipeContent.imageSrc = null
-        }
+        vm.recipeContent.imageSrc = image.object.get("results")[0].file
       })
     },
 
@@ -576,18 +577,70 @@ export default {
       this.recipeContent.references.splice(index, 1)
     },
 
-    showUnits(e) {
-      this.releaseBackEvent()
-      this.$showModal(ActionDialog, {
-        props: {
-          title: "Unit",
-          list: [...this.units],
-          height: "75%",
-        },
-      }).then((action) => {
-        this.hijackBackEvent()
-        if (action) e.object.text = action
+    clearEmptyFields() {
+      if (!this.recipeContent.title)
+        this.recipeContent.title = "Untitled Recipe"
+      if (!this.recipeContent.yield.quantity)
+        this.recipeContent.yield.quantity = 1
+      this.recipeContent.ingredients = this.recipeContent.ingredients.filter(
+        (e) => e.item
+      )
+      let vm = this
+      function clearEmpty(arr) {
+        vm.recipeContent[arr] = vm.recipeContent[arr].filter((e) => e)
+      }
+      clearEmpty("instructions")
+      clearEmpty("notes")
+      clearEmpty("references")
+    },
+    saveOperation() {
+      this.imageLoading = true
+      this.clearEmptyFields()
+      this.recipeContent.lastModified = new Date()
+      if (this.recipeContent.imageSrc) {
+        if (this.tempRecipeContent.imageSrc) {
+          if (this.tempRecipeContent.imageSrc !== this.recipeContent.imageSrc) {
+            getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
+            this.imageSaveOperation()
+          } else this.saveRecipe()
+        } else this.imageSaveOperation()
+      } else if (this.tempRecipeContent.imageSrc) {
+        getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
+        this.saveRecipe()
+      } else this.saveRecipe()
+    },
+    imageSaveOperation() {
+      let imgSavedToPath = path.join(
+        knownFolders.documents().getFolder("enrecipes").path,
+        `${this.getRandomID()}.jpg`
+      )
+      let workerService = new WorkerService()
+      let ImageProcessor = workerService.initImageProcessor()
+      ImageProcessor.postMessage({
+        imgFile: this.recipeContent.imageSrc,
+        imgSavedToPath,
       })
+      ImageProcessor.onmessage = ({ data }) => {
+        this.recipeContent.imageSrc = imgSavedToPath
+        this.saveRecipe()
+      }
+    },
+    saveRecipe() {
+      if (this.recipeID) {
+        this.overwriteRecipeAction({
+          index: this.recipeIndex,
+          id: this.recipeID,
+          recipe: this.recipeContent,
+        })
+      } else {
+        this.recipeContent.id = this.newRecipeID
+        this.addRecipeAction({
+          id: this.newRecipeID,
+          recipe: this.recipeContent,
+        })
+      }
+      this.imageLoading = false
+      this.$navigateBack()
     },
   },
   created() {
@@ -598,7 +651,10 @@ export default {
     if (this.recipeID) {
       let recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
       Object.assign(this.recipeContent, JSON.parse(JSON.stringify(recipe)))
-      Object.assign(this.tempRecipeContent, JSON.parse(JSON.stringify(recipe)))
+      Object.assign(
+        this.tempRecipeContent,
+        JSON.parse(JSON.stringify(this.recipeContent))
+      )
     } else {
       Object.assign(
         this.tempRecipeContent,

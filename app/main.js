@@ -12,11 +12,13 @@ Vue.registerElement(
   "RadSideDrawer",
   () => require("nativescript-ui-sidedrawer").RadSideDrawer
 )
-
-// Vue.registerElement(
-//   'Fab',
-//   () => require('@nstudio/nativescript-floatingactionbutton').Fab
-// );
+import { CheckBox } from "@nstudio/nativescript-checkbox"
+Vue.registerElement("CheckBox", () => CheckBox, {
+  model: {
+    prop: "checked",
+    event: "checkedChange",
+  },
+})
 
 if (TNS_ENV !== "production") {
   // Vue.use(VueDevtools)

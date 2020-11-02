@@ -13,13 +13,15 @@ $grayL1: #e0e0e0;
 $grayL2: #eeeeee;
 $grayL3: #f5f5f5;
 $grayL4: #fafafa;
-
-$orange: #ff7043;
-$paleOrange: #fbe9e7;
+$orange400: #ff7043;
+$orange500: #ff5722;
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
 
+// * {
+//   font-size: 16;
+// }
 Page {
   font-family: "Orkney-Regular";
 }
@@ -32,13 +34,19 @@ Page {
 .bx {
   font-family: "boxicons";
   font-size: 24;
+  vertical-alignment: center;
+  &.small {
+    padding: 0;
+    font-size: 16;
+  }
 }
 
 .ns-light {
   Page,
   ActionBar,
   SearchBar,
-  TabView {
+  TabView,
+  ListPicker {
     color: $grayD4;
     background: $grayL4;
   }
@@ -53,17 +61,24 @@ Page {
   .fieldLabel {
     background: $grayL4;
   }
-  .view-reference-text,
-  .view-reference-container {
+  .referenceItem,
+  .recipeText,
+  .overviewItem,
+  .recipeItem {
     background: white;
   }
-  .option-highlight {
+  .option-highlight,
+  .selected-sd-item {
     background: $grayL2;
   }
   .sd-item,
   .sd-group-header,
-  .recipe-time {
+  .time .bx {
     color: $grayD2;
+  }
+  .fab-button {
+    color: white;
+    background-color: $orange500;
   }
   .option,
   .icon-option {
@@ -71,31 +86,32 @@ Page {
     .option-info {
       color: $grayD2;
     }
-    .option-title {
-      color: $grayD4;
-    }
   }
-  .view-imageHolder,
-  .recipeImgContainer {
+  .imageHolder {
     color: $grayL1;
     background: $grayL2;
   }
-  .view-other {
-    color: $grayD2;
-  }
-  .view-count {
+  .count {
     color: $grayL4;
     background: $grayD4;
   }
-  .view-instruction {
+  .instruction {
     border-color: $grayD4;
+  }
+  .text-btn,
+  .group-header,
+  .category,
+  ActivityIndicator,
+  .selected-sd-item {
+    color: $orange500;
   }
 }
 .ns-dark {
   Page,
   ActionBar,
   SearchBar,
-  TabView {
+  TabView,
+  ListPicker {
     color: $grayL4;
     background: $grayD4;
   }
@@ -106,50 +122,57 @@ Page {
   .hr {
     border-color: #111;
   }
-
   .sd,
   .fieldLabel {
     background: $grayD4;
   }
-  .recipe-li,
+  .referenceItem,
+  .recipeText,
+  .overviewItem,
+  .recipeItem,
   .option-highlight,
-  .view-reference-text,
-  .view-reference-container {
+  .appIconContainer {
     background: $grayD3;
   }
   .sd-item,
   .sd-group-header,
-  .recipe-time {
+  .time .bx {
     color: $grayL2;
   }
-
+  .selected-sd-item {
+    background: #111;
+  }
+  .fab-button {
+    color: #111;
+    background: $orange400;
+  }
   .option,
   .icon-option {
     .bx,
     .option-info {
       color: $grayL2;
     }
-    .option-title {
-      color: $grayL4;
-    }
   }
-  .view-imageHolder,
-  .recipeImgContainer {
+  .imageHolder {
     color: $grayD4;
     background: #111;
   }
-  .view-other {
-    color: $grayL2;
-  }
-  .view-count {
+  .count {
     color: $grayD4;
     background: $grayL4;
   }
-  .view-instruction {
+  .instruction {
     border-color: $grayL4;
   }
+  .text-btn,
+  .group-header,
+  .category,
+  ActivityIndicator,
+  .selected-sd-item {
+    color: $orange400;
+  }
 }
-
+// -----------------------------
 // Elements
 TextField,
 TextView,
@@ -173,130 +196,117 @@ TabView {
   margin-top: 16;
 }
 .fieldLabel {
-  font-size: 13;
+  font-size: 12;
   margin-left: 8;
   padding: 0 8;
 }
-// DateTimePicker
-.date-time-picker,
-.date-time-picker-spinners {
-  color: $grayD4;
-  background: $grayL4;
-  &.ns-dark {
-    color: $grayL4;
-    background: $grayD4;
-  }
-}
-.ns-dark .date-time-picker-spinners {
-  color: $grayL4;
-  background: $grayD4;
-}
+// -----------------------------
 // ActionBar
 ActionBar {
-  width: 100%;
   margin: 24 0 0 0;
   padding: 0;
   height: 64;
   .bx {
-    padding: 16 12;
-    vertical-alignment: center;
-  }
-  .leftAction {
     padding: 16 16 16 4;
     margin: 0;
+    vertical-alignment: center;
+  }
+  .title {
+    padding-left: 8;
+    text-align: left;
+    font-size: 18;
   }
 }
-.actionBarContainer {
-  margin: 0;
-  padding: 0;
-}
-SearchBar {
-  width: 100%;
-  font-size: 16;
-}
-.title {
-  padding-left: 8;
-  text-align: left;
-  font-size: 18;
-}
-
+// -----------------------------
 // Side Drawer
 .sd {
-  margin-top: 24;
+  padding: 32 8 8;
 }
-
 .sd-item {
   border-radius: 4;
   padding: 0 16;
   height: 48;
-  font-size: 16;
   vertical-alignment: center;
-  // prettier-ignore
-  .bx, Label {
-    vertical-alignment: center;
+  .bx {
+    font-size: 24;
   }
-  &.selected-sd-item {
-    background: $paleOrange;
-    color: $orange;
+  // prettier-ignore
+  Label {
+    font-size: 16;
+    vertical-alignment: center;
   }
 }
 .sd-group-header {
   width: 100%;
   padding: 8 8 16;
-  font-size: 12;
 }
-
-// Home
-RadListView {
-  margin: 8 0 128;
-}
-.recipe-li {
-  background: white;
-  margin: 8 16;
-  border-radius: 6;
-  .recipe-info {
-    margin: 4;
-  }
-  .recipe-cat {
-    font-size: 12;
-    padding: 0;
-    margin: 0;
-  }
-  .recipe-title {
-    font-size: 16;
-    line-height: 4;
-    margin: 0;
-    padding: 4 0;
-  }
-  .recipe-time {
-    padding: 0;
-  }
-  .recipe-cat {
-    color: $orange;
-  }
-}
-.emptyState {
+// -----------------------------
+// HOME
+.emptyState,
+.noResult {
   width: 100%;
   height: 100%;
 }
-.noResults {
-  width: 100%;
-  height: 100%;
-  font-size: 16;
+.noResult {
   line-height: 8;
   padding: 64 16;
   text-align: center;
+  font-size: 16;
   horizontal-alignment: center;
-  // vertical-alignment: center;
-  .title {
-    font-size: 20;
-    text-align: center;
-  }
-  .bx {
+  vertical-alignment: center;
+  .icon {
     font-size: 64;
     text-align: center;
     color: $gray;
     margin-bottom: 16;
+  }
+  .title {
+    font-size: 20;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    horizontal-alignment: center;
+    .bx {
+      font-size: 24;
+      vertical-alignment: center;
+    }
+  }
+}
+// -----------------------------
+// Recipe Items
+RadListView {
+  margin: 0 0 128;
+  font-size: 16;
+}
+.recipeItem {
+  margin: 8 16;
+  border-radius: 6;
+  .recipeInfo {
+    margin: 4;
+    .category,
+    .time {
+      font-size: 12;
+      padding: 0;
+      margin: 0;
+    }
+    .title {
+      margin: 0;
+      padding: 4 0;
+    }
+    .timeContainer {
+      padding: 0;
+      .time {
+        padding: 0 0 0 4;
+      }
+    }
+  }
+}
+.imageHolder {
+  vertical-alignment: center;
+  border-radius: 6 0 0 6;
+  // prettier-ignore
+  Image {
+    border-radius: 6 0 0 6;
   }
 }
 .swipe-item {
@@ -306,167 +316,166 @@ RadListView {
   height: 128;
   border-radius: 6;
 }
-.recipeImgContainer {
-  vertical-alignment: center;
-  // prettier-ignore
-  Image {
-    border-radius: 6 0 0 6;
-  }
-}
-
-// Settings
+// -----------------------------
+// SETTINGS
 .group-header {
   padding: 8;
-  color: #ff7043;
 }
 .main-container {
   padding: 16 8 128;
   .option {
-    padding: 16;
-    border-radius: 4;
     font-size: 16;
+    padding: 16;
     .bx {
       margin: 0 24 0 0;
     }
-
     .option-info {
       font-size: 12;
     }
   }
 }
-
-// About
-.app-icon-container {
-  margin: 32 0;
+// -----------------------------
+// ABOUT
+.appIconContainer {
+  padding: 32 0;
   width: 100%;
-  .app-icon {
+  .appIcon {
     width: 56;
     height: 56;
     margin: 0 6 0 0;
     padding: 0;
   }
-  .app-name {
+  .appName {
     font-size: 24;
   }
 }
-.icon-option {
-  padding: 16;
-  border-radius: 4;
-  .bx {
-    margin: 0 24 0 0;
-  }
-  .option-title {
+// -----------------------------
+// VIEW RECIPE
+.viewRecipe {
+  .category,
+  .time,
+  .ingredient,
+  .ingredient-check {
     font-size: 16;
   }
-}
-
-// View Recipe
-
-.view-cat {
-  font-size: 16;
-  color: #ff7043;
-}
-.view-other {
-  font-size: 16;
-}
-.view-title {
-  font-size: 22;
-  line-height: 6;
-  margin-bottom: 16;
-}
-.view-ingredient {
-  font-size: 16;
-  line-height: 6;
-  padding-bottom: 12;
-}
-.activity-indicator {
-  background: #ff7043;
-}
-
-.view-count {
-  font-size: 12;
-  width: 24;
-  height: 24;
-  padding-top: 4%;
-  margin: 0 0 0 8;
-  text-align: center;
-  border-radius: 100;
-  &.note {
-    clip-path: polygon(
-      5% 0,
-      95% 0,
-      100% 5%,
-      100% 65%,
-      65% 100%,
-      5% 100%,
-      0 95%,
-      0 5%
-    );
+  .category {
+    margin: 0 8;
+  }
+  .time {
+    margin: 0 8;
+    .bx {
+      vertical-align: top;
+    }
+  }
+  .title {
+    font-size: 22;
+    line-height: 6;
+  }
+  .overviewContainer {
+    margin-top: 12;
+    .overviewItem {
+      border-radius: 6;
+      padding: 8;
+      margin: 8;
+      android-elevation: 1;
+      .bx {
+        color: $gray;
+        width: 24;
+        horizontal-alignment: left;
+      }
+      .itemCount {
+        font-size: 16;
+        padding: 8 4 4;
+      }
+    }
+  }
+  .ingredient,
+  .ingredient-check {
+    line-height: 6;
+    padding-bottom: 12;
+  }
+  .ingredient-check {
+    margin-bottom: 12;
+  }
+  .count {
+    width: 24;
+    height: 24;
+    padding-top: 4%;
+    margin: 0 0 0 8;
+    text-align: center;
+    border-radius: 100;
+    &.square {
+      clip-path: polygon(
+        5% 0,
+        95% 0,
+        100% 5%,
+        100% 65%,
+        65% 100%,
+        5% 100%,
+        0 95%,
+        0 5%
+      );
+    }
+  }
+  .instruction,
+  .note,
+  .reference {
+    font-size: 16;
+    line-height: 6;
+    padding: 2 0 14 36;
+    margin: 0 0 0 19;
+    border-width: 0 0 0 2;
+  }
+  .instruction.noBorder {
+    border-color: transparent;
+  }
+  .note {
+    border-width: 0;
+  }
+  .referenceItem {
+    padding: 14 16;
+    margin: 8 16 8;
+    border-radius: 6;
+    font-size: 16;
+    .bx {
+      font-size: 24;
+    }
+    .recipeLink {
+      padding: 0 16 0 0;
+      margin: 0;
+    }
+  }
+  .recipeText {
+    font-size: 16;
+    line-height: 6;
+    padding: 16;
+    margin: 8 16 8;
+    border-radius: 6;
   }
 }
-.view-instruction,
-.view-note,
-.view-reference {
-  font-size: 16;
-  line-height: 6;
-  padding: 2 0 14 36;
-  margin: 0 0 0 19;
-  border-width: 0 0 0 2;
-}
-.view-instruction.instructionWOBorder {
-  border-color: transparent;
-}
-.view-note {
-  border-width: 0;
-}
-
-.view-reference-container {
-  padding: 14 16;
-  margin: 8 16 8;
-  border-radius: 6;
-}
-.view-reference {
-  padding: 0 16 0 0;
-  margin: 0;
-  border-width: 0;
-}
-.view-reference-text {
-  font-size: 16;
-  line-height: 6;
-  padding: 16;
-  margin: 8 16 8;
-  border-radius: 6;
-}
-// .view-copyReference {
-//   color: #ff7043;
-// }
+// -----------------------------
+// FAB
 #btnFabContainer {
   width: 100%;
   height: 100%;
 }
-// Edit Recipe
 .fab-button {
-  color: #fff;
   height: 56;
   width: 56;
-  background-color: #ff7043;
-  vertical-alignment: center;
-  // horizontal-alignment: center;
   border-radius: 28;
   padding: 16;
   margin: 16;
+  vertical-alignment: center;
   android-elevation: 6;
-  &.negative {
-    background-color: #e53935;
-  }
 }
+// -----------------------------
+// EDIT RECIPE
 .sectionTitle {
   font-size: 20;
 }
-.sec-btn {
+.text-btn {
   font-size: 14;
-  color: #ff7043;
-  text-align: left;
+  horizontal-alignment: left;
   padding: 16;
   margin: 8 0 0 0;
 }
@@ -474,14 +483,13 @@ RadListView {
   padding: 4;
   margin-top: 16;
 }
-
-// Dialogs
+// -----------------------------
+// DIALOGS
 .dialogContainer {
   width: 100%;
-  &.light {
-    color: $grayD4;
-    background: $grayL4;
-  }
+  color: $grayD4;
+  background: $grayL4;
+  font-size: 16;
   &.dark {
     color: $grayL4;
     background: $grayD4;
@@ -490,59 +498,61 @@ RadListView {
     padding: 24 24 12;
     font-size: 20;
   }
-  .dialogInputField {
+  .dialogInput {
     padding: 0 24 16;
   }
   .dialogDescription {
-    font-size: 16;
     line-height: 4;
     padding: 0 24 16;
   }
-  .action {
-    padding: 24 24 24 8;
-    font-size: 12;
-    color: #ff7043;
-  }
   .actionItem {
-    width: 100%;
-    font-size: 16;
-    padding: 8 20;
+    padding: 8 24;
+    margin: 0;
   }
-  .cancel {
+  .actionsContainer {
     padding: 24;
+  }
+  .action {
     font-size: 12;
     color: #ff7043;
   }
-}
-ActivityIndicator {
-  color: #ff7043;
-  padding: 16 12;
-  margin: 16 10 16 8;
 }
 
-// Vue Transitions
+// -----------------------------
+ActivityIndicator {
+  width: 24;
+  height: 24;
+  margin: 16;
+}
+// -----------------------------
+// Transitions
 .bounce-enter-active {
   animation-name: bounce-in;
-  animation-duration: 0.5s;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
+  animation-timing-function: ease-in-out;
 }
 .bounce-leave-active {
   animation-name: bounce-in;
   animation-duration: 0.1s;
   animation-fill-mode: forwards;
   animation-direction: reverse;
-  animation-timing-function: ease-in;
+  animation-timing-function: ease;
 }
 @keyframes bounce-in {
   0% {
     transform: scale(0);
     opacity: 0;
   }
-
-  50% {
+  25% {
     transform: scale(1.2);
     opacity: 1;
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.1);
   }
 
   100% {
@@ -554,7 +564,7 @@ ActivityIndicator {
   animation-duration: 1s;
   animation-delay: 0.25s;
   animation-fill-mode: forwards;
-  animation-timing-function: ease;
+  animation-timing-function: ease-in-out;
 }
 .dolly-leave-active {
   opacity: 0;
