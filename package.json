@@ -8,10 +8,12 @@
     "run": "ns run android"
   },
   "dependencies": {
+    "@nativescript-community/perms": "^2.1.1",
     "@nativescript/core": "~7.0.0",
     "@nativescript/datetimepicker": "^2.0.4",
     "@nativescript/theme": "^3.0.0",
     "@nativescript/webpack": "3.0.0",
+    "@nativescript/zip": "^5.0.0",
     "@nstudio/nativescript-checkbox": "^2.0.4",
     "nativescript-clipboard": "^2.0.0",
     "nativescript-couchbase-plugin": "^0.9.6",
@@ -23,7 +25,6 @@
     "nativescript-ui-listview": "^9.0.4",
     "nativescript-ui-sidedrawer": "^9.0.3",
     "nativescript-vue": "^2.6.1",
-    "nativescript-zip": "^4.0.2",
     "vuex": "^3.3.0"
   },
   "devDependencies": {

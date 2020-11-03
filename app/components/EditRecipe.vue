@@ -611,7 +611,7 @@ export default {
     },
     imageSaveOperation() {
       let imgSavedToPath = path.join(
-        knownFolders.documents().getFolder("enrecipes").path,
+        knownFolders.documents().getFolder("EnRecipes").path,
         `${this.getRandomID()}.jpg`
       )
       let workerService = new WorkerService()

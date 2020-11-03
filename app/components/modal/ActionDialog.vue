@@ -1,6 +1,6 @@
 <template>
   <Page>
-    <StackLayout class="dialogContainer" :class="isLightMode">
+    <StackLayout class="dialogContainer" :class="appTheme">
       <Label class="dialogTitle orkm" :text="title" />
       <ListView
         width="100%"
@@ -37,7 +37,7 @@ import { Application } from "@nativescript/core"
 export default {
   props: ["title", "list", "height", "action"],
   computed: {
-    isLightMode() {
+    appTheme() {
       return Application.systemAppearance()
     },
   },

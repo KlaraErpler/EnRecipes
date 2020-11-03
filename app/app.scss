@@ -303,10 +303,12 @@ RadListView {
 }
 .imageHolder {
   vertical-alignment: center;
-  border-radius: 6 0 0 6;
-  // prettier-ignore
-  Image {
+  &.card {
     border-radius: 6 0 0 6;
+    // prettier-ignore
+    Image {
+    border-radius: 6 0 0 6;
+  }
   }
 }
 .swipe-item {
@@ -533,11 +535,9 @@ ActivityIndicator {
   animation-timing-function: ease-in-out;
 }
 .bounce-leave-active {
-  animation-name: bounce-in;
-  animation-duration: 0.1s;
+  animation-name: bounce-out;
+  animation-duration: 0.25s;
   animation-fill-mode: forwards;
-  animation-direction: reverse;
-  animation-timing-function: ease;
 }
 @keyframes bounce-in {
   0% {
@@ -557,6 +557,16 @@ ActivityIndicator {
 
   100% {
     transform: scale(1);
+  }
+}
+@keyframes bounce-out {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+    opacity: 0;
   }
 }
 .dolly-enter-active {

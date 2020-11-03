@@ -1,9 +1,10 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import { Couchbase } from "nativescript-couchbase-plugin"
-const recipesDB = new Couchbase("enrecipes")
-const categoriesDB = new Couchbase("userCategories")
-const yieldUnitsDB = new Couchbase("userYieldUnits")
+import { getFileAccess } from "@nativescript/core"
+const recipesDB = new Couchbase("EnRecipes")
+const userCategoriesDB = new Couchbase("userCategories")
+const userYieldUnitsDB = new Couchbase("userYieldUnits")
 
 Vue.use(Vuex)
 
@@ -49,7 +50,7 @@ let defaultYieldUnits = [
   "Millilitre",
   "Litre",
   "Roll",
-  "Pattie",
+  "Patty",
   "Loaf",
 ]
 
@@ -98,7 +99,7 @@ export default new Vuex.Store({
       //     "Continue adding hot broth, 1/2 cup at a time, and stirring until all the broth has been absorbed and rice is tender but firm. Add the mushroom mixture, spinach, pepper, salt and grated Parmesan cheese; cook and stir until heated through. If desired, sprinkle with parsley and shaved Parmesan cheese. Serve immediately.",
       //   ],
       //   notes: [
-      //     "Nutrition Facts\n3/4 cup: 409 calories, 22g fat (12g saturated fat), 61mg cholesterol, 667mg sodium, 41g carbohydrate (3g sugars, 2g fiber), 11g protein.",
+      //     "Nutrition Facts: 3/4 cup: 409 calories, 22g fat (12g saturated fat), 61mg cholesterol, 667mg sodium, 41g carbohydrate (3g sugars, 2g fiber), 11g protein.",
       //   ],
       //   references: [
       //     "https://www.tasteofhome.com/recipes/mushroom-spinach-risotto/",
@@ -189,9 +190,9 @@ export default new Vuex.Store({
       })
     },
     initializeCategories(state) {
-      let isCategoriesStored = categoriesDB.query({ select: [] }).length
+      let isCategoriesStored = userCategoriesDB.query({ select: [] }).length
       if (isCategoriesStored) {
-        state.userCategories = categoriesDB.getDocument(
+        state.userCategories = userCategoriesDB.getDocument(
           "userCategories"
         ).userCategories
         let categoriesWithRecipes = state.recipes.map((e) => e.category)
@@ -199,15 +200,18 @@ export default new Vuex.Store({
           categoriesWithRecipes.includes(e)
         )
       } else {
-        categoriesDB.createDocument({ userCategories: [] }, "userCategories")
+        userCategoriesDB.createDocument(
+          { userCategories: [] },
+          "userCategories"
+        )
       }
       state.categories = [...defaultCategories, ...state.userCategories]
       state.categories.sort()
     },
     initializeYieldUnits(state) {
-      let isYieldUnitsStored = yieldUnitsDB.query({ select: [] }).length
+      let isYieldUnitsStored = userYieldUnitsDB.query({ select: [] }).length
       if (isYieldUnitsStored) {
-        state.userYieldUnits = yieldUnitsDB.getDocument(
+        state.userYieldUnits = userYieldUnitsDB.getDocument(
           "userYieldUnits"
         ).userYieldUnits
         let yieldUnitsWithRecipes = state.recipes.map((e) => e.yield.unit)
@@ -215,7 +219,10 @@ export default new Vuex.Store({
           yieldUnitsWithRecipes.includes(e)
         )
       } else {
-        yieldUnitsDB.createDocument({ userYieldUnits: [] }, "userYieldUnits")
+        userYieldUnitsDB.createDocument(
+          { userYieldUnits: [] },
+          "userYieldUnits"
+        )
       }
       state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
     },
@@ -227,7 +234,7 @@ export default new Vuex.Store({
       let lowercase = state.categories.map((e) => e.toLowerCase())
       if (lowercase.indexOf(category.toLowerCase()) == -1) {
         state.userCategories.push(category)
-        categoriesDB.updateDocument("userCategories", {
+        userCategoriesDB.updateDocument("userCategories", {
           userCategories: [...state.userCategories],
         })
         state.categories = [...defaultCategories, ...state.userCategories]
@@ -238,7 +245,7 @@ export default new Vuex.Store({
       let lowercase = state.yieldUnits.map((e) => e.toLowerCase())
       if (lowercase.indexOf(unit.toLowerCase()) == -1) {
         state.userYieldUnits.push(unit)
-        yieldUnitsDB.updateDocument("userYieldUnits", {
+        userYieldUnitsDB.updateDocument("userYieldUnits", {
           userYieldUnits: [...state.userYieldUnits],
         })
         state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
@@ -249,6 +256,7 @@ export default new Vuex.Store({
       recipesDB.updateDocument(id, recipe)
     },
     deleteRecipe(state, { index, id }) {
+      getFileAccess().deleteFile(state.recipes[index].imageSrc)
       state.recipes.splice(index, 1)
       recipesDB.deleteDocument(id)
     },
@@ -268,7 +276,7 @@ export default new Vuex.Store({
       let lowercase = state.categories.map((e) => e.toLowerCase())
       if (lowercase.indexOf(updated.toLowerCase()) == -1) {
         state.userCategories.push(updated)
-        categoriesDB.updateDocument("userCategories", {
+        userCategoriesDB.updateDocument("userCategories", {
           userCategories: [...state.userCategories],
         })
         state.categories = [...defaultCategories, ...state.userCategories]

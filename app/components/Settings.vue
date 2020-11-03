@@ -23,16 +23,20 @@
           <Label verticalAlignment="center" class="bx" :text="icon.theme" />
           <StackLayout>
             <Label text="Theme" class="option-title" />
-            <Label :text="themeName" class="option-info" textWrap="true" />
+            <Label :text="appTheme" class="option-info" textWrap="true" />
           </StackLayout>
         </StackLayout>
         <StackLayout class="hr m-10"></StackLayout>
         <Label text="Backup/Restore" class="group-header" />
-        <StackLayout orientation="horizontal" class="option" @tap="backupData">
+        <StackLayout orientation="horizontal" class="option" @tap="backupCheck">
           <Label class="bx" :text="icon.save" />
           <Label text="Backup data" />
         </StackLayout>
-        <StackLayout orientation="horizontal" class="option" @tap="restoreData">
+        <StackLayout
+          orientation="horizontal"
+          class="option"
+          @tap="restoreCheck"
+        >
           <Label class="bx" :text="icon.restore" />
           <Label text="Restore data" />
         </StackLayout>
@@ -47,17 +51,20 @@ import {
   path,
   getFileAccess,
   knownFolders,
+  Application,
+  File,
+  Folder,
 } from "@nativescript/core"
-import * as permissions from "nativescript-permissions"
-import { Zip } from "nativescript-zip"
+import * as Permissions from "@nativescript-community/perms"
+import { Zip } from "@nativescript/zip"
 import * as Toast from "nativescript-toast"
-
-import * as filepicker from "nativescript-plugin-filepicker"
-
+import * as Filepicker from "nativescript-plugin-filepicker"
 import Theme from "@nativescript/theme"
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
+import { Couchbase } from "nativescript-couchbase-plugin"
+const recipesDB = new Couchbase("EnRecipes")
 import { mapState, mapActions } from "vuex"
 export default {
   props: [
@@ -70,36 +77,17 @@ export default {
   data() {
     return {
       viewIsScrolled: false,
-      interface: {
-        theme: {
-          title: "Theme",
-          subTitle: "Light",
-          icon: "\ued09",
-        },
-      },
-      backupRestore: [
-        {
-          title: "EnRecipes Backup Directory",
-          subTitle: "/storage/emulated/0/EnRecipes",
-          icon: "\ued7c",
-        },
-        {
-          title: "Backup Data",
-          subTitle: null,
-          icon: "\uee48",
-        },
-        {
-          title: "Restore Data",
-          subTitle: null,
-          icon: "\ueadc",
-        },
-      ],
-      themeName: "Light",
-      themesArray: ["Light", "Dark"],
+      appTheme: "Light",
     }
   },
   computed: {
-    ...mapState(["icon", "currentComponent"]),
+    ...mapState([
+      "icon",
+      "recipes",
+      "userCategories",
+      "userYieldUnits",
+      "currentComponent",
+    ]),
   },
   methods: {
     ...mapActions(["setCurrentComponentAction"]),
@@ -121,7 +109,7 @@ export default {
           height: "108",
         },
       }).then((action) => {
-        if (action && action !== "Cancel" && this.themeName !== action) {
+        if (action && action !== "Cancel" && this.appTheme !== action) {
           this.$showModal(ConfirmDialog, {
             props: {
               title: "App Reload Required",
@@ -132,91 +120,235 @@ export default {
             },
           }).then((result) => {
             if (result) {
-              this.interface.theme.subTitle = this.themeName = action
-              ApplicationSettings.setString("application-theme", action)
+              this.appTheme = action
+              ApplicationSettings.setString("appTheme", action)
               setTimeout((e) => this.restartApp(), 250)
             }
           })
         }
       })
     },
-    selectBackupDir(args) {
-      this.highlight(args)
-      let btn = args.object
-      permissions
-        .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .then(() => {
-          alert("select backup directory")
-        })
-        .catch(() => {
-          console.log("Uh oh, no permissions - plan B time!")
-        })
-    },
-    backupData(args) {
-      let btn = args.object
-      this.highlight(args)
-      permissions
-        .requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        .then(() => {
-          const sdDownloadPath = android.os.Environment.getExternalStoragePublicDirectory(
-            android.os.Environment.DIRECTORY_DOWNLOADS
-          ).toString()
-          let date = new Date()
-          let formattedDate = `${date.getFullYear()}${date.getMonth()}${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`
-          let fromPath = path.join(knownFolders.documents().path, "enrecipes")
-          let destPath = path.join(
-            sdDownloadPath,
-            `EnRecipes-${formattedDate}.zip`
-          )
-          console.log(fromPath, destPath, sdDownloadPath)
-          Zip.zip({
-            directory: fromPath,
-            archive: destPath,
+
+    writeFile(file, data) {
+      file
+        .writeText(JSON.stringify(data))
+        .then((res) => {
+          file.readText().then((res) => {
+            // console.log("Data: ", res)
           })
-            .then((success) => {
-              Toast.makeText(
-                "Backup file successfully saved to Downloads",
-                "long"
-              ).show()
-              console.log("success:" + success)
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-          // console.log(fromPath, destPath, sdDownloadPath)
-          // alert("Backup successful!")
         })
-        .catch(() => {
-          console.log("Uh oh, no permissions - plan B time!")
+        .catch((err) => {
+          console.log(err)
         })
     },
-    restoreData(args) {
+    BackupDataFiles(option) {
+      const folder = path.join(knownFolders.documents().path, "EnRecipes")
+      const EnRecipesFile = File.fromPath(path.join(folder, "EnRecipes.json"))
+      const userCategoriesFile = File.fromPath(
+        path.join(folder, "userCategories.json")
+      )
+      const userYieldUnitsFile = File.fromPath(
+        path.join(folder, "userYieldUnits.json")
+      )
+      switch (option) {
+        case "create":
+          this.writeFile(EnRecipesFile, this.recipes)
+          this.userCategories.length &&
+            this.writeFile(userCategoriesFile, this.userCategories)
+          this.userYieldUnits.length &&
+            this.writeFile(userYieldUnitsFile, this.userYieldUnits)
+          break
+        case "delete":
+          EnRecipesFile.remove()
+          this.userCategories.length && userCategoriesFile.remove()
+          this.userYieldUnits.length && userYieldUnitsFile.remove()
+          break
+        default:
+          break
+      }
+    },
+    backupPermissionConfirmation() {
+      return this.$showModal(ConfirmDialog, {
+        props: {
+          title: "Grant permission",
+          description:
+            "EnRecipes requires storage permission in order to backup your data to this device",
+          cancelButtonText: "NOT NOW",
+          okButtonText: "CONTINUE",
+        },
+      })
+    },
+    backupData() {
+      this.BackupDataFiles("create")
+      let date = new Date()
+      let formattedDate =
+        date.getFullYear() +
+        "-" +
+        ("0" + (date.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + date.getDate()).slice(-2) +
+        "_" +
+        ("0" + date.getHours()).slice(-2) +
+        ("0" + date.getMinutes()).slice(-2) +
+        ("0" + date.getSeconds()).slice(-2)
+      const sdDownloadPath = android.os.Environment.getExternalStoragePublicDirectory(
+        android.os.Environment.DIRECTORY_DOWNLOADS
+      ).toString()
+      let fromPath = path.join(knownFolders.documents().path, "EnRecipes")
+      let destPath = path.join(
+        sdDownloadPath,
+        `EnRecipes-Backup_${formattedDate}.zip`
+      )
+      Zip.zip({
+        directory: fromPath,
+        archive: destPath,
+      })
+        .then((success) => {
+          Toast.makeText(
+            "Backup file successfully saved to Downloads",
+            "long"
+          ).show()
+          console.log("success:" + success)
+          this.BackupDataFiles("delete")
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    backupCheck(args) {
       let btn = args.object
       this.highlight(args)
-      let vm = this
-      let context = filepicker.create({
+
+      if (!this.recipes.length) {
+        Toast.makeText("To perform a backup, add at least one recipe").show()
+      } else {
+        this.permissionCheck(this.backupPermissionConfirmation, this.backupData)
+      }
+    },
+
+    restorePermissionConfirmation() {
+      return this.$showModal(ConfirmDialog, {
+        props: {
+          title: "Grant permission",
+          description:
+            "EnRecipes requires storage permission in order to restore your data from a previous backup.",
+          cancelButtonText: "NOT NOW",
+          okButtonText: "CONTINUE",
+        },
+      })
+    },
+    restoreData() {},
+    restoreCheck(args) {
+      let btn = args.object
+      this.highlight(args)
+
+      this.permissionCheck(
+        this.restorePermissionConfirmation,
+        this.openFilePicker
+      )
+    },
+    openFilePicker() {
+      let context = Filepicker.create({
         mode: "single", // use "multiple" for multiple selection
         extensions: ["zip"],
       })
-      context
-        .authorize()
-        .then(function() {
-          return context.present()
+      context.present().then((selection) => {
+        Toast.makeText("Processing...").show()
+        let result = selection[0]
+        let zipPath = result
+        let dest = knownFolders.documents().path
+        this.validateZipContent(zipPath)
+        // Zip.unzip({
+        //   archive: zipPath,
+        //   directory: dest,
+        //   overwrite: true,
+        // })
+        //   .then((success) => {
+        //     this.restoreDataInDB()
+        //     Toast.makeText("Restore successful!").show()
+        //   })
+        //   .catch((err) => {
+        //     console.log(err)
+        //   })
+      })
+    },
+    validateZipContent(zipPath) {
+      Zip.unzip({
+        archive: zipPath,
+        overwrite: true,
+      }).then((success) => {
+        let cacheFolderPath = success + "/EnRecipes"
+        const EnRecipesFilePath = cacheFolderPath + "/EnRecipes.json"
+        const userCategoriesFilePath = cacheFolderPath + "/userCategories.json"
+        const userYieldUnitsFilePath = cacheFolderPath + "/userYieldUnits.json"
+        if (
+          Folder.exists(cacheFolderPath) &&
+          File.exists(EnRecipesFilePath) &&
+          File.exists(userCategoriesFilePath) &&
+          File.exists(userCategoriesFilePath)
+        ) {
+          console.log("Zip intact")
+          // Check if EnRecipes.json is of type array
+          File.fromPath(EnRecipesFilePath)
+            .readText()
+            .then((data) => {
+              let EnRecipesData = JSON.parse(data)
+              console.log(Array.isArray(EnRecipesData))
+              EnRecipesData.forEach(recipe => {
+                
+              })
+              console.log(EnRecipesData)
+            })
+        } else {
+          Folder.fromPath(success).remove()
+          console.log("Zip modified externally or incorrect file")
+        }
+      })
+    },
+    restoreDataInDB() {
+      // recipesDB.android
+      // recipesDB.android.destroyDatabase()
+    },
+
+    permissionCheck(confirmation, action) {
+      if (!ApplicationSettings.getBoolean("storagePermissionAsked", false)) {
+        confirmation().then((e) => {
+          if (e) {
+            Permissions.request("storage").then((res) => {
+              let status = res[Object.keys(res)[0]]
+              if (status === "authorized") action()
+              if (status !== "denied")
+                ApplicationSettings.setBoolean("storagePermissionAsked", true)
+              else Toast.makeText("Permission denied").show()
+            })
+          }
         })
-        .then(function(selection) {
-          let result = selection
-          console.log(result)
+      } else {
+        Permissions.request("storage").then((res) => {
+          let status = res[Object.keys(res)[0]]
+          if (status !== "authorized") {
+            confirmation().then((e) => {
+              e && this.openAppSettingsPage()
+            })
+          } else action()
         })
-        .catch(function(e) {
-          console.log(e)
-        })
+      }
+    },
+    openAppSettingsPage() {
+      const intent = new android.content.Intent(
+        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+      )
+      intent.addCategory(android.content.Intent.CATEGORY_DEFAULT)
+      intent.setData(
+        android.net.Uri.parse(
+          "package:" + Application.android.context.getPackageName()
+        )
+      )
+      Application.android.foregroundActivity.startActivity(intent)
     },
   },
   created() {
-    this.interface.theme.subTitle = this.themeName = ApplicationSettings.getString(
-      "application-theme",
-      "Light"
-    )
+    this.appTheme = ApplicationSettings.getString("appTheme", "Light")
   },
 }
 </script>

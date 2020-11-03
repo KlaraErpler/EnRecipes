@@ -1,7 +1,7 @@
 <template>
-  <Page @loaded="initializePage">
-    <ActionBar height="152" margin="0" flat="true" visibility="collapse">
-      <GridLayout rows="24, 64, 64" columns="auto, *, auto,auto, auto">
+  <Page @loaded="initializePage" @unloaded="hideInfo">
+    <ActionBar height="136" margin="0" flat="true">
+      <GridLayout rows="24, 64, 48" columns="auto, *, auto,auto, auto">
         <Label
           row="1"
           col="0"
@@ -444,6 +444,8 @@ import { mapState, mapActions } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
 
+let feedback = new Feedback()
+
 export default {
   props: [
     "filterTrylater",
@@ -507,7 +509,6 @@ export default {
       this.selectedTabIndex = args.object.selectedIndex
     },
     showInfo() {
-      let feedback = new Feedback()
       feedback.show({
         title: `You tried this recipe ${this.niceDates(
           this.recipe.lastTried
@@ -517,6 +518,9 @@ export default {
           `${this.isLightMode ? "#ff5722" : "#ff7043"}`
         ),
       })
+    },
+    hideInfo() {
+      feedback.hide()
     },
     highlight(args) {
       let temp = args.object.className
@@ -551,7 +555,7 @@ export default {
     shareRecipe() {
       let overview = `${
         this.recipe.title
-      } Recipe\n\nApprox. cooking time: ${this.formattedTime(
+      }\n\nTime required: ${this.formattedTime(
         this.recipe.timeRequired
       )}\n`
       let shareContent = overview
@@ -583,12 +587,12 @@ export default {
       if (this.recipe.references.length) {
         let references = `\nReferences:\n\n`
         this.recipe.references.forEach((e, i) => {
-          references += `${e}\n\n`
+          references += `${i + 1}. ${e}\n\n`
         })
         shareContent += references
       }
       let sharenote =
-        "\nCreated and shared via EnRecipes.\n\nDownload the app on f-droid:\nhttps://www.vishnuraghav.com/"
+        "\nCreated and shared via EnRecipes.\nDownload the app on f-droid: https://www.vishnuraghav.com/"
 
       shareContent += sharenote
 
@@ -652,7 +656,7 @@ export default {
   },
   mounted() {
     this.showFab = true
-    setTimeout((e) => this.recipe.tried && this.showInfo(), 2000)
+    setTimeout((e) => this.recipe.tried && this.showInfo(), 500)
   },
 }
 </script>

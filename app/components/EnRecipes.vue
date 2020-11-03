@@ -69,7 +69,7 @@
             columns="112, *"
             androidElevation="2"
           >
-            <GridLayout class="imageHolder" rows="112" columns="112">
+            <GridLayout class="imageHolder card" rows="112" columns="112">
               <Image
                 row="0"
                 col="0"
@@ -199,7 +199,10 @@
 </template>
 
 <script>
-import { Utils, AndroidApplication } from "@nativescript/core"
+import {
+  Utils,
+  AndroidApplication,
+} from "@nativescript/core"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
@@ -405,20 +408,7 @@ export default {
         this.deletionDialogActive = false
       })
     },
-    // getTotalTime(prepTime, timeRequired) {
-    //   let pT = prepTime.split(":")
-    //   let cT = timeRequired.split(":")
-    //   let hrs = parseInt(pT[0]) + parseInt(cT[0])
-    //   let mins = parseInt(pT[1]) + parseInt(cT[1])
-    //   if (mins > 60) {
-    //     hrs += Math.floor(mins / 60)
-    //     mins -= 60
-    //   }
-    //   return {
-    //     hrs,
-    //     mins,
-    //   }
-    // },
+
     formattedTime(time) {
       let t = time.split(":")
       let h = parseInt(t[0])
@@ -438,9 +428,9 @@ export default {
       this.releaseGlobalBackEvent()
       this.$navigateTo(EditRecipe, {
         // transition: {
-        //   name: "slide",
-        //   duration: 250,
-        //   curve: "easeIn",
+        //   name: "fade",
+        //   duration: 200,
+        //   curve: "easeOut",
         // },
         props: {
           selectedCategory: this.selectedCategory,
@@ -452,8 +442,8 @@ export default {
       this.$navigateTo(ViewRecipe, {
         // transition: {
         //   name: "fade",
-        //   duration: 250,
-        //   curve: "easeIn",
+        //   duration: 200,
+        //   curve: "easeOut",
         // },
         props: {
           filterTrylater: this.filterTrylater,

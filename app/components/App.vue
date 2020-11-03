@@ -338,7 +338,7 @@ export default {
     },
   },
   created() {
-    let themeName = ApplicationSettings.getString("application-theme", "Light")
+    let themeName = ApplicationSettings.getString("appTheme", "Light")
     setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
     if (!this.recipes.length) this.initializeRecipes()
     if (!this.categories.length) this.initializeCategories()
