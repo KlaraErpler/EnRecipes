@@ -1,5 +1,9 @@
 <template>
-  <Page actionBarHidden="true">
+  <Page
+    @loaded="initialize"
+    actionBarHidden="true"
+    :androidStatusBarBackground="themeName == 'Light' ? '#fafafa' : '#212121'"
+  >
     <RadSideDrawer
       ref="drawer"
       allowEdgeSwipe="true"
@@ -173,6 +177,7 @@ export default {
         },
       ],
       catEditMode: false,
+      themeName: "Light",
     }
   },
   computed: {
@@ -198,6 +203,14 @@ export default {
       "initializeYieldUnits",
       "renameCategoryAction",
     ]),
+    initialize() {
+      if (this.themeName === "Light") {
+        const View = android.view.View
+        const window = Application.android.startActivity.getWindow()
+        const decorView = window.getDecorView()
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+      }
+    },
     toggleCatEdit() {
       this.catEditMode = !this.catEditMode
       if (this.selectedCategory) this.setComponent("EnRecipes")
@@ -353,8 +366,10 @@ export default {
     },
   },
   created() {
-    let themeName = ApplicationSettings.getString("appTheme", "Light")
-    setTimeout((e) => Theme.setMode(Theme[themeName]), 50)
+    this.themeName = ApplicationSettings.getString("appTheme", "Light")
+    setTimeout((e) => {
+      Theme.setMode(Theme[this.themeName])
+    }, 50)
     if (!this.recipes.length) this.initializeRecipes()
     if (!this.categories.length) this.initializeCategories()
     if (!this.yieldUnits.length) this.initializeYieldUnits()

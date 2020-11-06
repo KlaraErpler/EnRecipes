@@ -10,7 +10,6 @@
   "dependencies": {
     "@nativescript-community/perms": "^2.1.1",
     "@nativescript/core": "~7.0.0",
-    "@nativescript/datetimepicker": "^2.0.4",
     "@nativescript/theme": "^3.0.0",
     "@nativescript/webpack": "3.0.0",
     "@nativescript/zip": "^5.0.0",

@@ -39,8 +39,9 @@
                 v-if="recipeContent.imageSrc"
                 :src="recipeContent.imageSrc"
                 stretch="aspectFill"
-                width="100%"
-                :height="screenWidth"
+                decodeWidth="100%"
+                :decodeHeight="screenWidth"
+                loadMode="async"
               />
               <Label
                 v-else
@@ -248,7 +249,7 @@
 
 <script>
 import { WorkerService } from "../worker.service"
-var workerService = new WorkerService()
+const workerService = new WorkerService()
 
 import {
   Screen,
@@ -261,9 +262,8 @@ import {
   File,
   ApplicationSettings,
 } from "@nativescript/core"
-import { Mediafilepicker } from "nativescript-mediafilepicker"
 
-import { DateTimePicker, TimePickerField } from "@nativescript/datetimepicker"
+import { Mediafilepicker } from "nativescript-mediafilepicker"
 
 import { mapState, mapActions } from "vuex"
 

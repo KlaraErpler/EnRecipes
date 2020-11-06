@@ -66,8 +66,8 @@
           <GridLayout
             class="recipeItem"
             rows="112"
-            columns="112, *"
-            androidElevation="2"
+            columns="112, 100%"
+            androidElevation="1"
           >
             <GridLayout class="imageHolder card" rows="112" columns="112">
               <Image
@@ -78,11 +78,12 @@
                 stretch="aspectFill"
                 decodeWidth="112"
                 decodeHeight="112"
+                loadMode="async"
               />
               <Label
+                v-else
                 row="0"
                 col="0"
-                v-else
                 horizontalAlignment="center"
                 class="bx"
                 fontSize="56"

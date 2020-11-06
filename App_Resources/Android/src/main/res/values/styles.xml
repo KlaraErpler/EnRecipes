@@ -21,7 +21,7 @@
 			true
 		</item>
 		<item name="android:windowTranslucentStatus">
-			true
+			false
 		</item>
 	</style>
 	<style name="LaunchScreenTheme" parent="LaunchScreenThemeBase">

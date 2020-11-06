@@ -27,9 +27,6 @@ Page {
 .orkm {
   font-family: "Orkney-Medium";
 }
-.orkb {
-  font-family: "Orkney-Bold";
-}
 .bx {
   font-family: "boxicons";
   font-size: 24;
@@ -87,7 +84,7 @@ Page {
     }
   }
   .imageHolder {
-    color: $grayL1;
+    color: $gray;
     background: $grayL2;
   }
   .count {
@@ -96,16 +93,9 @@ Page {
   }
   .instruction {
     border-color: $grayD4;
-  } // prettier-ignore
-  .text-btn,
-  .group-header,
-  .category,
-  ActivityIndicator,
-  .selected-sd-item,
-  Progress {
-    color: $orange;
   }
 }
+
 .ns-dark {
   Page,
   ActionBar,
@@ -153,7 +143,7 @@ Page {
     }
   }
   .imageHolder {
-    color: $grayD4;
+    color: $gray;
     background: #111;
   }
   .count {
@@ -162,15 +152,6 @@ Page {
   }
   .instruction {
     border-color: $grayL4;
-  }
-  // prettier-ignore
-  .text-btn,
-  .group-header,
-  .category,
-  ActivityIndicator,
-  .selected-sd-item,
-  Progress {
-    color: $orange;
   }
 }
 // -----------------------------
@@ -205,10 +186,18 @@ TabView {
 .progressContainer{
   width: 100%;
 }
+// prettier-ignore
+.text-btn,
+.group-header,
+.category,
+ActivityIndicator,
+Progress {
+  color: $orange;
+}
 // -----------------------------
 // ActionBar
 ActionBar {
-  margin: 24 0 0 0;
+  margin: 0;
   padding: 0;
   height: 64;
   .bx {
@@ -225,7 +214,7 @@ ActionBar {
 // -----------------------------
 // Side Drawer
 .sd {
-  padding: 32 8 8;
+  padding: 8;
 }
 .sd-item {
   border-radius: 4;
@@ -234,6 +223,9 @@ ActionBar {
   vertical-alignment: center;
   .bx {
     font-size: 24;
+  }
+  &.selected-sd-item {
+    color: $orange;
   }
   // prettier-ignore
   Label {
@@ -489,6 +481,7 @@ RadListView {
 .closeBtn {
   padding: 4;
   margin-top: 16;
+  vertical-alignment: top;
 }
 // -----------------------------
 // DIALOGS

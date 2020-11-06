@@ -1,9 +1,9 @@
 <template>
   <Page @loaded="initializePage" @unloaded="hideInfo">
-    <ActionBar height="136" margin="0" flat="true">
-      <GridLayout rows="24, 64, 48" columns="auto, *, auto,auto, auto">
+    <ActionBar height="112" margin="0" flat="true">
+      <GridLayout rows="64, 48" columns="auto, *, auto,auto, auto">
         <Label
-          row="1"
+          row="0"
           col="0"
           class="bx"
           :text="icon.back"
@@ -11,7 +11,7 @@
           @tap="$navigateBack()"
         />
         <ScrollView
-          row="2"
+          row="1"
           col="1"
           colSpan="3"
           orientation="horizontal"
@@ -24,7 +24,7 @@
           />
         </ScrollView>
         <Label
-          row="1"
+          row="0"
           col="3"
           class="bx"
           :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
@@ -32,7 +32,7 @@
         />
         <Label
           v-if="!filterTrylater"
-          row="1"
+          row="0"
           col="4"
           class="bx"
           :text="recipe.tried ? icon.trylaterOutline : icon.trylater"
@@ -40,13 +40,13 @@
         />
         <Label
           v-if="!busy"
-          row="1"
+          row="0"
           col="2"
           class="bx"
           :text="icon.edit"
           @tap="editRecipe"
         />
-        <ActivityIndicator v-else row="1" col="2" :busy="busy" />
+        <ActivityIndicator v-else row="0" col="2" :busy="busy" />
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
@@ -71,8 +71,9 @@
                   v-if="recipe.imageSrc"
                   :src="recipe.imageSrc"
                   stretch="aspectFill"
-                  width="100%"
-                  :height="screenWidth"
+                  decodeWidth="100%"
+                  :decodeHeight="screenWidth"
+                  loadMode="async"
                 />
                 <Label
                   v-else
@@ -296,7 +297,7 @@
                 <Label
                   verticalAlignment="top"
                   horizontalAlignment="center"
-                  class="count orkb"
+                  class="count orkm"
                   col="0"
                   :text="index + 1"
                 />
@@ -338,7 +339,7 @@
                 <Label
                   verticalAlignment="top"
                   horizontalAlignment="center"
-                  class="count square orkb"
+                  class="count square orkm"
                   col="0"
                   :text="index + 1"
                 />

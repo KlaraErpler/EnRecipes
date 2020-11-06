@@ -19,7 +19,7 @@
           orientation="horizontal"
           class="appIconContainer"
         >
-          <Image src="res://logo_white" class="appIcon" stretch="aspectFit" />
+          <Image src="res://logo_light" class="appIcon" stretch="aspectFit" />
         </StackLayout>
         <StackLayout orientation="horizontal" class="option">
           <Label class="bx" :text="icon.info" />
