@@ -105,6 +105,7 @@
             :showDrawer="showDrawer"
             :hijackGlobalBackEvent="hijackGlobalBackEvent"
             :releaseGlobalBackEvent="releaseGlobalBackEvent"
+            :openAppSettingsPage="openAppSettingsPage"
           />
         </Frame>
       </GridLayout>
@@ -117,6 +118,7 @@ import {
   Utils,
   ApplicationSettings,
   AndroidApplication,
+  Application,
 } from "@nativescript/core"
 
 import Theme from "@nativescript/theme"
@@ -286,6 +288,7 @@ export default {
             restartApp: this.restartApp,
             hijackGlobalBackEvent: this.hijackGlobalBackEvent,
             releaseGlobalBackEvent: this.releaseGlobalBackEvent,
+            openAppSettingsPage: this.openAppSettingsPage,
           },
           backstackVisible: false,
         })
@@ -325,6 +328,18 @@ export default {
         mPendingIntent
       )
       android.os.Process.killProcess(android.os.Process.myPid())
+    },
+    openAppSettingsPage() {
+      const intent = new android.content.Intent(
+        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+      )
+      intent.addCategory(android.content.Intent.CATEGORY_DEFAULT)
+      intent.setData(
+        android.net.Uri.parse(
+          "package:" + Application.android.context.getPackageName()
+        )
+      )
+      Application.android.foregroundActivity.startActivity(intent)
     },
     showDrawer() {
       this.$refs.drawer.nativeView.showDrawer()

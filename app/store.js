@@ -2,7 +2,7 @@ import Vue from "vue"
 import Vuex from "vuex"
 import { Couchbase } from "nativescript-couchbase-plugin"
 import { getFileAccess } from "@nativescript/core"
-const recipesDB = new Couchbase("EnRecipes")
+const EnRecipesDB = new Couchbase("EnRecipes")
 const userCategoriesDB = new Couchbase("userCategories")
 const userYieldUnitsDB = new Couchbase("userYieldUnits")
 
@@ -163,7 +163,6 @@ export default new Vuex.Store({
       share: "\uedf3",
       edit: "\uedba",
       theme: "\uecaa",
-      restore: "\uea72",
       link: "\ueaa0",
       file: "\ued02",
       user: "\uee33",
@@ -179,12 +178,14 @@ export default new Vuex.Store({
       item: "\ue99d",
       step: "\ue948",
       source: "\ueaa0",
+      export: "\ued07",
+      import: "\ued0c",
     },
     currentComponent: "EnRecipes",
   },
   mutations: {
     initializeRecipes(state) {
-      let a = recipesDB.query({ select: [] })
+      let a = EnRecipesDB.query({ select: [] })
       a.forEach((e) => {
         state.recipes.push(e)
       })
@@ -228,7 +229,45 @@ export default new Vuex.Store({
     },
     addRecipe(state, { id, recipe }) {
       state.recipes.push(recipe)
-      recipesDB.createDocument(recipe, id)
+      EnRecipesDB.createDocument(recipe, id)
+    },
+    importRecipes(state, recipes) {
+      console.log("hello")
+      let localRecipesIDs, partition
+      if (state.recipes.length) {
+        localRecipesIDs = state.recipes.map((e) => e.id)
+        partition = recipes.reduce(
+          (result, recipe, i) => {
+            localRecipesIDs.indexOf(recipe.id) < 0
+              ? result[0].push(recipe) // create candidates
+              : result[1].push(recipe) // update candidates
+            return result
+          },
+          [[], []]
+        )
+        if (partition[0].length) createDocuments(partition[0])
+        if (partition[1].length) updateDocuments(partition[1])
+      } else {
+        createDocuments(recipes)
+      }
+      function createDocuments(data) {
+        console.log("creating")
+        state.recipes = [...state.recipes, ...data]
+        data.forEach((recipe) => {
+          EnRecipesDB.createDocument(recipe, recipe.id)
+        })
+      }
+      function updateDocuments(data) {
+        console.log("updating")
+        data.forEach((recipe) => {
+          let recipeIndex = state.recipes
+            .map((e, i) => (e.id === recipe.id ? i : -1))
+            .filter((e) => e >= 0)[0]
+          console.log(recipeIndex)
+          Object.assign(state.recipes[recipeIndex], recipe)
+          EnRecipesDB.updateDocument(recipe.id, recipe)
+        })
+      }
     },
     addCategory(state, category) {
       let lowercase = state.categories.map((e) => e.toLowerCase())
@@ -241,33 +280,48 @@ export default new Vuex.Store({
         state.categories.sort()
       }
     },
-    addYieldUnit(state, unit) {
+    importCategories(state, categories) {
+      state.userCategories = new Set([...state.userCategories, ...categories])
+      userCategoriesDB.updateDocument("userCategories", {
+        userCategories: [...state.userCategories],
+      })
+      state.categories = [...defaultCategories, ...state.userCategories]
+      state.categories.sort()
+    },
+    addYieldUnit(state, yieldUnit) {
       let lowercase = state.yieldUnits.map((e) => e.toLowerCase())
-      if (lowercase.indexOf(unit.toLowerCase()) == -1) {
-        state.userYieldUnits.push(unit)
+      if (lowercase.indexOf(yieldUnit.toLowerCase()) == -1) {
+        state.userYieldUnits.push(yieldUnit)
         userYieldUnitsDB.updateDocument("userYieldUnits", {
           userYieldUnits: [...state.userYieldUnits],
         })
         state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
       }
     },
+    importYieldUnits(state, yieldUnits) {
+      state.userYieldUnits = new Set([...state.userYieldUnits, ...yieldUnits])
+      userYieldUnitsDB.updateDocument("userYieldUnits", {
+        userYieldUnits: [...state.userYieldUnits],
+      })
+      state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
+    },
     overwriteRecipe(state, { index, id, recipe }) {
       Object.assign(state.recipes[index], recipe)
-      recipesDB.updateDocument(id, recipe)
+      EnRecipesDB.updateDocument(id, recipe)
     },
     deleteRecipe(state, { index, id }) {
       getFileAccess().deleteFile(state.recipes[index].imageSrc)
       state.recipes.splice(index, 1)
-      recipesDB.deleteDocument(id)
+      EnRecipesDB.deleteDocument(id)
     },
     toggleState(state, { index, id, recipe, key, setDate }) {
       state.recipes[index][key] = !state.recipes[index][key]
       if (setDate) state.recipes[index].lastTried = new Date()
-      recipesDB.updateDocument(id, recipe)
+      EnRecipesDB.updateDocument(id, recipe)
     },
     setLastTriedDate(state, index) {
       state.recipes[index].lastTried = new Date()
-      recipesDB.updateDocument(state.recipes[index].id, state.recipes[index])
+      EnRecipesDB.updateDocument(state.recipes[index].id, state.recipes[index])
     },
     setCurrentComponent(state, comp) {
       state.currentComponent = comp
@@ -285,8 +339,8 @@ export default new Vuex.Store({
       state.recipes.forEach((e, i) => {
         if (e.category == current) {
           state.recipes[i].category = updated
-          recipesDB.inBatch(() => {
-            recipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
+          EnRecipesDB.inBatch(() => {
+            EnRecipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
           })
         }
       })
@@ -305,11 +359,20 @@ export default new Vuex.Store({
     addRecipeAction({ commit }, recipe) {
       commit("addRecipe", recipe)
     },
+    importRecipesAction({ commit }, recipes) {
+      commit("importRecipes", recipes)
+    },
     addCategoryAction({ commit }, category) {
       commit("addCategory", category)
     },
+    importCategoriesAction({ commit }, categories) {
+      commit("importCategories", categories)
+    },
     addYieldUnitAction({ commit }, yieldUnit) {
       commit("addYieldUnit", yieldUnit)
+    },
+    importYieldUnitsAction({ commit }, yieldUnits) {
+      commit("importYieldUnits", yieldUnits)
     },
     overwriteRecipeAction({ commit }, updatedRecipe) {
       commit("overwriteRecipe", updatedRecipe)

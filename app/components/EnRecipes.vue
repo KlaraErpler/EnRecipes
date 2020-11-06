@@ -76,6 +76,8 @@
                 v-if="recipe.imageSrc"
                 :src="recipe.imageSrc"
                 stretch="aspectFill"
+                decodeWidth="112"
+                decodeHeight="112"
               />
               <Label
                 row="0"
@@ -118,7 +120,7 @@
           class="noResult"
           v-if="!recipes.length && !filterFavorites && !filterTrylater"
         >
-          <Label class="bx icon" :text="icon.plusCircle" textWrap="true" />
+          <Image class="logo" src="res://icon_gray" stretch="aspectFit" />
           <Label
             class="title orkm"
             text="Start adding your recipes!"
@@ -199,10 +201,7 @@
 </template>
 
 <script>
-import {
-  Utils,
-  AndroidApplication,
-} from "@nativescript/core"
+import { Utils, AndroidApplication } from "@nativescript/core"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
@@ -218,6 +217,7 @@ export default {
     "showDrawer",
     "hijackGlobalBackEvent",
     "releaseGlobalBackEvent",
+    "openAppSettingsPage",
   ],
   components: {
     EditRecipe,
@@ -434,6 +434,7 @@ export default {
         // },
         props: {
           selectedCategory: this.selectedCategory,
+          openAppSettingsPage: this.openAppSettingsPage,
         },
       })
     },

@@ -13,8 +13,7 @@ $grayL1: #e0e0e0;
 $grayL2: #eeeeee;
 $grayL3: #f5f5f5;
 $grayL4: #fafafa;
-$orange400: #ff7043;
-$orange500: #ff5722;
+$orange: #ff5722;
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
@@ -78,7 +77,7 @@ Page {
   }
   .fab-button {
     color: white;
-    background-color: $orange500;
+    background-color: $orange;
   }
   .option,
   .icon-option {
@@ -97,13 +96,14 @@ Page {
   }
   .instruction {
     border-color: $grayD4;
-  }
+  } // prettier-ignore
   .text-btn,
   .group-header,
   .category,
   ActivityIndicator,
-  .selected-sd-item {
-    color: $orange500;
+  .selected-sd-item,
+  Progress {
+    color: $orange;
   }
 }
 .ns-dark {
@@ -130,8 +130,7 @@ Page {
   .recipeText,
   .overviewItem,
   .recipeItem,
-  .option-highlight,
-  .appIconContainer {
+  .option-highlight {
     background: $grayD3;
   }
   .sd-item,
@@ -144,13 +143,13 @@ Page {
   }
   .fab-button {
     color: #111;
-    background: $orange400;
+    background: $orange;
   }
   .option,
   .icon-option {
     .bx,
     .option-info {
-      color: $grayL2;
+      color: $gray;
     }
   }
   .imageHolder {
@@ -164,12 +163,14 @@ Page {
   .instruction {
     border-color: $grayL4;
   }
+  // prettier-ignore
   .text-btn,
   .group-header,
   .category,
   ActivityIndicator,
-  .selected-sd-item {
-    color: $orange400;
+  .selected-sd-item,
+  Progress {
+    color: $orange;
   }
 }
 // -----------------------------
@@ -199,6 +200,10 @@ TabView {
   font-size: 12;
   margin-left: 8;
   padding: 0 8;
+}
+// prettier-ignore
+.progressContainer{
+  width: 100%;
 }
 // -----------------------------
 // ActionBar
@@ -260,6 +265,10 @@ ActionBar {
     color: $gray;
     margin-bottom: 16;
   }
+  .logo {
+    width: 64;
+    margin-bottom: 16;
+  }
   .title {
     font-size: 20;
     text-align: center;
@@ -280,7 +289,7 @@ RadListView {
 }
 .recipeItem {
   margin: 8 16;
-  border-radius: 6;
+  border-radius: 4;
   .recipeInfo {
     margin: 4;
     .category,
@@ -304,10 +313,10 @@ RadListView {
 .imageHolder {
   vertical-alignment: center;
   &.card {
-    border-radius: 6 0 0 6;
+    border-radius: 4 0 0 4;
     // prettier-ignore
     Image {
-    border-radius: 6 0 0 6;
+    border-radius: 4 0 0 4;
   }
   }
 }
@@ -316,7 +325,7 @@ RadListView {
   background: #c62828;
   color: #fff;
   height: 128;
-  border-radius: 6;
+  border-radius: 4;
 }
 // -----------------------------
 // SETTINGS
@@ -333,22 +342,18 @@ RadListView {
     }
     .option-info {
       font-size: 12;
+      line-height: 4;
     }
   }
 }
 // -----------------------------
 // ABOUT
 .appIconContainer {
-  padding: 32 0;
+  background: $orange;
+  padding: 16 0;
   width: 100%;
   .appIcon {
-    width: 56;
-    height: 56;
-    margin: 0 6 0 0;
-    padding: 0;
-  }
-  .appName {
-    font-size: 24;
+    height: 128;
   }
 }
 // -----------------------------
@@ -376,7 +381,7 @@ RadListView {
   .overviewContainer {
     margin-top: 12;
     .overviewItem {
-      border-radius: 6;
+      border-radius: 4;
       padding: 8;
       margin: 8;
       android-elevation: 1;
@@ -405,7 +410,7 @@ RadListView {
     padding-top: 4%;
     margin: 0 0 0 8;
     text-align: center;
-    border-radius: 100;
+    border-radius: 99;
     &.square {
       clip-path: polygon(
         5% 0,
@@ -437,7 +442,7 @@ RadListView {
   .referenceItem {
     padding: 14 16;
     margin: 8 16 8;
-    border-radius: 6;
+    border-radius: 4;
     font-size: 16;
     .bx {
       font-size: 24;
@@ -452,7 +457,7 @@ RadListView {
     line-height: 6;
     padding: 16;
     margin: 8 16 8;
-    border-radius: 6;
+    border-radius: 4;
   }
 }
 // -----------------------------

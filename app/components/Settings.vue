@@ -22,23 +22,46 @@
         >
           <Label verticalAlignment="center" class="bx" :text="icon.theme" />
           <StackLayout>
-            <Label text="Theme" class="option-title" />
+            <Label text="Theme" />
             <Label :text="appTheme" class="option-info" textWrap="true" />
           </StackLayout>
         </StackLayout>
         <StackLayout class="hr m-10"></StackLayout>
-        <Label text="Backup/Restore" class="group-header" />
+        <Label text="Database" class="group-header" />
         <StackLayout orientation="horizontal" class="option" @tap="backupCheck">
-          <Label class="bx" :text="icon.save" />
-          <Label text="Backup data" />
+          <Label class="bx" :text="icon.export" />
+          <StackLayout>
+            <Label text="Export a full backup" />
+            <GridLayout
+              class="progressContainer"
+              v-if="backupInProgress"
+              columns="*, 64"
+            >
+              <Progress col="0" :value="backupProgress" />
+              <Label col="1" :text="`  ${backupProgress}%`" />
+            </GridLayout>
+            <Label
+              v-else
+              text="Generates a zip file that contains all your data. This file can be imported back."
+              class="option-info"
+              textWrap="true"
+            />
+          </StackLayout>
         </StackLayout>
         <StackLayout
           orientation="horizontal"
           class="option"
           @tap="restoreCheck"
         >
-          <Label class="bx" :text="icon.restore" />
-          <Label text="Restore data" />
+          <Label class="bx" :text="icon.import" />
+          <StackLayout>
+            <Label text="Import from backup" />
+            <Label
+              text="Supports full backups exported by this app."
+              class="option-info"
+              textWrap="true"
+            />
+          </StackLayout>
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -64,7 +87,6 @@ import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
 import { Couchbase } from "nativescript-couchbase-plugin"
-const recipesDB = new Couchbase("EnRecipes")
 import { mapState, mapActions } from "vuex"
 export default {
   props: [
@@ -73,11 +95,14 @@ export default {
     "restartApp",
     "hijackGlobalBackEvent",
     "releaseGlobalBackEvent",
+    "openAppSettingsPage",
   ],
   data() {
     return {
       viewIsScrolled: false,
       appTheme: "Light",
+      backupProgress: 0,
+      backupInProgress: false,
     }
   },
   computed: {
@@ -90,7 +115,12 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["setCurrentComponentAction"]),
+    ...mapActions([
+      "setCurrentComponentAction",
+      "importCategoriesAction",
+      "importYieldUnitsAction",
+      "importRecipesAction",
+    ]),
     initializePage() {
       this.setCurrentComponentAction("Settings")
       this.releaseGlobalBackEvent()
@@ -112,9 +142,9 @@ export default {
         if (action && action !== "Cancel" && this.appTheme !== action) {
           this.$showModal(ConfirmDialog, {
             props: {
-              title: "App Reload Required",
+              title: "Reload required",
               description:
-                "The app needs to be reloaded for the theme change to take effect.",
+                "EnRecipes needs to be reloaded for the theme change to take effect.",
               cancelButtonText: "CANCEL",
               okButtonText: "RELOAD",
             },
@@ -130,26 +160,22 @@ export default {
     },
 
     writeFile(file, data) {
-      file
-        .writeText(JSON.stringify(data))
-        .then((res) => {
-          file.readText().then((res) => {
-            // console.log("Data: ", res)
-          })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      file.writeText(JSON.stringify(data))
     },
     BackupDataFiles(option) {
       const folder = path.join(knownFolders.documents().path, "EnRecipes")
       const EnRecipesFile = File.fromPath(path.join(folder, "EnRecipes.json"))
-      const userCategoriesFile = File.fromPath(
-        path.join(folder, "userCategories.json")
-      )
-      const userYieldUnitsFile = File.fromPath(
-        path.join(folder, "userYieldUnits.json")
-      )
+      let userCategoriesFile, userYieldUnitsFile
+      if (this.userCategories.length) {
+        userCategoriesFile = File.fromPath(
+          path.join(folder, "userCategories.json")
+        )
+      }
+      if (this.userYieldUnits.length) {
+        userYieldUnitsFile = File.fromPath(
+          path.join(folder, "userYieldUnits.json")
+        )
+      }
       switch (option) {
         case "create":
           this.writeFile(EnRecipesFile, this.recipes)
@@ -199,28 +225,34 @@ export default {
         sdDownloadPath,
         `EnRecipes-Backup_${formattedDate}.zip`
       )
+      this.backupInProgress = true
       Zip.zip({
         directory: fromPath,
         archive: destPath,
+        onProgress: (progress) => {
+          this.backupProgress = progress
+          if (progress == 100) {
+            setTimeout((e) => {
+              this.backupInProgress = false
+            }, 2000)
+          }
+        },
+      }).then((success) => {
+        Toast.makeText(
+          "Backup file successfully saved to Downloads",
+          "long"
+        ).show()
+        this.BackupDataFiles("delete")
       })
-        .then((success) => {
-          Toast.makeText(
-            "Backup file successfully saved to Downloads",
-            "long"
-          ).show()
-          console.log("success:" + success)
-          this.BackupDataFiles("delete")
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     },
     backupCheck(args) {
       let btn = args.object
       this.highlight(args)
-
       if (!this.recipes.length) {
-        Toast.makeText("To perform a backup, add at least one recipe").show()
+        Toast.makeText(
+          "Add at least one recipe to perform a backup",
+          "long"
+        ).show()
       } else {
         this.permissionCheck(this.backupPermissionConfirmation, this.backupData)
       }
@@ -237,7 +269,6 @@ export default {
         },
       })
     },
-    restoreData() {},
     restoreCheck(args) {
       let btn = args.object
       this.highlight(args)
@@ -258,58 +289,77 @@ export default {
         let zipPath = result
         let dest = knownFolders.documents().path
         this.validateZipContent(zipPath)
-        // Zip.unzip({
-        //   archive: zipPath,
-        //   directory: dest,
-        //   overwrite: true,
-        // })
-        //   .then((success) => {
-        //     this.restoreDataInDB()
-        //     Toast.makeText("Restore successful!").show()
-        //   })
-        //   .catch((err) => {
-        //     console.log(err)
-        //   })
+      })
+    },
+    importDataToDB(data, db, zipPath) {
+      switch (db) {
+        case "EnRecipesDB":
+          this.copyImages(zipPath)
+          this.importRecipesAction(data)
+          break
+        case "userCategoriesDB":
+          this.importCategoriesAction(data)
+          break
+        case "userYieldUnitsDB":
+          this.importYieldUnitsAction(data)
+          break
+        default:
+          break
+      }
+    },
+    isImportedDataValid(file) {
+      file.forEach((file, i) => {
+        if (File.exists(file.path)) {
+          File.fromPath(file.path)
+            .readText()
+            .then((data) => {
+              Array.isArray(JSON.parse(data)) &&
+                this.importDataToDB(JSON.parse(data), file.db, file.zipPath)
+            })
+        }
       })
     },
     validateZipContent(zipPath) {
       Zip.unzip({
         archive: zipPath,
         overwrite: true,
-      }).then((success) => {
-        let cacheFolderPath = success + "/EnRecipes"
+      }).then((extractedFolderPath) => {
+        let cacheFolderPath = extractedFolderPath + "/EnRecipes"
         const EnRecipesFilePath = cacheFolderPath + "/EnRecipes.json"
         const userCategoriesFilePath = cacheFolderPath + "/userCategories.json"
         const userYieldUnitsFilePath = cacheFolderPath + "/userYieldUnits.json"
-        if (
-          Folder.exists(cacheFolderPath) &&
-          File.exists(EnRecipesFilePath) &&
-          File.exists(userCategoriesFilePath) &&
-          File.exists(userCategoriesFilePath)
-        ) {
-          console.log("Zip intact")
-          // Check if EnRecipes.json is of type array
-          File.fromPath(EnRecipesFilePath)
-            .readText()
-            .then((data) => {
-              let EnRecipesData = JSON.parse(data)
-              console.log(Array.isArray(EnRecipesData))
-              EnRecipesData.forEach(recipe => {
-                
-              })
-              console.log(EnRecipesData)
-            })
+        if (Folder.exists(cacheFolderPath)) {
+          this.isImportedDataValid([
+            {
+              zipPath,
+              path: EnRecipesFilePath,
+              db: "EnRecipesDB",
+            },
+            { zipPath, path: userCategoriesFilePath, db: "userCategoriesDB" },
+            { zipPath, path: userYieldUnitsFilePath, db: "userYieldUnitsDB" },
+          ])
         } else {
-          Folder.fromPath(success).remove()
-          console.log("Zip modified externally or incorrect file")
+          Folder.fromPath(extractedFolderPath).remove()
+          Toast.makeText(
+            "Zip modified externally or incorrect file",
+            "long"
+          ).show()
+        }
+        if (Folder.exists(cacheFolderPath + "/Images")) {
+          this.copyImages(cacheFolderPath + "/Images")
         }
       })
     },
-    restoreDataInDB() {
-      // recipesDB.android
-      // recipesDB.android.destroyDatabase()
+    copyImages(sourcePath) {
+      let dest = knownFolders.documents().path
+      Zip.unzip({
+        archive: sourcePath,
+        directory: dest,
+        overwrite: true,
+      }).then((res) => {
+        Toast.makeText("Import successful!", "long").show()
+      })
     },
-
     permissionCheck(confirmation, action) {
       if (!ApplicationSettings.getBoolean("storagePermissionAsked", false)) {
         confirmation().then((e) => {
@@ -333,18 +383,6 @@ export default {
           } else action()
         })
       }
-    },
-    openAppSettingsPage() {
-      const intent = new android.content.Intent(
-        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-      )
-      intent.addCategory(android.content.Intent.CATEGORY_DEFAULT)
-      intent.setData(
-        android.net.Uri.parse(
-          "package:" + Application.android.context.getPackageName()
-        )
-      )
-      Application.android.foregroundActivity.startActivity(intent)
     },
   },
   created() {

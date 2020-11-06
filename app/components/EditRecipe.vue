@@ -28,7 +28,6 @@
         scrollBarIndicatorVisible="false"
       >
         <StackLayout width="100%" padding="0 0 128">
-          <!-- Image and camera btn -->
           <AbsoluteLayout>
             <StackLayout
               width="100%"
@@ -65,7 +64,6 @@
             </StackLayout>
           </AbsoluteLayout>
 
-          <!-- Primary information -->
           <StackLayout margin="0 16">
             <AbsoluteLayout class="inputField">
               <TextField
@@ -115,7 +113,6 @@
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <!-- Ingredients section -->
           <StackLayout margin="0 16">
             <Label text="Ingredients" class="sectionTitle" />
             <GridLayout
@@ -161,7 +158,6 @@
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <!-- Instructions section -->
           <StackLayout margin="0 16">
             <Label text="Instructions" class="sectionTitle" />
             <GridLayout
@@ -191,7 +187,6 @@
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <!-- Notes section -->
           <StackLayout margin="0 16">
             <Label text="Notes" class="sectionTitle" />
             <GridLayout
@@ -217,7 +212,6 @@
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <!-- References section -->
           <StackLayout margin="0 16">
             <Label text="References" class="sectionTitle" />
             <GridLayout
@@ -265,6 +259,7 @@ import {
   knownFolders,
   Utils,
   File,
+  ApplicationSettings,
 } from "@nativescript/core"
 import { Mediafilepicker } from "nativescript-mediafilepicker"
 
@@ -276,10 +271,11 @@ import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ListPicker from "./modal/ListPicker.vue"
-import { create } from "domain"
+import * as Permissions from "@nativescript-community/perms"
+import * as Toast from "nativescript-toast"
 
 export default {
-  props: ["recipeIndex", "recipeID", "selectedCategory"],
+  props: ["recipeIndex", "recipeID", "selectedCategory", "openAppSettingsPage"],
   data() {
     return {
       title: "New recipe",
@@ -519,14 +515,64 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.imagePicker()
+            this.permissionCheck(
+              this.imagePickerPermissionConfirmation,
+              this.imagePicker
+            )
           } else if (action != null) {
             this.recipeContent.imageSrc = null
             this.releaseBackEvent()
           }
         })
       } else {
-        this.imagePicker()
+        this.permissionCheck(
+          this.imagePickerPermissionConfirmation,
+          this.imagePicker
+        )
+      }
+    },
+    imagePickerPermissionConfirmation() {
+      return this.$showModal(ConfirmDialog, {
+        props: {
+          title: "Grant permission",
+          description:
+            "EnRecipes requires storage and camera permission in order to set recipe photo.",
+          cancelButtonText: "NOT NOW",
+          okButtonText: "CONTINUE",
+        },
+      })
+    },
+    permissionCheck(confirmation, action) {
+      if (!ApplicationSettings.getBoolean("storagePermissionAsked", false)) {
+        confirmation().then((e) => {
+          if (e) {
+            Permissions.request("camera").then((res) => {
+              let status = res[Object.keys(res)[0]]
+              if (status === "authorized") action()
+              if (status === "never_ask_again")
+                ApplicationSettings.setBoolean("storagePermissionAsked", true)
+              if (status === "denied")
+                Toast.makeText("Permission denied").show()
+            })
+          }
+        })
+      } else {
+        Permissions.check("camera").then((res) => {
+          if (res[0] !== "authorized") {
+            confirmation().then((e) => {
+              e && this.openAppSettingsPage()
+            })
+          } else {
+            Permissions.request("storage").then((res) => {
+              let status = res[Object.keys(res)[0]]
+              if (status !== "authorized") {
+                confirmation().then((e) => {
+                  e && this.openAppSettingsPage()
+                })
+              } else action()
+            })
+          }
+        })
       }
     },
     imagePicker() {
@@ -541,6 +587,7 @@ export default {
         },
       })
       mediafilepicker.on("getFiles", (image) => {
+        ApplicationSettings.setBoolean("storagePermissionAsked", true)
         vm.recipeContent.imageSrc = image.object.get("results")[0].file
       })
     },
@@ -611,7 +658,10 @@ export default {
     },
     imageSaveOperation() {
       let imgSavedToPath = path.join(
-        knownFolders.documents().getFolder("EnRecipes").path,
+        knownFolders
+          .documents()
+          .getFolder("EnRecipes")
+          .getFolder("Images").path,
         `${this.getRandomID()}.jpg`
       )
       let workerService = new WorkerService()

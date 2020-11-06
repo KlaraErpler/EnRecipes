@@ -19,12 +19,7 @@
           orientation="horizontal"
           class="appIconContainer"
         >
-          <Image src="res://icon" class="appIcon" stretch="fill" />
-          <Label
-            text="EnRecipes"
-            verticalAlignment="center"
-            class="appName orkb"
-          />
+          <Image src="res://logo_white" class="appIcon" stretch="aspectFit" />
         </StackLayout>
         <StackLayout orientation="horizontal" class="option">
           <Label class="bx" :text="icon.info" />
@@ -98,6 +93,7 @@ export default {
   data() {
     return {
       viewIsScrolled: false,
+      appTheme: "Light",
     }
   },
   methods: {

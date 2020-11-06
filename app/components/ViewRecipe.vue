@@ -474,7 +474,6 @@ export default {
         : 1
     },
     isLightMode() {
-      console.log(Application.systemAppearance())
       return Application.systemAppearance() === "light"
     },
   },
@@ -555,9 +554,7 @@ export default {
     shareRecipe() {
       let overview = `${
         this.recipe.title
-      }\n\nTime required: ${this.formattedTime(
-        this.recipe.timeRequired
-      )}\n`
+      }\n\nTime required: ${this.formattedTime(this.recipe.timeRequired)}\n`
       let shareContent = overview
       if (this.recipe.ingredients.length) {
         let ingredients = `\n\nIngredients for ${
