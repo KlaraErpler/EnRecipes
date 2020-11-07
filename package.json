@@ -1,8 +1,8 @@
 {
-  "name": "ns",
+  "name": "enrecipes",
   "version": "1.0.0",
   "description": "A native application built with NativeScript-Vue",
-  "author": "Vishnu Raghav B <design@vishnuraghav.com>",
+  "author": "Vishnu Raghav <design@vishnuraghav.com>",
   "license": "GPL",
   "scripts": {
     "run": "ns run android"

@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="initializePage" @unloaded="hideInfo">
+  <Page @loaded="initializePage" @unloaded="unLoad">
     <ActionBar height="112" margin="0" flat="true">
       <GridLayout rows="64, 48" columns="auto, *, auto,auto, auto">
         <Label
@@ -80,7 +80,7 @@
                   horizontalAlignment="center"
                   class="bx"
                   fontSize="160"
-                  :text="icon.food"
+                  :text="icon.image"
                 />
               </StackLayout>
               <StackLayout margin="16 8 144">
@@ -185,11 +185,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.ingredients.length"
-              rows="*"
+              rows="96, auto, *"
               columns="*"
               class="emptyState"
             >
-              <StackLayout col="0" row="0" class="noResult">
+              <StackLayout col="0" row="1" class="noResult">
                 <Label class="bx icon" :text="icon.item" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -231,7 +231,7 @@
                   v-if="filterTrylater"
                   class="ingredient-check"
                   checkPadding="16"
-                  :fillColor="`${isLightMode ? '#ff5722' : '#ff7043'}`"
+                  :fillColor="`${isLightMode ? '#ff5200' : '#ff7043'}`"
                   :text="
                     `${
                       roundedQuantity(item.quantity)
@@ -264,11 +264,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.instructions.length"
-              rows="*"
+              rows="96, auto, *"
               columns="*"
               class="emptyState"
             >
-              <StackLayout col="0" row="0" class="noResult">
+              <StackLayout col="0" row="1" class="noResult">
                 <Label class="bx icon" :text="icon.step" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -309,11 +309,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.notes.length"
-              rows="*"
+              rows="96, auto, *"
               columns="*"
               class="emptyState"
             >
-              <StackLayout col="0" row="0" class="noResult">
+              <StackLayout col="0" row="1" class="noResult">
                 <Label class="bx icon" :text="icon.note" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -351,11 +351,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.references.length"
-              rows="*"
+              rows="96, auto, *"
               columns="*"
               class="emptyState"
             >
-              <StackLayout col="0" row="0" class="noResult">
+              <StackLayout col="0" row="1" class="noResult">
                 <Label class="bx icon" :text="icon.source" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -488,6 +488,7 @@ export default {
       }, 500)
       this.yieldMultiplier = this.recipe.yield.quantity
       this.showFab = true
+      this.toggleScreenOn(true)
     },
     niceDates(time) {
       let lastTried = new Date(time).getTime()
@@ -515,12 +516,13 @@ export default {
         )}!`,
         titleColor: new Color(`${this.isLightMode ? "#fff" : "#111"}`),
         backgroundColor: new Color(
-          `${this.isLightMode ? "#ff5722" : "#ff7043"}`
+          `${this.isLightMode ? "#ff5200" : "#ff7043"}`
         ),
       })
     },
-    hideInfo() {
+    unLoad() {
       feedback.hide()
+      this.toggleScreenOn(false)
     },
     highlight(args) {
       let temp = args.object.className
@@ -647,6 +649,20 @@ export default {
       setText(url).then((e) => {
         Toast.makeText("URL Copied").show()
       })
+    },
+    toggleScreenOn(boolean) {
+      let activity =
+        Application.android.foregroundActivity ||
+        Application.android.startActivity
+      let window = activity.getWindow()
+      if (boolean)
+        window.addFlags(
+          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+      else
+        window.clearFlags(
+          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
     },
   },
   created() {

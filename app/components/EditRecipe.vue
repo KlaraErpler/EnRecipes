@@ -48,7 +48,7 @@
                 horizontalAlignment="center"
                 class="bx"
                 fontSize="160"
-                :text="icon.food"
+                :text="icon.image"
               />
             </StackLayout>
             <StackLayout width="100%" :top="screenWidth - 42">
@@ -275,7 +275,14 @@ import * as Permissions from "@nativescript-community/perms"
 import * as Toast from "nativescript-toast"
 
 export default {
-  props: ["recipeIndex", "recipeID", "selectedCategory", "openAppSettingsPage"],
+  props: [
+    "recipeIndex",
+    "recipeID",
+    "selectedCategory",
+    "openAppSettingsPage",
+    "filterFavorites",
+    "filterTrylater",
+  ],
   data() {
     return {
       title: "New recipe",
@@ -712,6 +719,7 @@ export default {
       )
       if (this.selectedCategory)
         this.recipeContent.category = this.selectedCategory
+      if (this.filterFavorites) this.recipeContent.isFavorite = true
       this.newRecipeID = this.getRandomID()
     }
     this.hijackBackEvent()

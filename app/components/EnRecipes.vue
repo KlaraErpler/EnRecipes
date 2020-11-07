@@ -66,7 +66,7 @@
           <GridLayout
             class="recipeItem"
             rows="112"
-            columns="112, 100%"
+            columns="112, *"
             androidElevation="1"
           >
             <GridLayout class="imageHolder card" rows="112" columns="112">
@@ -87,7 +87,7 @@
                 horizontalAlignment="center"
                 class="bx"
                 fontSize="56"
-                :text="icon.food"
+                :text="icon.image"
               />
             </GridLayout>
             <StackLayout class="recipeInfo" col="1">
@@ -114,10 +114,10 @@
           <StackLayout height="128"></StackLayout>
         </v-template>
       </RadListView>
-      <GridLayout rows="*" columns="*" class="emptyState">
+      <GridLayout rows="96, auto, *" columns="*" class="emptyState">
         <StackLayout
           col="0"
-          row="0"
+          row="1"
           class="noResult"
           v-if="!recipes.length && !filterFavorites && !filterTrylater"
         >
@@ -135,7 +135,7 @@
         </StackLayout>
         <StackLayout
           col="0"
-          row="0"
+          row="1"
           class="noResult"
           v-if="!filteredRecipes.length && searchQuery"
           verticalAlignment="top"
@@ -155,7 +155,7 @@
         </StackLayout>
         <StackLayout
           col="0"
-          row="0"
+          row="1"
           class="noResult"
           v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
         >
@@ -168,7 +168,7 @@
         </StackLayout>
         <StackLayout
           col="0"
-          row="0"
+          row="1"
           class="noResult"
           v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
         >
@@ -178,7 +178,6 @@
             text="Nothing to try next!"
             textWrap="true"
           />
-          <!-- text="Your Try later recipes will be listed here" -->
           <Label
             text="Recipes you wanted to try later will be listed here"
             textWrap="true"
@@ -436,6 +435,7 @@ export default {
         props: {
           selectedCategory: this.selectedCategory,
           openAppSettingsPage: this.openAppSettingsPage,
+          filterFavorites: this.filterFavorites,
         },
       })
     },
