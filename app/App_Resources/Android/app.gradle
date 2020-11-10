@@ -15,14 +15,14 @@
 
 android {
   defaultConfig {
-    versionCode 2
+    versionCode 1
     versionName '1.0.0'
     applicationId 'com.vishnuraghav.enrecipes'
     minSdkVersion 21
     generatedDensities = []
     ndk {
       abiFilters.clear()
-      abiFilters.addAll(['arm64-v8a','x86'])
+      abiFilters.addAll(['arm64-v8a'])
   }
   }
   aaptOptions {

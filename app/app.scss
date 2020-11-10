@@ -1,27 +1,24 @@
 // NativeScript core theme
 // @see https://docs.nativescript.org/ui/theme
 @import "~@nativescript/theme/core";
-
 // Override variables here
-
-$grayD4: #212121;
-$grayD3: #424242;
-$grayD2: #616161;
-$grayD1: #757575;
-$gray: #9e9e9e;
-$grayL1: #e0e0e0;
-$grayL2: #eeeeee;
-$grayL3: #f5f5f5;
-$grayL4: #fafafa;
+$gray1: #f1f3f5;
+$gray2: #e9ecef;
+$gray3: #dee2e6;
+$gray4: #ced4da;
+$gray5: #adb5bd; // rgb(173,181,189)
+$gray6: #868e96;
+$gray7: #495057;
+$gray8: #343a40;
+$gray9: #212529;
 $orange: #ff5200;
-
+$fabRipple: #ff864d;
+$red: #c92a2a;
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
 
-// * {
-//   font-size: 16;
-// }
-Page {
+Page,
+.ns-modal {
   font-family: "Orkney-Regular";
 }
 .orkm {
@@ -36,26 +33,30 @@ Page {
     font-size: 16;
   }
 }
-
 .ns-light {
   Page,
   ActionBar,
   SearchBar,
   TabView,
   ListPicker {
-    color: $grayD4;
-    background: $grayL4;
+    color: $gray9;
+    background: $gray1;
   }
+  MDRipple,
+  MDButton {
+    ripple-color: rgba($gray6, 0.2);
+  }
+
   TabView {
-    tab-background-color: $grayL4;
-    selected-tab-text-color: $grayD4;
+    tab-background-color: $gray1;
+    selected-tab-text-color: $gray9;
   }
   .hr {
-    border-color: $grayL2;
+    border-color: $gray3;
   }
   .sd,
   .fieldLabel {
-    background: $grayL4;
+    background: $gray1;
   }
   .referenceItem,
   .recipeText,
@@ -63,36 +64,32 @@ Page {
   .recipeItem {
     background: white;
   }
-  .option-highlight,
-  .selected-sd-item {
-    background: $grayL2;
-  }
+
   .sd-item,
   .sd-group-header,
   .time .bx {
-    color: $grayD2;
+    color: $gray8;
   }
-  .fab-button {
-    color: white;
-    background-color: $orange;
-  }
-  .option,
-  .icon-option {
-    .bx,
-    .option-info {
-      color: $grayD2;
-    }
+  .option .bx,
+  .option .info {
+    color: $gray7;
   }
   .imageHolder {
-    color: $gray;
-    background: $grayL2;
+    color: $gray4;
+    background: $gray3;
   }
   .count {
-    color: $grayL4;
-    background: $grayD4;
+    color: $gray1;
+    background: $gray9;
   }
   .instruction {
-    border-color: $grayD4;
+    border-color: $gray9;
+  }
+  MDProgress {
+    progress-background-color: $gray4;
+  }
+  MDFloatingActionButton {
+    color: white;
   }
 }
 
@@ -102,56 +99,56 @@ Page {
   SearchBar,
   TabView,
   ListPicker {
-    color: $grayL4;
-    background: $grayD4;
+    color: $gray1;
+    background: $gray9;
   }
   TabView {
-    tab-background-color: $grayD4;
-    selected-tab-text-color: $grayL4;
+    tab-background-color: $gray9;
+    selected-tab-text-color: $gray1;
   }
+  MDRipple,
+  MDButton {
+    ripple-color: rgba($gray4, 0.1);
+  }
+
   .hr {
     border-color: #111;
   }
   .sd,
   .fieldLabel {
-    background: $grayD4;
+    background: $gray9;
   }
   .referenceItem,
   .recipeText,
   .overviewItem,
-  .recipeItem,
-  .option-highlight {
-    background: $grayD3;
+  .recipeItem {
+    background: $gray8;
   }
   .sd-item,
   .sd-group-header,
   .time .bx {
-    color: $grayL2;
+    color: $gray3;
   }
-  .selected-sd-item {
-    background: #111;
-  }
-  .fab-button {
-    color: #111;
-    background: $orange;
-  }
-  .option,
-  .icon-option {
-    .bx,
-    .option-info {
-      color: $gray;
-    }
+  .option .bx,
+  .option .info {
+    color: $gray5;
   }
   .imageHolder {
-    color: $gray;
+    color: $gray8;
     background: #111;
   }
   .count {
-    color: $grayD4;
-    background: $grayL4;
+    color: $gray9;
+    background: $gray1;
   }
   .instruction {
-    border-color: $grayL4;
+    border-color: $gray1;
+  }
+  MDProgress {
+    progress-background-color: $gray6;
+  }
+  MDFloatingActionButton {
+    color: $gray9;
   }
 }
 // -----------------------------
@@ -165,48 +162,56 @@ TimePickerField {
   padding: 14 14 13;
   margin: 8 0 0 0;
   border-radius: 4;
-  border-color: $gray;
-  placeholder-color: $gray;
+  border-color: $gray6;
+  placeholder-color: $gray6;
 }
 TextView {
   line-height: 12;
 }
+SearchBar {
+  font-family: "Orkney-Regular";
+  font-size: 16;
+  text-field-hint-color: $gray6;
+}
 TabView {
-  tab-text-color: $gray;
+  tab-text-color: $gray6;
 }
 .inputField {
-  margin-top: 16;
+  margin-bottom: 14;
 }
 .fieldLabel {
   font-size: 12;
-  margin-left: 8;
-  padding: 0 8;
+  margin-left: 12;
+  padding: 0 4;
 }
-// prettier-ignore
-.progressContainer{
+.progressContainer {
   width: 100%;
 }
-// prettier-ignore
 .text-btn,
 .group-header,
 .category,
-ActivityIndicator,
-Progress {
+MDActivityIndicator {
   color: $orange;
+}
+MDProgress {
+  progress-color: $orange;
 }
 // -----------------------------
 // ActionBar
 ActionBar {
   margin: 0;
-  padding: 0;
+  padding: 0 8;
   height: 64;
-  .bx {
-    padding: 16 16 16 4;
+  GridLayout {
+    padding: 0;
     margin: 0;
-    vertical-alignment: center;
+  }
+  MDButton.bx {
+    padding: 0;
+    margin: 0;
   }
   .title {
-    padding-left: 8;
+    padding-left: 12;
     text-align: left;
     font-size: 18;
   }
@@ -218,7 +223,6 @@ ActionBar {
 }
 .sd-item {
   border-radius: 4;
-  padding: 0 16;
   height: 48;
   vertical-alignment: center;
   .bx {
@@ -226,25 +230,50 @@ ActionBar {
   }
   &.selected-sd-item {
     color: $orange;
+    background: rgba($orange, 0.1);
+    MDRipple {
+      ripple-color: transparent;
+    }
   }
   // prettier-ignore
   Label {
+    padding: 0 16 0 0;
     font-size: 16;
     vertical-alignment: center;
+    &.bx{
+      padding: 0 0 0 16;
+    }
+  }
+  MDRipple {
+    padding: 0 16;
   }
 }
 .sd-group-header {
   width: 100%;
-  padding: 8 8 16;
+  padding: 8 0 8 8;
+}
+MDRipple {
+  border-radius: 4;
+}
+MDButton {
+  padding: 8;
+  min-width: 0;
+  min-height: 0;
+  &.bx {
+    padding: 0;
+    width: 48;
+    height: 48;
+    margin: 0 8 0 0;
+    border-radius: 99;
+  }
 }
 // -----------------------------
 // HOME
-
-.emptyState {
+.emptyStateContainer {
   width: 100%;
   height: 100%;
 }
-.noResult {
+.emptyState {
   line-height: 8;
   padding: 0 32;
   text-align: center;
@@ -253,7 +282,7 @@ ActionBar {
   .icon {
     font-size: 64;
     text-align: center;
-    color: $gray;
+    color: $gray5;
     margin-bottom: 16;
   }
   .logo {
@@ -270,6 +299,9 @@ ActionBar {
       font-size: 24;
       vertical-alignment: center;
     }
+  }
+  &.noResult {
+    margin-top: 32;
   }
 }
 // -----------------------------
@@ -313,7 +345,7 @@ RadListView {
 }
 .swipe-item {
   margin: 0 8;
-  background: #c62828;
+  background: $red;
   color: #fff;
   height: 128;
   border-radius: 4;
@@ -324,16 +356,18 @@ RadListView {
   padding: 8;
 }
 .main-container {
-  padding: 16 8 128;
+  padding: 8 8 128;
   .option {
     font-size: 16;
-    padding: 16;
     .bx {
-      margin: 0 24 0 0;
+      margin: 16 24 16 16;
     }
-    .option-info {
+    .info {
       font-size: 12;
       line-height: 4;
+    }
+    StackLayout {
+      margin: 16 24 16 0;
     }
   }
 }
@@ -374,17 +408,16 @@ RadListView {
     margin-top: 12;
     .overviewItem {
       border-radius: 4;
-      padding: 8;
       margin: 8;
       android-elevation: 1;
       .bx {
-        color: $gray;
-        width: 24;
+        padding: 12 0 0 12;
+        color: $gray6;
         horizontal-alignment: left;
       }
       .itemCount {
         font-size: 16;
-        padding: 8 4 4;
+        padding: 8 12 12;
       }
     }
   }
@@ -394,7 +427,7 @@ RadListView {
     padding-bottom: 12;
   }
   .ingredient-check {
-    margin-bottom: 12;
+    padding-bottom: 0;
   }
   .count {
     width: 24;
@@ -432,15 +465,14 @@ RadListView {
     border-width: 0;
   }
   .referenceItem {
-    padding: 14 16;
-    margin: 8 16 8;
+    margin: 8 16;
     border-radius: 4;
     font-size: 16;
     .bx {
       font-size: 24;
     }
     .recipeLink {
-      padding: 0 16 0 0;
+      padding: 16;
       margin: 0;
     }
   }
@@ -448,7 +480,7 @@ RadListView {
     font-size: 16;
     line-height: 6;
     padding: 16;
-    margin: 8 16 8;
+    margin: 8 16;
     border-radius: 4;
   }
 }
@@ -458,14 +490,10 @@ RadListView {
   width: 100%;
   height: 100%;
 }
-.fab-button {
-  height: 56;
-  width: 56;
-  border-radius: 28;
-  padding: 16;
+MDFloatingActionButton {
   margin: 16;
-  vertical-alignment: center;
-  android-elevation: 6;
+  background: $orange;
+  ripple-color: $fabRipple;
 }
 // -----------------------------
 // EDIT RECIPE
@@ -475,51 +503,67 @@ RadListView {
 .text-btn {
   font-size: 14;
   horizontal-alignment: left;
-  padding: 16;
+  padding: 12;
   margin: 8 0 0 0;
+  min-width: 0;
 }
-.closeBtn {
+MDButton.closeBtn {
   padding: 4;
   margin-top: 16;
+  min-width: 0;
   vertical-alignment: top;
 }
 // -----------------------------
 // DIALOGS
 .dialogContainer {
   width: 100%;
-  color: $grayD4;
-  background: $grayL4;
+  color: $gray9;
+  background: $gray1;
   font-size: 16;
   &.dark {
-    color: $grayL4;
-    background: $grayD4;
+    color: $gray1;
+    background: $gray9;
   }
   .dialogTitle {
-    padding: 24 24 12;
+    padding: 24 24 16;
     font-size: 20;
   }
   .dialogInput {
     padding: 0 24 16;
   }
   .dialogDescription {
-    line-height: 4;
-    padding: 0 24 16;
+    line-height: 6;
+    padding: 0 24 8;
   }
   .actionItem {
-    padding: 8 24;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 16 24;
     margin: 0;
   }
   .actionsContainer {
-    padding: 24;
+    padding: 8;
   }
   .action {
     font-size: 12;
+    padding: 12;
+    min-width: 0;
     color: #ff7043;
+  }
+  MDButton.actionIcon {
+    width: auto;
+    height: auto;
+    min-width: 0;
+    padding: 16 24;
+    border-radius: 4;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 16 16;
   }
 }
 
 // -----------------------------
-ActivityIndicator {
+MDActivityIndicator {
   width: 24;
   height: 24;
   margin: 16;

@@ -2,28 +2,24 @@
   <Page>
     <StackLayout class="dialogContainer" :class="appTheme">
       <Label class="dialogTitle orkm" :text="title" />
-      <Label
-        v-if="description"
-        class="dialogDescription"
-        :text="description"
-        textWrap="true"
-      />
-      <GridLayout rows="auto" columns="*, auto, auto" class="actionsContainer">
+      <GridLayout rows="auto, auto" columns="*" class="actionsContainer">
         <MDButton
           :rippleColor="rippleColor"
-          variant="text"
-          col="1"
-          class="action orkm"
-          :text="cancelButtonText"
-          @tap="$modal.close(false)"
+          :backgroundColor="backgroundColor"
+          row="0"
+          class="actionIcon"
+          src="res://photo"
+          text="Photo"
+          @tap="$modal.close('photo')"
         />
         <MDButton
           :rippleColor="rippleColor"
-          variant="text"
-          col="2"
-          class="action orkm"
-          :text="okButtonText"
-          @tap="$modal.close(true)"
+          :backgroundColor="backgroundColor"
+          row="1"
+          class="actionIcon"
+          src="res://detail"
+          text="Recipe"
+          @tap="$modal.close('recipe')"
         />
       </GridLayout>
     </StackLayout>
@@ -32,9 +28,11 @@
 
 <script>
 import { Application } from "@nativescript/core"
+import { mapState } from "vuex"
 export default {
-  props: ["title", "description", "cancelButtonText", "okButtonText"],
+  props: ["title"],
   computed: {
+    ...mapState(["icon"]),
     appTheme() {
       return Application.systemAppearance()
     },
@@ -42,6 +40,9 @@ export default {
       return this.appTheme == "light"
         ? "rgba(134,142,150,0.2)"
         : "rgba(206,212,218,0.1)"
+    },
+    backgroundColor() {
+      return this.appTheme == "light" ? "#fff" : "#343a40"
     },
   },
 }

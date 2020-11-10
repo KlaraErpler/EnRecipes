@@ -1,8 +1,9 @@
 <template>
-  <Page @loaded="initializePage" @unloaded="unLoad">
+  <Page @loaded="onPageLoad" @unloaded="onPageUnload">
     <ActionBar height="112" margin="0" flat="true">
       <GridLayout rows="64, 48" columns="auto, *, auto,auto, auto">
-        <Label
+        <MDButton
+          variant="text"
           row="0"
           col="0"
           class="bx"
@@ -23,30 +24,36 @@
             verticalAlignment="bottom"
           />
         </ScrollView>
-        <Label
-          row="0"
-          col="3"
-          class="bx"
-          :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
-          @tap="toggleFavorite"
-        />
-        <Label
-          v-if="!filterTrylater"
-          row="0"
-          col="4"
-          class="bx"
-          :text="recipe.tried ? icon.trylaterOutline : icon.trylater"
-          @tap="toggleTrylater"
-        />
-        <Label
-          v-if="!busy"
-          row="0"
-          col="2"
-          class="bx"
-          :text="icon.edit"
-          @tap="editRecipe"
-        />
-        <ActivityIndicator v-else row="0" col="2" :busy="busy" />
+        <FlexboxLayout row="0" col="2" alignItems="center">
+          <MDButton
+            variant="text"
+            v-if="!busy"
+            class="bx"
+            :text="icon.edit"
+            @tap="editRecipe"
+          />
+          <MDActivityIndicator v-else :busy="busy" />
+          <MDButton
+            variant="text"
+            class="bx"
+            :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
+            @tap="toggleFavorite"
+          />
+          <MDButton
+            variant="text"
+            v-if="!filterTrylater"
+            class="bx"
+            :text="recipe.tried ? icon.trylaterOutline : icon.trylater"
+            @tap="toggleTrylater"
+          />
+          <MDButton
+            variant="text"
+            v-else
+            class="bx"
+            :text="icon.share"
+            @tap="shareHandler"
+          />
+        </FlexboxLayout>
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
@@ -91,27 +98,26 @@
                   :text="recipe.title"
                   textWrap="true"
                 />
-                <Label class="time">
-                  <FormattedString>
-                    <Span text="Time required:"></Span>
-                    <Span
-                      :text="` ${formattedTime(recipe.timeRequired)}`"
-                    ></Span>
-                  </FormattedString>
-                </Label>
+                <StackLayout orientation="horizontal" class="time">
+                  <Label text="Time required:" />
+                  <Label :text="` ${formattedTime(recipe.timeRequired)}`" />
+                </StackLayout>
                 <GridLayout
                   rows="auto,  auto"
                   columns="*,  *"
                   class="overviewContainer"
                 >
-                  <StackLayout
+                  <GridLayout
                     class="overviewItem"
                     row="0"
                     col="0"
-                    @tap="selectedTabIndex = 1"
+                    rows="auto, auto"
+                    columns="*"
                   >
-                    <Label class="bx" :text="icon.item" />
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 1" />
+                    <Label row="0" class="bx" :text="icon.item" />
                     <Label
+                      row="1"
                       class="itemCount"
                       :text="
                         `${recipe.ingredients.length} ${
@@ -122,15 +128,18 @@
                       "
                       textWrap="true"
                     />
-                  </StackLayout>
-                  <StackLayout
+                  </GridLayout>
+                  <GridLayout
                     class="overviewItem"
                     row="0"
                     col="1"
-                    @tap="selectedTabIndex = 2"
+                    rows="auto, auto"
+                    columns="*"
                   >
-                    <Label class="bx" :text="icon.step" />
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 2" />
+                    <Label row="0" class="bx" :text="icon.step" />
                     <Label
+                      row="1"
                       class="itemCount"
                       :text="
                         `${recipe.instructions.length} ${
@@ -139,15 +148,18 @@
                       "
                       textWrap="true"
                     />
-                  </StackLayout>
-                  <StackLayout
+                  </GridLayout>
+                  <GridLayout
                     class="overviewItem"
                     row="1"
                     col="0"
-                    @tap="selectedTabIndex = 3"
+                    rows="auto, auto"
+                    columns="*"
                   >
-                    <Label class="bx" :text="icon.note" />
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 3" />
+                    <Label row="0" class="bx" :text="icon.note" />
                     <Label
+                      row="1"
                       class="itemCount"
                       :text="
                         `${recipe.notes.length} ${
@@ -156,15 +168,18 @@
                       "
                       textWrap="true"
                     />
-                  </StackLayout>
-                  <StackLayout
+                  </GridLayout>
+                  <GridLayout
                     class="overviewItem"
                     row="1"
                     col="1"
-                    @tap="selectedTabIndex = 4"
+                    rows="auto, auto"
+                    columns="*"
                   >
-                    <Label class="bx" :text="icon.source" />
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 4" />
+                    <Label row="0" class="bx" :text="icon.source" />
                     <Label
+                      row="1"
                       class="itemCount"
                       :text="
                         `${recipe.references.length} ${
@@ -175,7 +190,7 @@
                       "
                       textWrap="true"
                     />
-                  </StackLayout>
+                  </GridLayout>
                 </GridLayout>
               </StackLayout>
             </StackLayout>
@@ -185,11 +200,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.ingredients.length"
-              rows="96, auto, *"
+              rows="*, auto, *, 88"
               columns="*"
-              class="emptyState"
+              class="emptyStateContainer"
             >
-              <StackLayout col="0" row="1" class="noResult">
+              <StackLayout col="0" row="1" class="emptyState">
                 <Label class="bx icon" :text="icon.item" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -199,7 +214,7 @@
                 <Label text="to add some ingredients" textWrap="true" />
               </StackLayout>
             </GridLayout>
-            <StackLayout v-else padding="16 16 134">
+            <StackLayout v-else padding="32 16 134">
               <AbsoluteLayout class="inputField">
                 <TextField
                   width="50%"
@@ -212,7 +227,7 @@
                   :text="`Required ${recipe.yield.unit.toLowerCase()}`"
                 />
               </AbsoluteLayout>
-              <StackLayout margin="24 0 16 0">
+              <StackLayout margin="16 0">
                 <Label
                   class="title orkm"
                   :text="
@@ -231,7 +246,7 @@
                   v-if="filterTrylater"
                   class="ingredient-check"
                   checkPadding="16"
-                  :fillColor="`${isLightMode ? '#ff5200' : '#ff7043'}`"
+                  fillColor="#ff5200"
                   :text="
                     `${
                       roundedQuantity(item.quantity)
@@ -264,11 +279,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.instructions.length"
-              rows="96, auto, *"
+              rows="*, auto, *, 88"
               columns="*"
-              class="emptyState"
+              class="emptyStateContainer"
             >
-              <StackLayout col="0" row="1" class="noResult">
+              <StackLayout col="0" row="1" class="emptyState">
                 <Label class="bx icon" :text="icon.step" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -309,11 +324,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.notes.length"
-              rows="96, auto, *"
+              rows="*, auto, *, 88"
               columns="*"
-              class="emptyState"
+              class="emptyStateContainer"
             >
-              <StackLayout col="0" row="1" class="noResult">
+              <StackLayout col="0" row="1" class="emptyState">
                 <Label class="bx icon" :text="icon.note" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -351,11 +366,11 @@
           <ScrollView scrollBarIndicatorVisible="false">
             <GridLayout
               v-if="!recipe.references.length"
-              rows="96, auto, *"
+              rows="*, auto, *, 88"
               columns="*"
-              class="emptyState"
+              class="emptyStateContainer"
             >
-              <StackLayout col="0" row="1" class="noResult">
+              <StackLayout col="0" row="1" class="emptyState">
                 <Label class="bx icon" :text="icon.source" textWrap="true" />
                 <StackLayout orientation="horizontal" class="title orkm">
                   <Label text="Use the " />
@@ -375,8 +390,8 @@
                   columns="*, auto"
                   class="referenceItem"
                   androidElevation="1"
-                  @longPress="copyURL($event, reference)"
                 >
+                  <MDRipple colSpan="3" @tap="copyURL(reference)" />
                   <Label
                     col="0"
                     verticalAlignment="center"
@@ -384,11 +399,13 @@
                     :text="reference"
                     textWrap="false"
                   />
-                  <Label
+                  <MDButton
+                    variant="text"
+                    automationText="openURL"
                     col="1"
                     class="bx"
                     :text="icon.source"
-                    @tap="openURL($event, reference)"
+                    @tap="openURL(reference)"
                   />
                 </GridLayout>
                 <Label
@@ -402,22 +419,20 @@
           </ScrollView>
         </TabViewItem>
       </TabView>
-      <GridLayout id="btnFabContainer" rows="*,auto" columns="*,auto">
-        <Label
+      <GridLayout id="btnFabContainer" rows="*, auto" columns="*, auto">
+        <MDFloatingActionButton
           row="1"
           col="1"
-          class="bx fab-button"
-          :text="icon.check"
+          src="res://check"
           @tap="recipeTried"
           v-if="filterTrylater"
         />
         <transition name="dolly" appear>
-          <Label
+          <MDFloatingActionButton
             row="1"
             col="1"
-            class="bx fab-button"
-            :text="icon.share"
-            @tap="shareRecipe"
+            src="res://share"
+            @tap="shareHandler"
             v-if="!filterTrylater && showFab"
           />
         </transition>
@@ -428,22 +443,24 @@
 
 <script>
 import {
-  Screen,
-  Utils,
-  ImageSource,
+  Color,
   Device,
   File,
-  Color,
+  knownFolders,
+  path,
+  ImageSource,
+  Screen,
+  Utils,
 } from "@nativescript/core"
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import * as Toast from "nativescript-toast"
-import * as SocialShare from "nativescript-social-share-ns-7"
+import * as SocialShare from "@nativescript/social-share"
 import { setText } from "nativescript-clipboard"
 import { Application } from "@nativescript/core"
-
-import { mapState, mapActions } from "vuex"
+import { mapActions, mapState } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
+import ShareChooser from "./modal/ShareChooser.vue"
 
 let feedback = new Feedback()
 
@@ -480,7 +497,7 @@ export default {
   },
   methods: {
     ...mapActions(["toggleStateAction", "setCurrentComponentAction"]),
-    initializePage() {
+    onPageLoad() {
       this.releaseGlobalBackEvent()
       this.busy = false
       setTimeout((e) => {
@@ -488,8 +505,14 @@ export default {
       }, 500)
       this.yieldMultiplier = this.recipe.yield.quantity
       this.showFab = true
-      this.toggleScreenOn(true)
+      this.keepScreenOn(true)
     },
+    onPageUnload() {
+      feedback.hide()
+      this.keepScreenOn(false)
+    },
+
+    // HELPERS
     niceDates(time) {
       let lastTried = new Date(time).getTime()
       let now = new Date().getTime()
@@ -509,25 +532,14 @@ export default {
     selectedIndexChange(args) {
       this.selectedTabIndex = args.object.selectedIndex
     },
-    showInfo() {
+    showLastTried() {
       feedback.show({
         title: `You tried this recipe ${this.niceDates(
           this.recipe.lastTried
         )}!`,
-        titleColor: new Color(`${this.isLightMode ? "#fff" : "#111"}`),
-        backgroundColor: new Color(
-          `${this.isLightMode ? "#ff5200" : "#ff7043"}`
-        ),
+        titleColor: new Color(`${this.isLightMode ? "#f1f3f5" : "#212529"}`),
+        backgroundColor: new Color("#ff5200"),
       })
-    },
-    unLoad() {
-      feedback.hide()
-      this.toggleScreenOn(false)
-    },
-    highlight(args) {
-      let temp = args.object.className
-      args.object.className = `${temp} option-highlight`
-      setTimeout(() => (args.object.className = temp), 100)
     },
     roundedQuantity(quantity) {
       return (
@@ -538,6 +550,32 @@ export default {
         ) / 100
       )
     },
+    keepScreenOn(boolean) {
+      let activity =
+        Application.android.foregroundActivity ||
+        Application.android.startActivity
+      let window = activity.getWindow()
+      if (boolean)
+        window.addFlags(
+          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+      else
+        window.clearFlags(
+          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
+    },
+    formattedTime(time) {
+      let t = time.split(":")
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
+      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
+    },
+    isValidURL(string) {
+      let pattern = new RegExp("^https?|www", "ig")
+      return pattern.test(string)
+    },
+
+    // NAVIGATION HANDLERS
     editRecipe() {
       this.showFab = false
       this.busy = true
@@ -554,6 +592,47 @@ export default {
         // backstackVisible: false,
       })
     },
+
+    // SHARE ACTION
+    shareHandler() {
+      if (this.recipe.imageSrc) {
+        this.$showModal(ShareChooser, {
+          props: {
+            title: "Share",
+          },
+        }).then((result) => {
+          switch (result) {
+            case "photo":
+              // let cacheFilePath = path.join(
+              //   knownFolders.temp().path,
+              //   `${this.recipe.title}.jpg`
+              // )
+              // if (!File.exists(cacheFilePath)) {
+              //   File.fromPath(cacheFilePath).writeSync(
+              //     File.fromPath(this.recipe.imageSrc).readSync()
+              //   )
+              // }
+              // let shareFile = new ShareFile()
+              // shareFile.open({
+              //   path: cacheFilePath,
+              //   title: "Share recipe photo using",
+              // })
+              ImageSource.fromFile(this.recipe.imageSrc).then((res) => {
+                SocialShare.shareImage(res, "Share recipe photo using")
+              })
+              break
+            case "recipe":
+              this.shareRecipe()
+              break
+
+            default:
+              break
+          }
+        })
+      } else {
+        this.shareRecipe()
+      }
+    },
     shareRecipe() {
       let overview = `${
         this.recipe.title
@@ -564,9 +643,11 @@ export default {
           this.yieldMultiplier
         } ${this.recipe.yield.unit.toLowerCase()}\n\n`
         this.recipe.ingredients.forEach((e) => {
-          ingredients += `- ${this.roundedQuantity(e.quantity)} ${e.unit} ${
-            e.item
-          }\n`
+          ingredients += `- ${
+            e.quantity
+              ? this.roundedQuantity(e.quantity) + " " + e.unit + " "
+              : ""
+          }${e.item}\n`
         })
         shareContent += ingredients
       }
@@ -592,15 +673,14 @@ export default {
         shareContent += references
       }
       let sharenote =
-        "\nCreated and shared via EnRecipes.\nDownload the app on f-droid: https://www.vishnuraghav.com/"
+        "\nCreated and shared via EnRecipes.\nGet it on F-Droid."
 
       shareContent += sharenote
 
-      SocialShare.shareText(
-        shareContent,
-        "How would you like to share this recipe?"
-      )
+      SocialShare.shareText(shareContent, "Share recipe using")
     },
+
+    // DATA HANDLERS
     toggle(key, setDate) {
       this.toggleStateAction({
         index: this.recipeIndex,
@@ -624,45 +704,21 @@ export default {
         : this.filterTrylater
         ? Toast.makeText("You tried this recipe").show()
         : Toast.makeText("Removed from Try later").show()
-      // : Toast.makeText("You tried this recipe").show()
       this.toggle("tried")
     },
     recipeTried() {
       this.toggle("tried", true)
       this.$navigateBack()
     },
-    formattedTime(time) {
-      let t = time.split(":")
-      let h = parseInt(t[0])
-      let m = parseInt(t[1])
-      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
-    },
-    isValidURL(string) {
-      let pattern = new RegExp("^https?|www", "ig")
-      return pattern.test(string)
-    },
-    openURL(args, url) {
-      // this.highlight(args)
+
+    // URL ACTION
+    openURL(url) {
       Utils.openUrl(url)
     },
-    copyURL(args, url) {
+    copyURL(url) {
       setText(url).then((e) => {
         Toast.makeText("URL Copied").show()
       })
-    },
-    toggleScreenOn(boolean) {
-      let activity =
-        Application.android.foregroundActivity ||
-        Application.android.startActivity
-      let window = activity.getWindow()
-      if (boolean)
-        window.addFlags(
-          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
-      else
-        window.clearFlags(
-          android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
     },
   },
   created() {
@@ -670,7 +726,10 @@ export default {
   },
   mounted() {
     this.showFab = true
-    setTimeout((e) => this.recipe.tried && this.showInfo(), 500)
+    setTimeout(
+      (e) => this.recipe.tried && this.recipe.lastTried && this.showLastTried(),
+      500
+    )
   },
 }
 </script>

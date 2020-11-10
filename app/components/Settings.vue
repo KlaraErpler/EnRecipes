@@ -1,9 +1,10 @@
 <template>
-  <Page @loaded="initializePage">
+  <Page @loaded="onPageLoad">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *">
-        <Label
-          class="bx"
+        <MDButton
+          class="bx left"
+          variant="text"
           :text="icon.menu"
           automationText="Back"
           @tap="showDrawer"
@@ -14,55 +15,59 @@
     </ActionBar>
     <ScrollView scrollBarIndicatorVisible="false" @scroll="onScroll">
       <StackLayout class="main-container">
-        <Label text="Interface" class="group-header" />
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="selectThemes"
-        >
-          <Label verticalAlignment="center" class="bx" :text="icon.theme" />
-          <StackLayout>
+        <Label text="Interface" class="group-header orkm" />
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple colSpan="2" @tap="selectThemes" />
+          <Label
+            col="0"
+            verticalAlignment="center"
+            class="bx"
+            :text="icon.theme"
+          />
+          <StackLayout col="1">
             <Label text="Theme" />
-            <Label :text="appTheme" class="option-info" textWrap="true" />
+            <Label :text="appTheme" class="info" textWrap="true" />
           </StackLayout>
-        </StackLayout>
+        </GridLayout>
         <StackLayout class="hr m-10"></StackLayout>
-        <Label text="Database" class="group-header" />
-        <StackLayout orientation="horizontal" class="option" @tap="backupCheck">
-          <Label class="bx" :text="icon.export" />
-          <StackLayout>
+        <Label text="Database" class="group-header orkm" />
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple colSpan="2" @tap="exportCheck" />
+          <Label col="0" class="bx" :text="icon.export" />
+          <StackLayout col="1">
             <Label text="Export a full backup" />
             <GridLayout
               class="progressContainer"
               v-if="backupInProgress"
               columns="*, 64"
             >
-              <Progress col="0" :value="backupProgress" />
+              <MDProgress
+                col="0"
+                :value="backupProgress"
+                maxValue="100"
+              ></MDProgress>
               <Label col="1" :text="`  ${backupProgress}%`" />
             </GridLayout>
             <Label
               v-else
               text="Generates a zip file that contains all your data. This file can be imported back."
-              class="option-info"
+              class="info"
               textWrap="true"
             />
           </StackLayout>
-        </StackLayout>
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="restoreCheck"
-        >
-          <Label class="bx" :text="icon.import" />
-          <StackLayout>
+        </GridLayout>
+        <GridLayout columns="auto, *" class="option"
+          ><MDRipple colSpan="2" @tap="importCheck" />
+          <Label col="0" class="bx" :text="icon.import" />
+          <StackLayout col="1">
             <Label text="Import from backup" />
             <Label
               text="Supports full backups exported by this app."
-              class="option-info"
+              class="info"
               textWrap="true"
             />
           </StackLayout>
-        </StackLayout>
+        </GridLayout>
       </StackLayout>
     </ScrollView>
   </Page>
@@ -83,14 +88,13 @@ import { Zip } from "@nativescript/zip"
 import * as Toast from "nativescript-toast"
 import * as Filepicker from "nativescript-plugin-filepicker"
 import Theme from "@nativescript/theme"
+import { mapState, mapActions } from "vuex"
+
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
-import { Couchbase } from "nativescript-couchbase-plugin"
-import { mapState, mapActions } from "vuex"
 export default {
   props: [
-    "highlight",
     "showDrawer",
     "restartApp",
     "hijackGlobalBackEvent",
@@ -121,22 +125,25 @@ export default {
       "importYieldUnitsAction",
       "importRecipesAction",
     ]),
-    initializePage() {
+    onPageLoad() {
       this.setCurrentComponentAction("Settings")
       this.releaseGlobalBackEvent()
     },
+
+    // HELPERS
     onScroll(args) {
       args.scrollY
         ? (this.viewIsScrolled = true)
         : (this.viewIsScrolled = false)
     },
-    selectThemes(args) {
-      this.highlight(args)
+
+    // THEME SELECTION
+    selectThemes() {
       this.$showModal(ActionDialog, {
         props: {
           title: "Theme",
           list: ["Light", "Dark"],
-          height: "108",
+          height: "113",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.appTheme !== action) {
@@ -159,53 +166,23 @@ export default {
       })
     },
 
-    writeFile(file, data) {
-      file.writeText(JSON.stringify(data))
-    },
-    BackupDataFiles(option) {
-      const folder = path.join(knownFolders.documents().path, "EnRecipes")
-      const EnRecipesFile = File.fromPath(path.join(folder, "EnRecipes.json"))
-      let userCategoriesFile, userYieldUnitsFile
-      if (this.userCategories.length) {
-        userCategoriesFile = File.fromPath(
-          path.join(folder, "userCategories.json")
+    // EXPORT HANDLERS
+    exportCheck() {
+      if (!this.recipes.length) {
+        Toast.makeText(
+          "Add at least one recipe to perform a backup",
+          "long"
+        ).show()
+      } else {
+        this.permissionCheck(
+          this.permissionConfirmation,
+          "EnRecipes requires storage permission in order to backup your data to this device.",
+          this.exportBackup
         )
       }
-      if (this.userYieldUnits.length) {
-        userYieldUnitsFile = File.fromPath(
-          path.join(folder, "userYieldUnits.json")
-        )
-      }
-      switch (option) {
-        case "create":
-          this.writeFile(EnRecipesFile, this.recipes)
-          this.userCategories.length &&
-            this.writeFile(userCategoriesFile, this.userCategories)
-          this.userYieldUnits.length &&
-            this.writeFile(userYieldUnitsFile, this.userYieldUnits)
-          break
-        case "delete":
-          EnRecipesFile.remove()
-          this.userCategories.length && userCategoriesFile.remove()
-          this.userYieldUnits.length && userYieldUnitsFile.remove()
-          break
-        default:
-          break
-      }
     },
-    backupPermissionConfirmation() {
-      return this.$showModal(ConfirmDialog, {
-        props: {
-          title: "Grant permission",
-          description:
-            "EnRecipes requires storage permission in order to backup your data to this device",
-          cancelButtonText: "NOT NOW",
-          okButtonText: "CONTINUE",
-        },
-      })
-    },
-    backupData() {
-      this.BackupDataFiles("create")
+    exportBackup() {
+      this.exportFiles("create")
       let date = new Date()
       let formattedDate =
         date.getFullYear() +
@@ -242,59 +219,70 @@ export default {
           "Backup file successfully saved to Downloads",
           "long"
         ).show()
-        this.BackupDataFiles("delete")
+        this.exportFiles("delete")
       })
     },
-    backupCheck(args) {
-      let btn = args.object
-      this.highlight(args)
-      if (!this.recipes.length) {
-        Toast.makeText(
-          "Add at least one recipe to perform a backup",
-          "long"
-        ).show()
-      } else {
-        this.permissionCheck(this.backupPermissionConfirmation, this.backupData)
+    exportFiles(option) {
+      const folder = path.join(knownFolders.documents().path, "EnRecipes")
+      const EnRecipesFile = File.fromPath(path.join(folder, "EnRecipes.json"))
+      let userCategoriesFile, userYieldUnitsFile
+      if (this.userCategories.length) {
+        userCategoriesFile = File.fromPath(
+          path.join(folder, "userCategories.json")
+        )
+      }
+      if (this.userYieldUnits.length) {
+        userYieldUnitsFile = File.fromPath(
+          path.join(folder, "userYieldUnits.json")
+        )
+      }
+      switch (option) {
+        case "create":
+          this.writeDataToFile(EnRecipesFile, this.recipes)
+          this.userCategories.length &&
+            this.writeDataToFile(userCategoriesFile, this.userCategories)
+          this.userYieldUnits.length &&
+            this.writeDataToFile(userYieldUnitsFile, this.userYieldUnits)
+          break
+        case "delete":
+          EnRecipesFile.remove()
+          this.userCategories.length && userCategoriesFile.remove()
+          this.userYieldUnits.length && userYieldUnitsFile.remove()
+          break
+        default:
+          break
       }
     },
-
-    restorePermissionConfirmation() {
-      return this.$showModal(ConfirmDialog, {
-        props: {
-          title: "Grant permission",
-          description:
-            "EnRecipes requires storage permission in order to restore your data from a previous backup.",
-          cancelButtonText: "NOT NOW",
-          okButtonText: "CONTINUE",
-        },
-      })
+    writeDataToFile(file, data) {
+      file.writeText(JSON.stringify(data))
     },
-    restoreCheck(args) {
-      let btn = args.object
-      this.highlight(args)
 
+    // IMPORT HANDLERS
+    importCheck() {
       this.permissionCheck(
-        this.restorePermissionConfirmation,
+        this.permissionConfirmation,
+        "EnRecipes requires storage permission in order to restore your data from a previous backup.",
         this.openFilePicker
       )
     },
     openFilePicker() {
-      let context = Filepicker.create({
-        mode: "single", // use "multiple" for multiple selection
+      Filepicker.create({
+        mode: "single",
         extensions: ["zip"],
       })
-      context.present().then((selection) => {
-        Toast.makeText("Processing...").show()
-        let result = selection[0]
-        let zipPath = result
-        let dest = knownFolders.documents().path
-        this.validateZipContent(zipPath)
-      })
+        .present()
+        .then((selection) => {
+          Toast.makeText("Processing...").show()
+          let result = selection[0]
+          let zipPath = result
+          let dest = knownFolders.documents().path
+          this.validateZipContent(zipPath)
+        })
     },
     importDataToDB(data, db, zipPath) {
       switch (db) {
         case "EnRecipesDB":
-          this.copyImages(zipPath)
+          this.importImages(zipPath)
           this.importRecipesAction(data)
           break
         case "userCategoriesDB":
@@ -307,7 +295,7 @@ export default {
           break
       }
     },
-    isImportedDataValid(file) {
+    isFileDataValid(file) {
       file.forEach((file, i) => {
         if (File.exists(file.path)) {
           File.fromPath(file.path)
@@ -329,7 +317,7 @@ export default {
         const userCategoriesFilePath = cacheFolderPath + "/userCategories.json"
         const userYieldUnitsFilePath = cacheFolderPath + "/userYieldUnits.json"
         if (Folder.exists(cacheFolderPath)) {
-          this.isImportedDataValid([
+          this.isFileDataValid([
             {
               zipPath,
               path: EnRecipesFilePath,
@@ -341,30 +329,33 @@ export default {
         } else {
           Folder.fromPath(extractedFolderPath).remove()
           Toast.makeText(
-            "Zip modified externally or incorrect file",
+            "Import failed. Backup file is incorrect or corrupt",
             "long"
           ).show()
         }
         if (Folder.exists(cacheFolderPath + "/Images")) {
-          this.copyImages(cacheFolderPath + "/Images")
+          this.importImages(cacheFolderPath + "/Images")
         }
       })
     },
-    copyImages(sourcePath) {
+    importImages(sourcePath) {
       let dest = knownFolders.documents().path
       Zip.unzip({
         archive: sourcePath,
         directory: dest,
         overwrite: true,
       }).then((res) => {
-        Toast.makeText("Import successful!", "long").show()
+        Toast.makeText("Import successful", "long").show()
+        this.$navigateBack()
       })
     },
-    permissionCheck(confirmation, action) {
+
+    // PERMISSIONS HANDLER
+    permissionCheck(confirmation, description, action) {
       if (!ApplicationSettings.getBoolean("storagePermissionAsked", false)) {
-        confirmation().then((e) => {
+        confirmation(description).then((e) => {
           if (e) {
-            Permissions.request("storage").then((res) => {
+            Permissions.request("photo").then((res) => {
               let status = res[Object.keys(res)[0]]
               if (status === "authorized") action()
               if (status !== "denied")
@@ -374,15 +365,25 @@ export default {
           }
         })
       } else {
-        Permissions.request("storage").then((res) => {
+        Permissions.check("photo").then((res) => {
           let status = res[Object.keys(res)[0]]
           if (status !== "authorized") {
-            confirmation().then((e) => {
+            confirmation(description).then((e) => {
               e && this.openAppSettingsPage()
             })
           } else action()
         })
       }
+    },
+    permissionConfirmation(description) {
+      return this.$showModal(ConfirmDialog, {
+        props: {
+          title: "Grant permission",
+          description,
+          cancelButtonText: "NOT NOW",
+          okButtonText: "CONTINUE",
+        },
+      })
     },
   },
   created() {

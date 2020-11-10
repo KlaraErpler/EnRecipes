@@ -1,5 +1,5 @@
 <template>
-  <Page @loaded="initializePage">
+  <Page @loaded="onPageLoad">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <!-- Search Actionbar -->
       <GridLayout
@@ -7,9 +7,10 @@
         columns="auto, *"
         verticalAlignment="center"
       >
-        <Label
+        <MDButton
           class="bx"
           :text="icon.back"
+          variant="text"
           automationText="Back"
           col="0"
           @tap="closeSearch"
@@ -17,33 +18,35 @@
         <SearchBar
           col="1"
           hint="Search"
-          textFieldHintColor="#bdbdbd"
           v-model="searchQuery"
           @textChange="updateFilter"
-          @clear="updateFilter"
+          @clear="clearSearch"
         />
       </GridLayout>
       <!-- Home Actionbar -->
       <GridLayout v-else columns="auto, *, auto, auto">
-        <Label
+        <MDButton
           class="bx"
+          col="0"
+          variant="text"
+          @tap="showDrawer"
           :text="icon.menu"
           automationText="Back"
-          @tap="showDrawer"
-          col="0"
         />
         <Label class="title orkm" :text="currentComponent" col="1" />
-        <Label
+        <MDButton
           v-if="recipes.length"
           class="bx"
           :text="icon.search"
+          variant="text"
           col="2"
           @tap="openSearch"
         />
-        <Label
+        <MDButton
           v-if="recipes.length"
           class="bx"
           :text="icon.sort"
+          variant="text"
           col="3"
           @tap="sortDialog"
         />
@@ -58,10 +61,10 @@
         @itemSwipeProgressChanged="onSwiping"
         @itemSwipeProgressEnded="onSwipeEnded"
         @scrolled="onScroll"
-        @itemTap="viewRecipe"
         :filteringFunction="filterFunction"
         :sortingFunction="sortFunction"
       >
+        <!-- @itemTap="viewRecipe" -->
         <v-template>
           <GridLayout
             class="recipeItem"
@@ -69,6 +72,7 @@
             columns="112, *"
             androidElevation="1"
           >
+            <MDRipple colSpan="2" @tap="viewRecipe(recipe)" />
             <GridLayout class="imageHolder card" rows="112" columns="112">
               <Image
                 row="0"
@@ -114,31 +118,85 @@
           <StackLayout height="128"></StackLayout>
         </v-template>
       </RadListView>
-      <GridLayout rows="96, auto, *" columns="*" class="emptyState">
+      <GridLayout rows="*, auto, *, 88" columns="*" class="emptyStateContainer">
         <StackLayout
           col="0"
           row="1"
-          class="noResult"
-          v-if="!recipes.length && !filterFavorites && !filterTrylater"
+          class="emptyState"
+          v-if="
+            !recipes.length &&
+              !filterFavorites &&
+              !filterTrylater &&
+              !selectedCategory
+          "
+          @tap="addRecipe"
         >
-          <Image class="logo" src="res://icon_gray" stretch="aspectFit" />
+          <Label class="bx icon" :text="icon.plusCircle" />
           <Label
             class="title orkm"
             text="Start adding your recipes!"
             textWrap="true"
           />
           <StackLayout orientation="horizontal" horizontalAlignment="center">
-            <Label text="Use the " textWrap="true" />
+            <Label text="Use the " />
             <Label class="bx" :text="icon.plus" />
-            <Label text=" button to add a new recipe" textWrap="true" />
+            <Label text=" button to add one" />
           </StackLayout>
         </StackLayout>
         <StackLayout
           col="0"
           row="1"
-          class="noResult"
+          class="emptyState"
+          v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
+        >
+          <Label class="bx icon" :text="icon.heartOutline" textWrap="true" />
+          <Label class="title orkm" text="No favorites yet" textWrap="true" />
+          <Label
+            text="Recipes you mark as favorite will be listed here"
+            textWrap="true"
+          />
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="1"
+          class="emptyState"
+          v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
+        >
+          <Label class="bx icon" :text="icon.trylaterOutline" textWrap="true" />
+          <Label class="title orkm" text="All done!" textWrap="true" />
+          <Label
+            text="Recipes you mark as try later will be listed here"
+            textWrap="true"
+          />
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="1"
+          class="emptyState"
+          v-if="
+            !filteredRecipes.length &&
+              !filterFavorites &&
+              !filterTrylater &&
+              selectedCategory
+          "
+        >
+          <Label class="bx icon" :text="icon.labelOutline" textWrap="true" />
+          <Label
+            class="title orkm"
+            text="Category looks empty"
+            textWrap="true"
+          />
+          <StackLayout orientation="horizontal" horizontalAlignment="center">
+            <Label text="Use the " textWrap="true" />
+            <Label class="bx" :text="icon.plus" />
+            <Label text=" button to add a recipe" textWrap="true" />
+          </StackLayout>
+        </StackLayout>
+        <StackLayout
+          col="0"
+          row="0"
+          class="emptyState noResult"
           v-if="!filteredRecipes.length && searchQuery"
-          verticalAlignment="top"
         >
           <Label class="bx icon" :text="icon.search" textWrap="true" />
           <Label class="title orkm" text="No recipes found" textWrap="true" />
@@ -153,45 +211,15 @@
             textWrap="true"
           />
         </StackLayout>
-        <StackLayout
-          col="0"
-          row="1"
-          class="noResult"
-          v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
-        >
-          <Label class="bx icon" :text="icon.heartOutline" textWrap="true" />
-          <Label class="title orkm" text="No favorites yet!" textWrap="true" />
-          <Label
-            text="Your favorited recipes will be listed here"
-            textWrap="true"
-          />
-        </StackLayout>
-        <StackLayout
-          col="0"
-          row="1"
-          class="noResult"
-          v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
-        >
-          <Label class="bx icon" :text="icon.trylaterOutline" textWrap="true" />
-          <Label
-            class="title orkm"
-            text="Nothing to try next!"
-            textWrap="true"
-          />
-          <Label
-            text="Recipes you wanted to try later will be listed here"
-            textWrap="true"
-          />
-        </StackLayout>
       </GridLayout>
-      <GridLayout id="btnFabContainer" rows="*,auto" columns="*,auto">
+      <GridLayout id="btnFabContainer" rows="*, auto" columns="*, auto">
         <transition name="bounce">
-          <Label
+          <MDFloatingActionButton
             v-if="showFAB"
             row="1"
             col="1"
             class="bx fab-button"
-            :text="icon.plus"
+            src="res://plus"
             @tap="addRecipe"
           />
         </transition>
@@ -201,13 +229,14 @@
 </template>
 
 <script>
-import { Utils, AndroidApplication } from "@nativescript/core"
+import { AndroidApplication, Utils } from "@nativescript/core"
+import { mapActions, mapState } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
 import ViewRecipe from "./ViewRecipe.vue"
+
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
-import { mapState, mapActions } from "vuex"
 
 export default {
   props: [
@@ -261,7 +290,7 @@ export default {
   },
   methods: {
     ...mapActions(["setCurrentComponentAction", "deleteRecipeAction"]),
-    initializePage() {
+    onPageLoad() {
       this.filterFavorites
         ? this.setComponent("Favorites")
         : this.filterTrylater
@@ -271,10 +300,46 @@ export default {
         : this.setComponent("EnRecipes")
       this.showFAB = true
     },
+
+    // HELPERS
     openSearch() {
       this.showSearch = true
+      this.showFAB = false
       this.hijackLocalBackEvent()
     },
+    closeSearch() {
+      if (this.searchQuery) this.updateFilter()
+      this.searchQuery = ""
+      Utils.ad.dismissSoftInput()
+      this.showSearch = false
+      this.showFAB = true
+      this.releaseLocalBackEvent()
+    },
+    setComponent(comp) {
+      this.setCurrentComponentAction(comp)
+      this.hijackGlobalBackEvent()
+    },
+    clearSearch() {
+      if (this.searchQuery !== "") {
+        this.updateFilter()
+      }
+    },
+    formattedTime(time) {
+      let t = time.split(":")
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
+      return {
+        time: h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`,
+        duration: `${h}${m}`,
+      }
+    },
+    onScroll(args) {
+      args.scrollOffset
+        ? (this.viewIsScrolled = true)
+        : (this.viewIsScrolled = false)
+    },
+
+    // NAVIGATION HANDLERS
     hijackLocalBackEvent() {
       this.releaseGlobalBackEvent()
       AndroidApplication.on(
@@ -293,20 +358,49 @@ export default {
       args.cancel = true
       this.closeSearch()
     },
-    closeSearch() {
-      if (this.searchQuery) this.updateFilter()
-      this.searchQuery = ""
-      Utils.ad.dismissSoftInput()
-      this.showSearch = false
-      this.releaseLocalBackEvent()
+    addRecipe() {
+      this.showFAB = false
+      this.releaseGlobalBackEvent()
+      this.$navigateTo(EditRecipe, {
+        // transition: {
+        //   name: "fade",
+        //   duration: 200,
+        //   curve: "easeOut",
+        // },
+        props: {
+          selectedCategory: this.selectedCategory,
+          openAppSettingsPage: this.openAppSettingsPage,
+          filterFavorites: this.filterFavorites,
+        },
+      })
     },
+    viewRecipe(item) {
+      let index = this.recipes.indexOf(item)
+      this.showFAB = false
+      this.$navigateTo(ViewRecipe, {
+        // transition: {
+        //   name: "fade",
+        //   duration: 200,
+        //   curve: "easeOut",
+        // },
+        props: {
+          filterTrylater: this.filterTrylater,
+          recipeIndex: index,
+          recipeID: item.id,
+          hijackGlobalBackEvent: this.hijackGlobalBackEvent,
+          releaseGlobalBackEvent: this.releaseGlobalBackEvent,
+        },
+      })
+    },
+
+    // LIST HANDLERS
     sortDialog() {
       this.releaseGlobalBackEvent()
       this.$showModal(ActionDialog, {
         props: {
           title: "Sort by",
           list: ["Natural order", "Title", "Duration", "Last modified"],
-          height: "216", // 54*4
+          height: "225",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.sortType !== action) {
@@ -345,10 +439,6 @@ export default {
           return 0
           break
       }
-    },
-    setComponent(comp) {
-      this.setCurrentComponentAction(comp)
-      this.hijackGlobalBackEvent()
     },
     updateFilter() {
       let listView = this.$refs.listView.nativeView
@@ -392,6 +482,8 @@ export default {
         this.deleteRecipe(index, recipeID)
       this.rightAction = false
     },
+
+    // DATA HANDLERS
     deleteRecipe(index, recipeID) {
       this.deletionDialogActive = true
       this.$showModal(ConfirmDialog, {
@@ -406,54 +498,6 @@ export default {
           this.deleteRecipeAction({ index, id: recipeID })
         }
         this.deletionDialogActive = false
-      })
-    },
-
-    formattedTime(time) {
-      let t = time.split(":")
-      let h = parseInt(t[0])
-      let m = parseInt(t[1])
-      return {
-        time: h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`,
-        duration: `${h}${m}`,
-      }
-    },
-    onScroll(args) {
-      args.scrollOffset
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
-    },
-    addRecipe() {
-      this.showFAB = false
-      this.releaseGlobalBackEvent()
-      this.$navigateTo(EditRecipe, {
-        // transition: {
-        //   name: "fade",
-        //   duration: 200,
-        //   curve: "easeOut",
-        // },
-        props: {
-          selectedCategory: this.selectedCategory,
-          openAppSettingsPage: this.openAppSettingsPage,
-          filterFavorites: this.filterFavorites,
-        },
-      })
-    },
-    viewRecipe({ item, index }) {
-      this.showFAB = false
-      this.$navigateTo(ViewRecipe, {
-        // transition: {
-        //   name: "fade",
-        //   duration: 200,
-        //   curve: "easeOut",
-        // },
-        props: {
-          filterTrylater: this.filterTrylater,
-          recipeIndex: index,
-          recipeID: item.id,
-          hijackGlobalBackEvent: this.hijackGlobalBackEvent,
-          releaseGlobalBackEvent: this.releaseGlobalBackEvent,
-        },
       })
     },
   },

@@ -1,4 +1,4 @@
-# NativeScript-Vue Application
+# EnRecipes
 
 > A native application built with NativeScript-Vue
 

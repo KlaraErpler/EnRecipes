@@ -1,8 +1,9 @@
 <template>
-  <Page @loaded="initializePage">
+  <Page @loaded="onPageLoad">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *">
-        <Label
+        <MDButton
+          variant="text"
           class="bx"
           :text="icon.menu"
           automationText="Back"
@@ -21,67 +22,73 @@
         >
           <Image src="res://logo_light" class="appIcon" stretch="aspectFit" />
         </StackLayout>
-        <StackLayout orientation="horizontal" class="option">
-          <Label class="bx" :text="icon.info" />
-          <StackLayout>
+        <StackLayout class="m-8"></StackLayout>
+        <GridLayout columns="auto, *" class="option">
+          <Label col="0" class="bx" :text="icon.info" />
+          <StackLayout col="1">
             <Label text="Version" />
-            <Label :text="getVersion" class="option-info" textWrap="true" />
+            <Label :text="getVersion" class="info" textWrap="true" />
           </StackLayout>
-        </StackLayout>
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="openURL($event, 'https://github.com/vishnuraghavb/enrecipes')"
-        >
-          <Label class="bx" :text="icon.link" />
-          <Label text="View project on GitHub" />
-        </StackLayout>
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="openURL($event, 'https://t.me/enrecipes')"
-        >
-          <Label class="bx" :text="icon.telegram" />
-          <Label text="Join the Telegram group" />
-        </StackLayout>
+        </GridLayout>
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple
+            colSpan="2"
+            @tap="openURL('https://github.com/vishnuraghavb/enrecipes')"
+          />
+          <Label col="0" class="bx" :text="icon.link" />
+          <Label
+            verticalAlignment="center"
+            col="1"
+            text="View project on GitHub"
+          />
+        </GridLayout>
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple colSpan="2" @tap="openURL('https://t.me/enrecipes')" />
+          <Label col="0" class="bx" :text="icon.telegram" />
+          <Label
+            verticalAlignment="center"
+            col="1"
+            text="Join the Telegram group"
+          />
+        </GridLayout>
 
         <StackLayout class="hr m-10"></StackLayout>
 
-        <Label text="Author" class="group-header" />
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="openURL($event, 'https://www.vishnuraghav.com')"
-        >
-          <Label class="bx" :text="icon.user" />
-          <Label text="Vishnu Raghav" />
-        </StackLayout>
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="openURL($event, 'https://github.com/vishnuraghavb')"
-        >
-          <Label class="bx" :text="icon.link" />
-          <Label text="Follow on GitHub" />
-        </StackLayout>
-        <StackLayout
-          orientation="horizontal"
-          class="option"
-          @tap="openURL($event, 'https://mastodon.social/@vishnuraghavb')"
-        >
-          <Label class="bx" :text="icon.link" />
-          <Label text="Follow on Mastodon" />
-        </StackLayout>
+        <Label text="Author" class="group-header orkm" />
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple
+            colSpan="2"
+            @tap="openURL('https://www.vishnuraghav.com')"
+          />
+          <Label col="0" class="bx" :text="icon.user" />
+          <Label verticalAlignment="center" col="1" text="Vishnu Raghav" />
+        </GridLayout>
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple
+            colSpan="2"
+            @tap="openURL('https://github.com/vishnuraghavb')"
+          />
+          <Label col="0" class="bx" :text="icon.link" />
+          <Label verticalAlignment="center" col="1" text="Follow on GitHub" />
+        </GridLayout>
+        <GridLayout columns="auto, *" class="option">
+          <MDRipple
+            colSpan="2"
+            @tap="openURL('https://mastodon.social/@vishnuraghavb')"
+          />
+          <Label col="0" class="bx" :text="icon.link" />
+          <Label verticalAlignment="center" col="1" text="Follow on Mastodon" />
+        </GridLayout>
       </StackLayout>
     </ScrollView>
   </Page>
 </template>
 
 <script>
-import { Utils, Application } from "@nativescript/core"
-import { mapState, mapActions } from "vuex"
+import { Application, Utils } from "@nativescript/core"
+import { mapActions, mapState } from "vuex"
 export default {
-  props: ["highlight", "showDrawer", "title"],
+  props: ["showDrawer", "title"],
   computed: {
     ...mapState(["icon", "currentComponent"]),
     getVersion() {
@@ -98,16 +105,16 @@ export default {
   },
   methods: {
     ...mapActions(["setCurrentComponentAction"]),
-    initializePage() {
+    onPageLoad() {
       this.setCurrentComponentAction("About")
     },
+    // HELPERS
     onScroll(args) {
       args.scrollY
         ? (this.viewIsScrolled = true)
         : (this.viewIsScrolled = false)
     },
-    openURL(args, url) {
-      this.highlight(args)
+    openURL(url) {
       Utils.openUrl(url)
     },
   },

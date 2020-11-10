@@ -1,8 +1,8 @@
 <template>
   <Page
-    @loaded="initialize"
+    @loaded="onPageLoad"
     actionBarHidden="true"
-    :androidStatusBarBackground="themeName == 'Light' ? '#fafafa' : '#212121'"
+    :androidStatusBarBackground="appTheme == 'Light' ? '#f1f3f5' : '#212529'"
   >
     <RadSideDrawer
       ref="drawer"
@@ -19,12 +19,16 @@
             columns="auto, 24, *"
             v-for="(item, index) in topmenu"
             :key="index"
-            @tap="navigateTo(item.component, false, false)"
             class="sd-item orkm"
             :class="{
               'selected-sd-item': currentComponent === item.component,
             }"
           >
+            <MDRipple
+              row="0"
+              colSpan="3"
+              @tap="navigateTo(item.component, false, false)"
+            />
             <Label col="0" row="0" class="bx" :text="icon[item.icon]" />
             <Label col="2" row="0" :text="item.title" />
           </GridLayout>
@@ -35,17 +39,17 @@
             columns="*, auto"
             v-if="categoriesWithRecipes.length"
           >
-            <Label col="0" text="Categories" />
-            <Label
+            <Label verticalAlignment="center" col="0" text="Categories" />
+            <MDButton
+              variant="text"
               @tap="toggleCatEdit"
               col="2"
-              :text="catEditMode ? 'DONE' : 'RENAME'"
+              :text="editCategory ? 'DONE' : 'RENAME'"
             />
           </GridLayout>
           <ScrollView height="100%">
             <StackLayout>
               <GridLayout
-                @tap="navigateTo(item, false, true)"
                 v-for="(item, index) in categoriesWithRecipes"
                 :key="index"
                 class="sd-item orkm"
@@ -54,6 +58,11 @@
                 }"
                 columns="auto, *, auto"
               >
+                <MDRipple
+                  row="0"
+                  colSpan="3"
+                  @tap="navigateTo(item, false, true)"
+                />
                 <Label
                   col="0"
                   class="bx"
@@ -61,8 +70,9 @@
                   margin="0 24 0 0"
                 />
                 <Label col="1" :text="item" />
-                <Label
-                  v-if="catEditMode"
+                <MDButton
+                  variant="text"
+                  v-if="editCategory"
                   @tap="renameCategory(item)"
                   col="2"
                   class="bx"
@@ -74,30 +84,25 @@
         </StackLayout>
         <StackLayout row="1">
           <StackLayout class="hr m-10"></StackLayout>
-          <!-- <StackLayout
-            orientation="horizontal"
-            class="sd-item orkm"
-            @tap="donate"
-          >
-            <Label class="bx" :text="icon.donate" margin="0 24 0 0" />
-            <Label text="Donate" />
-          </StackLayout> -->
-          <StackLayout
-            @tap="navigateTo(item.component, true, false)"
-            v-for="(item, index) in bottommenu"
-            :key="index"
-            orientation="horizontal"
+          <GridLayout
             class="sd-item orkm"
             :class="{
               'selected-sd-item': currentComponent == item.title,
             }"
+            v-for="(item, index) in bottommenu"
+            :key="index"
+            rows="48"
+            columns="auto, 24, *"
           >
-            <Label class="bx" :text="icon[item.icon]" margin="0 24 0 0" />
-            <Label :text="item.title" />
-          </StackLayout>
+            <MDRipple
+              colSpan="3"
+              @tap="navigateTo(item.component, true, false)"
+            />
+            <Label class="bx" col="0" :text="icon[item.icon]" />
+            <Label col="2" :text="item.title" />
+          </GridLayout>
         </StackLayout>
       </GridLayout>
-
       <GridLayout ~mainContent rows="*" columns="*">
         <Frame row="0" col="0" ref="mainFrame" id="main-frame">
           <!-- Home  -->
@@ -119,29 +124,28 @@
 
 <script>
 import {
-  Utils,
   ApplicationSettings,
   AndroidApplication,
+  ApplicationEventData,
   Application,
+  Color,
+  Utils,
 } from "@nativescript/core"
-
 import Theme from "@nativescript/theme"
 import * as Toast from "nativescript-toast"
 import * as application from "tns-core-modules/application"
+import { mapActions, mapState } from "vuex"
+
 import EnRecipes from "./EnRecipes.vue"
 import Settings from "./Settings.vue"
 import About from "./About.vue"
-import PromptDialog from "./modal/PromptDialog.vue"
-import { mapState, mapActions } from "vuex"
 
-let page
+import PromptDialog from "./modal/PromptDialog.vue"
+
 export default {
   components: {
     EnRecipes,
-    Settings,
-    About,
   },
-
   data() {
     return {
       selectedCategory: null,
@@ -176,8 +180,8 @@ export default {
           icon: "info",
         },
       ],
-      catEditMode: false,
-      themeName: "Light",
+      editCategory: false,
+      appTheme: "Light",
     }
   },
   computed: {
@@ -203,16 +207,19 @@ export default {
       "initializeYieldUnits",
       "renameCategoryAction",
     ]),
-    initialize() {
-      if (this.themeName === "Light") {
+    onPageLoad() {
+      if (this.appTheme === "Light") {
         const View = android.view.View
         const window = Application.android.startActivity.getWindow()
         const decorView = window.getDecorView()
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        // window.setNavigationBarColor(new Color("#e0e0e0").android)
       }
     },
+    
+    // HELPERS
     toggleCatEdit() {
-      this.catEditMode = !this.catEditMode
+      this.editCategory = !this.editCategory
       if (this.selectedCategory) this.setComponent("EnRecipes")
       this.filterFavorites = this.filterTrylater = false
       this.selectedCategory = null
@@ -226,98 +233,21 @@ export default {
       this.$showModal(PromptDialog, {
         props: {
           title: `Rename category`,
-          hint: category,
+          text: category,
           action: "RENAME",
         },
       }).then((newCategory) => {
         this.hijackGlobalBackEvent()
         if (newCategory.length) {
           this.renameCategoryAction({ current: category, updated: newCategory })
-          this.catEditMode = false
+          this.editCategory = false
           this.navigateTo(newCategory, false, true)
         }
       })
     },
-    highlight(args) {
-      let temp = args.object.className
-      args.object.className = `${temp} option-highlight`
-      setTimeout(() => (args.object.className = temp), 100)
-    },
-    // Navigation
     setSelectedCategory(e) {
       this.selectedCategory = e.item
       this.closeDrawer()
-    },
-    hijackGlobalBackEvent() {
-      AndroidApplication.on(
-        AndroidApplication.activityBackPressedEvent,
-        this.globalBackEvent
-      )
-    },
-    releaseGlobalBackEvent() {
-      AndroidApplication.off(
-        AndroidApplication.activityBackPressedEvent,
-        this.globalBackEvent
-      )
-    },
-    globalBackEvent(args) {
-      function preventDefault() {
-        args.cancel = true
-      }
-      let vm = this
-      function isFiltered() {
-        vm.filterFavorites
-          ? vm.setComponent("Favorites")
-          : vm.filterTrylater
-          ? vm.setComponent("Try later")
-          : vm.selectedCategory
-          ? vm.setComponent(vm.selectedCategory)
-          : vm.setComponent("EnRecipes")
-      }
-      if (this.$refs.drawer && this.$refs.drawer.nativeView.getIsOpen()) {
-        preventDefault()
-        this.closeDrawer()
-        this.catEditMode = false
-      } else if (
-        ["Favorites", "Try later", this.selectedCategory].includes(
-          this.currentComponent
-        )
-      ) {
-        preventDefault()
-        this.setComponent("EnRecipes")
-        this.filterFavorites = this.filterTrylater = false
-        this.selectedCategory = null
-        this.$refs.enrecipes.updateFilter()
-        this.releaseGlobalBackEvent()
-      }
-    },
-    navigateTo(to, isTrueComponent, isCategory) {
-      if (isTrueComponent) {
-        this.$navigateTo(to, {
-          frame: "main-frame",
-          props: {
-            highlight: this.highlight,
-            showDrawer: this.showDrawer,
-            restartApp: this.restartApp,
-            hijackGlobalBackEvent: this.hijackGlobalBackEvent,
-            releaseGlobalBackEvent: this.releaseGlobalBackEvent,
-            openAppSettingsPage: this.openAppSettingsPage,
-          },
-          backstackVisible: false,
-        })
-        this.closeDrawer()
-      } else if (!this.catEditMode || !isCategory) {
-        this.releaseGlobalBackEvent()
-        this.hijackGlobalBackEvent()
-        this.setComponent(to)
-        this.$navigateBack({ frame: "main-frame", backstackVisible: false })
-        this.filterFavorites = to === "Favorites" ? true : false
-        this.filterTrylater = to === "Try later" ? true : false
-        this.selectedCategory = isCategory ? to : null
-        this.$refs.enrecipes.updateFilter()
-        this.closeDrawer()
-      }
-      this.catEditMode = false
     },
     restartApp() {
       // Code from nativescript-master-technology
@@ -360,19 +290,91 @@ export default {
     closeDrawer() {
       this.$refs.drawer.nativeView.closeDrawer()
     },
-    donate(args) {
-      this.highlight(args)
+
+    // NAVIGATION HANDLERS
+    hijackGlobalBackEvent() {
+      AndroidApplication.on(
+        AndroidApplication.activityBackPressedEvent,
+        this.globalBackEvent
+      )
+    },
+    releaseGlobalBackEvent() {
+      AndroidApplication.off(
+        AndroidApplication.activityBackPressedEvent,
+        this.globalBackEvent
+      )
+    },
+    globalBackEvent(args) {
+      function preventDefault() {
+        args.cancel = true
+      }
+      let vm = this
+      function isFiltered() {
+        vm.filterFavorites
+          ? vm.setComponent("Favorites")
+          : vm.filterTrylater
+          ? vm.setComponent("Try later")
+          : vm.selectedCategory
+          ? vm.setComponent(vm.selectedCategory)
+          : vm.setComponent("EnRecipes")
+      }
+      if (this.$refs.drawer && this.$refs.drawer.nativeView.getIsOpen()) {
+        preventDefault()
+        this.closeDrawer()
+        this.editCategory = false
+      } else if (
+        ["Favorites", "Try later", this.selectedCategory].includes(
+          this.currentComponent
+        )
+      ) {
+        preventDefault()
+        this.setComponent("EnRecipes")
+        this.filterFavorites = this.filterTrylater = false
+        this.selectedCategory = null
+        this.$refs.enrecipes.updateFilter()
+        this.releaseGlobalBackEvent()
+      }
+    },
+    navigateTo(to, isTrueComponent, isCategory) {
+      if (isTrueComponent) {
+        this.$navigateTo(to, {
+          frame: "main-frame",
+          props: {
+            showDrawer: this.showDrawer,
+            restartApp: this.restartApp,
+            hijackGlobalBackEvent: this.hijackGlobalBackEvent,
+            releaseGlobalBackEvent: this.releaseGlobalBackEvent,
+            openAppSettingsPage: this.openAppSettingsPage,
+          },
+          backstackVisible: false,
+        })
+        this.closeDrawer()
+      } else if (!this.editCategory || !isCategory) {
+        this.releaseGlobalBackEvent()
+        this.hijackGlobalBackEvent()
+        this.setComponent(to)
+        this.$navigateBack({ frame: "main-frame", backstackVisible: false })
+        this.filterFavorites = to === "Favorites" ? true : false
+        this.filterTrylater = to === "Try later" ? true : false
+        this.selectedCategory = isCategory ? to : null
+        this.$refs.enrecipes.updateFilter()
+        this.closeDrawer()
+      }
+      this.editCategory = false
+    },
+
+    donate() {
       Utils.openUrl("https://www.vishnuraghav.com/donate/")
     },
   },
   created() {
-    this.themeName = ApplicationSettings.getString("appTheme", "Light")
+    this.appTheme = ApplicationSettings.getString("appTheme", "Light")
     setTimeout((e) => {
-      Theme.setMode(Theme[this.themeName])
+      Theme.setMode(Theme[this.appTheme])
     }, 50)
-    if (!this.recipes.length) this.initializeRecipes()
-    if (!this.categories.length) this.initializeCategories()
-    if (!this.yieldUnits.length) this.initializeYieldUnits()
+    this.initializeRecipes()
+    this.initializeCategories()
+    this.initializeYieldUnits()
   },
 }
 </script>

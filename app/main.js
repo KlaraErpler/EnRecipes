@@ -5,6 +5,24 @@ import store from "./store"
 import RadListView from "nativescript-ui-listview/vue"
 Vue.use(RadListView)
 
+import ButtonPlugin from "@nativescript-community/ui-material-button/vue"
+Vue.use(ButtonPlugin)
+
+import ActivityIndicatorPlugin from "@nativescript-community/ui-material-activityindicator/vue"
+Vue.use(ActivityIndicatorPlugin)
+
+import RipplePlugin from "@nativescript-community/ui-material-ripple/vue"
+Vue.use(RipplePlugin)
+
+import FloatingActionButtonPlugin from "@nativescript-community/ui-material-floatingactionbutton/vue"
+Vue.use(FloatingActionButtonPlugin)
+
+import ProgressPlugin from "@nativescript-community/ui-material-progress/vue"
+Vue.use(ProgressPlugin)
+
+// import SpeedDialPlugin from "@nativescript-community/ui-material-speeddial/vue"
+// Vue.use(SpeedDialPlugin)
+
 Vue.registerElement(
   "RadSideDrawer",
   () => require("nativescript-ui-sidedrawer").RadSideDrawer

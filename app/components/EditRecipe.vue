@@ -1,8 +1,9 @@
 <template>
-  <Page @loaded="initialize" @unloaded="releaseBackEvent">
+  <Page @loaded="onPageLoad" @unloaded="releaseBackEvent">
     <ActionBar :flat="viewIsScrolled ? false : true">
       <GridLayout rows="*" columns="auto, *, auto">
-        <Label
+        <MDButton
+          variant="text"
           class="bx"
           :text="icon.back"
           automationText="Back"
@@ -10,14 +11,15 @@
           @tap="navigateBack"
         />
         <Label class="title orkm" :text="title" col="1" />
-        <Label
-          v-if="hasEnoughDetails && !imageLoading"
+        <MDButton
+          variant="text"
+          v-if="hasChanges && !imageLoading"
           class="bx"
           :text="icon.save"
           col="2"
           @tap="saveOperation"
         />
-        <ActivityIndicator col="2" v-if="imageLoading" :busy="imageLoading" />
+        <MDActivityIndicator col="2" v-if="imageLoading" :busy="imageLoading" />
       </GridLayout>
     </ActionBar>
     <GridLayout rows="*" columns="*">
@@ -51,18 +53,16 @@
                 :text="icon.image"
               />
             </StackLayout>
-            <StackLayout width="100%" :top="screenWidth - 42">
-              <transition :name="recipeContent.imageSrc ? 'null' : 'bounce'">
-                <Label
-                  v-if="showFab"
-                  horizontalAlignment="right"
-                  @tap="imageHandler"
-                  class="bx fab-button"
-                  :text="icon.camera"
-                  androidElevation="6"
-                />
-              </transition>
-            </StackLayout>
+            <transition :name="recipeContent.imageSrc ? 'null' : 'bounce'">
+              <MDFloatingActionButton
+                v-if="showFab"
+                :top="screenWidth - 44"
+                :left="screenWidth - 88"
+                class="bx"
+                src="res://camera"
+                @tap="imageHandler"
+              />
+            </transition>
           </AbsoluteLayout>
 
           <StackLayout margin="0 16">
@@ -71,6 +71,7 @@
                 hint="My Healthy Recipe"
                 v-model="recipeContent.title"
                 autocapitalizationType="words"
+                autocorrect="true"
               />
               <Label top="0" class="fieldLabel" text="Title" />
             </AbsoluteLayout>
@@ -103,7 +104,7 @@
             <GridLayout columns="*, 8, *">
               <AbsoluteLayout class="inputField" col="0">
                 <TextField
-                  :text="formattedTimeRequired"
+                  :text="timeRequired"
                   editable="false"
                   @tap="setTimeRequired"
                 />
@@ -127,30 +128,33 @@
                 v-model="recipeContent.ingredients[index].item"
                 :hint="`Item ${index + 1}`"
                 autocapitalizationType="words"
+                autocorrect="true"
               />
               <TextField
-                width="72"
+                width="68"
                 col="2"
                 v-model="recipeContent.ingredients[index].quantity"
-                hint="1.000"
+                hint="1.00"
                 keyboardType="number"
               />
               <TextField
-                width="64"
+                width="68"
                 col="4"
                 v-model="recipeContent.ingredients[index].unit"
                 hint="Unit"
                 editable="false"
                 @tap="showUnits($event)"
               />
-              <Label
+              <MDButton
+                variant="text"
                 col="6"
                 class="bx closeBtn"
                 :text="icon.close"
                 @tap="removeIngredient(index)"
               />
             </GridLayout>
-            <Label
+            <MDButton
+              variant="text"
               class="text-btn orkm"
               text="+ ADD INGREDIENT"
               @tap="addIngredient()"
@@ -172,15 +176,18 @@
                 :hint="`Step ${index + 1}`"
                 v-model="recipeContent.instructions[index]"
                 editable="true"
+                autocorrect="true"
               />
-              <Label
+              <MDButton
+                variant="text"
                 col="2"
                 class="bx closeBtn"
                 :text="icon.close"
                 @tap="removeInstruction(index)"
               />
             </GridLayout>
-            <Label
+            <MDButton
+              variant="text"
               class="text-btn orkm"
               text="+ ADD STEP"
               @tap="addInstruction()"
@@ -201,15 +208,22 @@
                 v-model="recipeContent.notes[index]"
                 :hint="`Note ${index + 1}`"
                 editable="true"
+                autocorrect="true"
               />
-              <Label
+              <MDButton
+                variant="text"
                 col="2"
                 class="bx closeBtn"
                 :text="icon.close"
                 @tap="removeNote(index)"
               />
             </GridLayout>
-            <Label class="text-btn orkm" text="+ ADD NOTE" @tap="addNote()" />
+            <MDButton
+              variant="text"
+              class="text-btn orkm"
+              text="+ ADD NOTE"
+              @tap="addNote()"
+            />
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
@@ -226,15 +240,18 @@
                 v-model="recipeContent.references[index]"
                 hint="Text or Website/Video URL"
                 editable="true"
+                autocorrect="true"
               />
-              <Label
+              <MDButton
+                variant="text"
                 col="2"
                 class="bx closeBtn"
                 :text="icon.close"
                 @tap="removeReference(index)"
               />
             </GridLayout>
-            <Label
+            <MDButton
+              variant="text"
               class="text-btn orkm"
               text="+ ADD REFERENCE"
               @tap="addReference()"
@@ -248,31 +265,30 @@
 </template>
 
 <script>
-import { WorkerService } from "../worker.service"
-const workerService = new WorkerService()
-
+// import { WorkerService } from "../worker.service"
+// const workerService = new WorkerService()
 import {
-  Screen,
   AndroidApplication,
-  ImageSource,
-  path,
-  getFileAccess,
-  knownFolders,
-  Utils,
-  File,
+  Application,
   ApplicationSettings,
+  File,
+  getFileAccess,
+  ImageSource,
+  knownFolders,
+  path,
+  Screen,
+  Utils,
 } from "@nativescript/core"
-
-import { Mediafilepicker } from "nativescript-mediafilepicker"
-
+import * as Permissions from "@nativescript-community/perms"
+import * as Toast from "nativescript-toast"
+import * as ImagePicker from "@nativescript/imagepicker"
+import { ImageCropper } from "nativescript-imagecropper"
 import { mapState, mapActions } from "vuex"
 
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ListPicker from "./modal/ListPicker.vue"
-import * as Permissions from "@nativescript-community/perms"
-import * as Toast from "nativescript-toast"
 
 export default {
   props: [
@@ -310,6 +326,7 @@ export default {
       newRecipeID: null,
       showFab: false,
       imageLoading: false,
+      cacheImagePath: null,
     }
   },
   computed: {
@@ -324,13 +341,16 @@ export default {
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
-    hasEnoughDetails() {
+    appTheme() {
+      return Application.systemAppearance()
+    },
+    hasChanges() {
       return (
         JSON.stringify(this.recipeContent) !==
         JSON.stringify(this.tempRecipeContent)
       )
     },
-    formattedTimeRequired() {
+    timeRequired() {
       let t = this.recipeContent.timeRequired.split(":")
       let h = parseInt(t[0])
       let m = parseInt(t[1])
@@ -345,7 +365,7 @@ export default {
       "addCategoryAction",
       "addYieldUnitAction",
     ]),
-    initialize() {
+    onPageLoad() {
       this.showFab = true
     },
 
@@ -394,11 +414,11 @@ export default {
         props: {
           title: "Category",
           list: [...this.categories],
-          height: "408",
-          action: "CREATE NEW",
+          // height: "420",
+          action: "ADD NEW",
         },
       }).then((action) => {
-        if (action == "CREATE NEW") {
+        if (action == "ADD NEW") {
           this.$showModal(PromptDialog, {
             props: {
               title: "New category",
@@ -425,11 +445,11 @@ export default {
         props: {
           title: "Yield measured in",
           list: [...this.yieldUnits],
-          height: "408",
-          action: "CREATE NEW",
+          // height: "420",
+          action: "ADD NEW",
         },
       }).then((action) => {
-        if (action == "CREATE NEW") {
+        if (action == "ADD NEW") {
           this.$showModal(PromptDialog, {
             props: {
               title: "New yield unit",
@@ -456,7 +476,7 @@ export default {
         props: {
           title: "Unit",
           list: [...this.units],
-          height: "408",
+          // height: "420",
         },
       }).then((action) => {
         this.hijackBackEvent()
@@ -466,21 +486,19 @@ export default {
 
     // NAVIGATION HANDLERS
     navigateBack() {
-      if (this.hasEnoughDetails) {
+      if (this.hasChanges) {
         this.blockModal = true
         this.$showModal(ConfirmDialog, {
           props: {
             title: "Unsaved changes",
             description:
-              "Do you want to save the changes you made in this recipe?",
+              "Are you sure you want to discard unsaved changes to this recipe?",
             cancelButtonText: "DISCARD",
-            okButtonText: "SAVE",
+            okButtonText: "KEEP EDITING",
           },
         }).then((action) => {
           this.blockModal = false
-          if (action) {
-            this.saveOperation()
-          } else if (action != null) {
+          if (action != null && !action) {
             this.$navigateBack()
             this.releaseBackEvent()
           }
@@ -503,7 +521,7 @@ export default {
       )
     },
     backEvent(args) {
-      if (this.hasEnoughDetails && !this.blockModal) {
+      if (this.hasChanges && !this.blockModal) {
         args.cancel = true
         this.navigateBack()
       }
@@ -522,28 +540,22 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.permissionCheck(
-              this.imagePickerPermissionConfirmation,
-              this.imagePicker
-            )
+            this.permissionCheck(this.permissionConfirmation, this.imagePicker)
           } else if (action != null) {
             this.recipeContent.imageSrc = null
             this.releaseBackEvent()
           }
         })
       } else {
-        this.permissionCheck(
-          this.imagePickerPermissionConfirmation,
-          this.imagePicker
-        )
+        this.permissionCheck(this.permissionConfirmation, this.imagePicker)
       }
     },
-    imagePickerPermissionConfirmation() {
+    permissionConfirmation() {
       return this.$showModal(ConfirmDialog, {
         props: {
           title: "Grant permission",
           description:
-            "EnRecipes requires storage and camera permission in order to set recipe photo.",
+            "EnRecipes requires storage permission in order to set recipe photo.",
           cancelButtonText: "NOT NOW",
           okButtonText: "CONTINUE",
         },
@@ -553,52 +565,82 @@ export default {
       if (!ApplicationSettings.getBoolean("storagePermissionAsked", false)) {
         confirmation().then((e) => {
           if (e) {
-            Permissions.request("camera").then((res) => {
-              let status = res[Object.keys(res)[0]]
-              if (status === "authorized") action()
-              if (status === "never_ask_again")
-                ApplicationSettings.setBoolean("storagePermissionAsked", true)
-              if (status === "denied")
-                Toast.makeText("Permission denied").show()
+            Permissions.request("photo").then((status) => {
+              switch (status[0]) {
+                case "authorized":
+                  action()
+                  break
+                case "never_ask_again":
+                  ApplicationSettings.setBoolean("storagePermissionAsked", true)
+                  break
+                case "denied":
+                  Toast.makeText("Permission denied").show()
+                  break
+                default:
+                  break
+              }
             })
           }
         })
       } else {
-        Permissions.check("camera").then((res) => {
-          if (res[0] !== "authorized") {
-            confirmation().then((e) => {
-              e && this.openAppSettingsPage()
-            })
-          } else {
-            Permissions.request("storage").then((res) => {
-              let status = res[Object.keys(res)[0]]
-              if (status !== "authorized") {
-                confirmation().then((e) => {
-                  e && this.openAppSettingsPage()
-                })
-              } else action()
-            })
-          }
+        Permissions.check("photo").then((res) => {
+          res[0] !== "authorized"
+            ? confirmation().then((e) => e && this.openAppSettingsPage())
+            : action()
         })
       }
     },
     imagePicker() {
-      const vm = this
-      const mediafilepicker = new Mediafilepicker()
-      mediafilepicker.openImagePicker({
-        android: {
-          isCaptureMood: false, // if true then camera will open directly.
-          isNeedCamera: true,
-          maxNumberFiles: 1,
-          isNeedFolderList: true,
-        },
+      ApplicationSettings.setBoolean("storagePermissionAsked", true)
+      this.cacheImagePath = path.join(
+        knownFolders.temp().path,
+        `${this.getRandomID()}.jpg`
+      )
+      let screenWidth = Math.round(this.screenWidth * 2)
+      ImagePicker.create({
+        mode: "single",
+        mediaType: ImagePicker.ImagePickerMediaType.Image,
       })
-      mediafilepicker.on("getFiles", (image) => {
-        ApplicationSettings.setBoolean("storagePermissionAsked", true)
-        vm.recipeContent.imageSrc = image.object.get("results")[0].file
-      })
+        .present()
+        .then((selection) => {
+          let imgPath = selection[0]._android
+          ImageSource.fromFile(imgPath).then((image) => {
+            ImageCropper.prototype
+              .show(
+                image,
+                {
+                  width: screenWidth,
+                  height: screenWidth,
+                },
+                {
+                  hideBottomControls: true,
+                  toolbarTitle: "Crop photo",
+                  statusBarColor: "#ff5200",
+                  toolbarTextColor:
+                    this.appTheme == "light" ? "#212529" : "#f1f3f5",
+                  toolbarColor:
+                    this.appTheme == "light" ? "#f1f3f5" : "#212529",
+                  cropFrameColor: "#ff5200",
+                }
+              )
+              .then((cropped) => {
+                cropped.image.saveToFile(this.cacheImagePath, "jpg", 75)
+                this.recipeContent.imageSrc = this.cacheImagePath
+              })
+          })
+        })
     },
 
+    // INPUT FIELD HANDLERS
+    fieldDeletionConfirm(item) {
+      return this.$showModal(ConfirmDialog, {
+        props: {
+          title: `Delete ${item}?`,
+          cancelButtonText: "CANCEL",
+          okButtonText: "DELETE",
+        },
+      })
+    },
     addIngredient() {
       this.recipeContent.ingredients.push({
         item: "",
@@ -607,30 +649,55 @@ export default {
       })
     },
     removeIngredient(index) {
-      this.recipeContent.ingredients.splice(index, 1)
+      if (this.recipeContent.ingredients[index].item.length) {
+        this.fieldDeletionConfirm("ingredient").then((res) => {
+          if (res) {
+            this.recipeContent.ingredients.splice(index, 1)
+          }
+        })
+      } else this.recipeContent.ingredients.splice(index, 1)
     },
 
     addInstruction() {
       this.recipeContent.instructions.push("")
     },
     removeInstruction(index) {
-      this.recipeContent.instructions.splice(index, 1)
+      if (this.recipeContent.instructions[index].length) {
+        this.fieldDeletionConfirm("instruction").then((res) => {
+          if (res) {
+            this.recipeContent.instructions.splice(index, 1)
+          }
+        })
+      } else this.recipeContent.instructions.splice(index, 1)
     },
 
     addNote() {
       this.recipeContent.notes.push("")
     },
     removeNote(index) {
-      this.recipeContent.notes.splice(index, 1)
+      if (this.recipeContent.notes[index].length) {
+        this.fieldDeletionConfirm("note").then((res) => {
+          if (res) {
+            this.recipeContent.notes.splice(index, 1)
+          }
+        })
+      } else this.recipeContent.notes.splice(index, 1)
     },
 
     addReference() {
       this.recipeContent.references.push("")
     },
     removeReference(index) {
-      this.recipeContent.references.splice(index, 1)
+      if (this.recipeContent.references[index].length) {
+        this.fieldDeletionConfirm("reference").then((res) => {
+          if (res) {
+            this.recipeContent.references.splice(index, 1)
+          }
+        })
+      } else this.recipeContent.references.splice(index, 1)
     },
 
+    // SAVE OPERATION
     clearEmptyFields() {
       if (!this.recipeContent.title)
         this.recipeContent.title = "Untitled Recipe"
@@ -651,37 +718,50 @@ export default {
       this.imageLoading = true
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
+      if (this.cacheImagePath) {
+        let recipeImage = path.join(
+          knownFolders
+            .documents()
+            .getFolder("EnRecipes")
+            .getFolder("Images").path,
+          `${this.getRandomID()}.jpg`
+        )
+        let binarySource = File.fromPath(this.cacheImagePath).readSync()
+        File.fromPath(recipeImage).writeSync(binarySource)
+        this.recipeContent.imageSrc = recipeImage
+        knownFolders.temp().clear()
+      }
       if (this.recipeContent.imageSrc) {
-        if (this.tempRecipeContent.imageSrc) {
-          if (this.tempRecipeContent.imageSrc !== this.recipeContent.imageSrc) {
-            getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
-            this.imageSaveOperation()
-          } else this.saveRecipe()
-        } else this.imageSaveOperation()
+        if (
+          this.tempRecipeContent.imageSrc &&
+          this.tempRecipeContent.imageSrc !== this.recipeContent.imageSrc
+        ) {
+          getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
+        }
       } else if (this.tempRecipeContent.imageSrc) {
         getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
-        this.saveRecipe()
-      } else this.saveRecipe()
-    },
-    imageSaveOperation() {
-      let imgSavedToPath = path.join(
-        knownFolders
-          .documents()
-          .getFolder("EnRecipes")
-          .getFolder("Images").path,
-        `${this.getRandomID()}.jpg`
-      )
-      let workerService = new WorkerService()
-      let ImageProcessor = workerService.initImageProcessor()
-      ImageProcessor.postMessage({
-        imgFile: this.recipeContent.imageSrc,
-        imgSavedToPath,
-      })
-      ImageProcessor.onmessage = ({ data }) => {
-        this.recipeContent.imageSrc = imgSavedToPath
-        this.saveRecipe()
       }
+      this.saveRecipe()
     },
+    // imageSaveOperation() {
+    //   let imgSavedToPath = path.join(
+    //     knownFolders
+    //       .documents()
+    //       .getFolder("EnRecipes")
+    //       .getFolder("Images").path,
+    //     `${this.getRandomID()}.jpg`
+    //   )
+    //   let workerService = new WorkerService()
+    //   let ImageProcessor = workerService.initImageProcessor()
+    //   ImageProcessor.postMessage({
+    //     imgFile: this.recipeContent.imageSrc,
+    //     imgSavedToPath,
+    //   })
+    //   ImageProcessor.onmessage = ({ data }) => {
+    //     this.recipeContent.imageSrc = imgSavedToPath
+    //     this.saveRecipe()
+    //   }
+    // },
     saveRecipe() {
       if (this.recipeID) {
         this.overwriteRecipeAction({
@@ -705,6 +785,7 @@ export default {
       this.setCurrentComponentAction("EditRecipe")
     }, 500)
     this.title = this.recipeID ? "Edit recipe" : "New recipe"
+
     if (this.recipeID) {
       let recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
       Object.assign(this.recipeContent, JSON.parse(JSON.stringify(recipe)))
@@ -713,13 +794,14 @@ export default {
         JSON.parse(JSON.stringify(this.recipeContent))
       )
     } else {
+      if (this.selectedCategory)
+        this.recipeContent.category = this.selectedCategory
+      if (this.filterFavorites) this.recipeContent.isFavorite = true
       Object.assign(
         this.tempRecipeContent,
         JSON.parse(JSON.stringify(this.recipeContent))
       )
-      if (this.selectedCategory)
-        this.recipeContent.category = this.selectedCategory
-      if (this.filterFavorites) this.recipeContent.isFavorite = true
+
       this.newRecipeID = this.getRandomID()
     }
     this.hijackBackEvent()

@@ -18,6 +18,7 @@
     "@nativescript/imagepicker": "^1.0.0",
     "@nativescript/social-share": "^2.0.1",
     "@nativescript/theme": "^3.0.0",
+    "@nativescript/webpack": "3.0.0",
     "@nativescript/zip": "^5.0.0",
     "@nstudio/nativescript-checkbox": "^2.0.4",
     "nativescript-clipboard": "^2.0.0",
@@ -39,8 +40,7 @@
     "babel-loader": "^8.1.0",
     "nativescript-vue-template-compiler": "^2.6.0",
     "node-sass": "^4.13.1",
-    "vue-loader": "^15.9.1",
-    "@nativescript/webpack": "~3.0.0"
+    "vue-loader": "^15.9.1"
   },
   "main": "main"
 }

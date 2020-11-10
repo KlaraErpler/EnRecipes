@@ -147,6 +147,7 @@ export default new Vuex.Store({
       heart: "\ued36",
       heartOutline: "\uea6c",
       label: "\ued51",
+      labelOutline: "\uea8b",
       cog: "\ueca6",
       info: "\ued49",
       menu: "\ueac1",
@@ -165,6 +166,7 @@ export default new Vuex.Store({
       theme: "\uecaa",
       link: "\ueaa0",
       file: "\ued02",
+      detail: "\ue9f9",
       user: "\uee33",
       trash: "\uee26",
       donate: "\ueb4f",
@@ -185,9 +187,8 @@ export default new Vuex.Store({
   },
   mutations: {
     initializeRecipes(state) {
-      let a = EnRecipesDB.query({ select: [] })
-      a.forEach((e) => {
-        state.recipes.push(e)
+      EnRecipesDB.query({ select: [] }).forEach((recipe) => {
+        state.recipes.push(recipe)
       })
     },
     initializeCategories(state) {
