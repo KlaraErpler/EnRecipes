@@ -64,7 +64,6 @@
         :filteringFunction="filterFunction"
         :sortingFunction="sortFunction"
       >
-        <!-- @itemTap="viewRecipe" -->
         <v-template>
           <GridLayout
             class="recipeItem"

@@ -78,9 +78,8 @@
                   v-if="recipe.imageSrc"
                   :src="recipe.imageSrc"
                   stretch="aspectFill"
-                  decodeWidth="100%"
-                  :decodeHeight="screenWidth"
-                  loadMode="async"
+                  width="100%"
+                  :height="screenWidth"
                 />
                 <Label
                   v-else
@@ -668,7 +667,7 @@ export default {
         })
         shareContent += references
       }
-      let sharenote = "\nCreated and shared via EnRecipes.\nGet it on F-Droid."
+      let sharenote = "\nCreated and shared via EnRecipes. Get it on F-Droid."
 
       shareContent += sharenote
 

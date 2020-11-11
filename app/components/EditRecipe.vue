@@ -41,8 +41,8 @@
                 v-if="recipeContent.imageSrc"
                 :src="recipeContent.imageSrc"
                 stretch="aspectFill"
-                decodeWidth="100%"
-                :decodeHeight="screenWidth"
+                width="100%"
+                :height="screenWidth"
               />
               <Label
                 v-else
@@ -262,8 +262,6 @@
 </template>
 
 <script>
-// import { WorkerService } from "../worker.service"
-// const workerService = new WorkerService()
 import {
   AndroidApplication,
   Application,
@@ -278,7 +276,6 @@ import {
 } from "@nativescript/core"
 import * as Permissions from "@nativescript-community/perms"
 import * as Toast from "nativescript-toast"
-import * as ImagePicker from "@nativescript/imagepicker"
 import * as Filepicker from "nativescript-plugin-filepicker"
 import { ImageCropper } from "nativescript-imagecropper"
 import { mapState, mapActions } from "vuex"
@@ -592,10 +589,7 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.permissionCheck(
-              this.permissionConfirmation,
-              this.imagePicker
-            )
+            this.permissionCheck(this.permissionConfirmation, this.imagePicker)
           } else if (action != null) {
             this.recipeContent.imageSrc = null
             this.releaseBackEvent()
@@ -651,8 +645,6 @@ export default {
         knownFolders.temp().path,
         `${this.getRandomID()}.jpg`
       )
-      console.log(this.cacheImagePath)
-      let screenWidth = Math.round(this.screenWidth * 2)
       Filepicker.create({
         mode: "single",
         extensions: ["png", "jpeg", "jpg"],
@@ -665,8 +657,8 @@ export default {
               .show(
                 image,
                 {
-                  width: screenWidth,
-                  height: screenWidth,
+                  width: 1080,
+                  height: 1080,
                 },
                 {
                   hideBottomControls: true,
@@ -685,39 +677,8 @@ export default {
               })
           })
         })
-      // ImagePicker.create({
-      //   mode: "single",
-      //   mediaType: ImagePicker.ImagePickerMediaType.Image,
-      // })
-      //   .present()
-      //   .then((selection) => {
-      //     let imgPath = selection[0]._android
-      //     ImageSource.fromFile(imgPath).then((image) => {
-      //       ImageCropper.prototype
-      //         .show(
-      //           image,
-      //           {
-      //             width: screenWidth,
-      //             height: screenWidth,
-      //           },
-      //           {
-      //             hideBottomControls: true,
-      //             toolbarTitle: "Crop photo",
-      //             statusBarColor: "#ff5200",
-      //             toolbarTextColor:
-      //               this.appTheme == "light" ? "#212529" : "#f1f3f5",
-      //             toolbarColor:
-      //               this.appTheme == "light" ? "#f1f3f5" : "#212529",
-      //             cropFrameColor: "#ff5200",
-      //           }
-      //         )
-      //         .then((cropped) => {
-      //           cropped.image.saveToFile(this.cacheImagePath, "jpg", 75)
-      //           this.recipeContent.imageSrc = this.cacheImagePath
-      //         })
-      //     })
-      //   })
     },
+
     // INPUT FIELD HANDLERS
     fieldDeletionConfirm(item) {
       return this.$showModal(ConfirmDialog, {
@@ -830,25 +791,6 @@ export default {
       }
       this.saveRecipe()
     },
-    // imageSaveOperation() {
-    //   let imgSavedToPath = path.join(
-    //     knownFolders
-    //       .documents()
-    //       .getFolder("EnRecipes")
-    //       .getFolder("Images").path,
-    //     `${this.getRandomID()}.jpg`
-    //   )
-    //   let workerService = new WorkerService()
-    //   let ImageProcessor = workerService.initImageProcessor()
-    //   ImageProcessor.postMessage({
-    //     imgFile: this.recipeContent.imageSrc,
-    //     imgSavedToPath,
-    //   })
-    //   ImageProcessor.onmessage = ({ data }) => {
-    //     this.recipeContent.imageSrc = imgSavedToPath
-    //     this.saveRecipe()
-    //   }
-    // },
     saveRecipe() {
       if (this.recipeID) {
         this.overwriteRecipeAction({
@@ -863,7 +805,9 @@ export default {
           recipe: this.recipeContent,
         })
       }
-      this.imageLoading = false
+      setTimeout(() => {
+        this.imageLoading = false
+      }, 100)
       this.$navigateBack()
     },
   },

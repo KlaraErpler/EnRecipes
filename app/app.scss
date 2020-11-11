@@ -491,6 +491,8 @@ RadListView {
   height: 100%;
 }
 MDFloatingActionButton {
+  width: 56;
+  height: 56;
   margin: 16;
   background: $orange;
   ripple-color: $fabRipple;
@@ -567,7 +569,7 @@ MDButton.closeBtn {
 MDActivityIndicator {
   width: 24;
   height: 24;
-  margin: 16;
+  margin: 16 12;
 }
 // -----------------------------
 // Transitions
