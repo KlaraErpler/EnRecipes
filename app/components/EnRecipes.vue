@@ -329,7 +329,7 @@ export default {
       let h = parseInt(t[0])
       let m = parseInt(t[1])
       return {
-        time: h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`,
+        time: h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`,
         duration: `${h}${m}`,
       }
     },

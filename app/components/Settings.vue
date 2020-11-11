@@ -273,9 +273,7 @@ export default {
         .present()
         .then((selection) => {
           Toast.makeText("Processing...").show()
-          let result = selection[0]
-          let zipPath = result
-          let dest = knownFolders.documents().path
+          let zipPath = selection[0]
           this.validateZipContent(zipPath)
         })
     },

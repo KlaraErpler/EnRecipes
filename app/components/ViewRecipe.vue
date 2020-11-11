@@ -231,9 +231,7 @@
                 <Label
                   class="title orkm"
                   :text="
-                    `Ingredients for ${
-                      yieldMultiplier ? yieldMultiplier : 1
-                    } ${recipe.yield.unit.toLowerCase()}`
+                    `Ingredients for ${positiveYieldMultiplier} ${recipe.yield.unit.toLowerCase()}`
                   "
                   textWrap="true"
                 />
@@ -486,10 +484,8 @@ export default {
     screenWidth() {
       return Screen.mainScreen.widthDIPs
     },
-    isYieldMultiplierPositive() {
-      return this.yieldMultiplier && !isNaN(this.yieldMultiplier)
-        ? parseFloat(this.yieldMultiplier)
-        : 1
+    positiveYieldMultiplier() {
+      return this.yieldMultiplier > 0 ? parseFloat(this.yieldMultiplier) : 1
     },
     isLightMode() {
       return Application.systemAppearance() === "light"
@@ -545,7 +541,7 @@ export default {
       return (
         Math.round(
           (quantity / this.recipe.yield.quantity) *
-            this.isYieldMultiplierPositive *
+            this.positiveYieldMultiplier *
             100
         ) / 100
       )
@@ -568,7 +564,7 @@ export default {
       let t = time.split(":")
       let h = parseInt(t[0])
       let m = parseInt(t[1])
-      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
+      return h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`
     },
     isValidURL(string) {
       let pattern = new RegExp("^https?|www", "ig")
@@ -672,8 +668,7 @@ export default {
         })
         shareContent += references
       }
-      let sharenote =
-        "\nCreated and shared via EnRecipes.\nGet it on F-Droid."
+      let sharenote = "\nCreated and shared via EnRecipes.\nGet it on F-Droid."
 
       shareContent += sharenote
 

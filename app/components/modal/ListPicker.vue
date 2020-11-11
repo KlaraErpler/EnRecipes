@@ -49,52 +49,52 @@ export default {
   data() {
     return {
       hrs: [
-        "0h",
-        "1h",
-        "2h",
-        "3h",
-        "4h",
-        "5h",
-        "6h",
-        "7h",
-        "8h",
-        "9h",
-        "10h",
-        "11h",
-        "12h",
-        "13h",
-        "14h",
-        "15h",
-        "16h",
-        "17h",
-        "18h",
-        "19h",
-        "20h",
-        "21h",
-        "22h",
-        "23h",
+        "0 hr",
+        "1 hr",
+        "2 hr",
+        "3 hr",
+        "4 hr",
+        "5 hr",
+        "6 hr",
+        "7 hr",
+        "8 hr",
+        "9 hr",
+        "10 hr",
+        "11 hr",
+        "12 hr",
+        "13 hr",
+        "14 hr",
+        "15 hr",
+        "16 hr",
+        "17 hr",
+        "18 hr",
+        "19 hr",
+        "20 hr",
+        "21 hr",
+        "22 hr",
+        "23 hr",
       ],
       mins: [
-        "0m",
-        "1m",
-        "2m",
-        "3m",
-        "4m",
-        "5m",
-        "6m",
-        "7m",
-        "8m",
-        "9m",
-        "10m",
-        "15m",
-        "20m",
-        "25m",
-        "30m",
-        "35m",
-        "40m",
-        "45m",
-        "50m",
-        "55m",
+        "0 min",
+        "1 min",
+        "2 min",
+        "3 min",
+        "4 min",
+        "5 min",
+        "6 min",
+        "7 min",
+        "8 min",
+        "9 min",
+        "10 min",
+        "15 min",
+        "20 min",
+        "25 min",
+        "30 min",
+        "35 min",
+        "40 min",
+        "45 min",
+        "50 min",
+        "55 min",
       ],
       selectedHrs: "00",
       selectedMins: "00",
@@ -103,14 +103,14 @@ export default {
   computed: {
     hrIndex() {
       let hr = this.selectedHr
-      if (hr.charAt(0) == "0") hr = hr.slice(-1) + "h"
-      else hr = hr + "h"
+      if (hr.charAt(0) == "0") hr = hr.slice(-1) + " hr"
+      else hr = hr + " hr"
       return this.hrs.indexOf(hr)
     },
     minIndex() {
       let min = this.selectedMin
-      if (min.charAt(0) == "0") min = min.slice(-1) + "m"
-      else min = min + "m"
+      if (min.charAt(0) == "0") min = min.slice(-1) + " min"
+      else min = min + " min"
       return this.mins.indexOf(min)
     },
     appTheme() {
@@ -128,11 +128,11 @@ export default {
   methods: {
     setHrs(args) {
       let hr = "0" + this.hrs[args.object.selectedIndex]
-      this.selectedHrs = hr.slice(-3).slice(0, -1)
+      this.selectedHrs = hr.slice(-5).slice(0, -3)
     },
     setMins(args) {
       let min = "0" + this.mins[args.object.selectedIndex]
-      this.selectedMins = min.slice(-3).slice(0, -1)
+      this.selectedMins = min.slice(-6).slice(0, -4)
     },
   },
 }

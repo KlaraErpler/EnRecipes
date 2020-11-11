@@ -43,7 +43,6 @@
                 stretch="aspectFill"
                 decodeWidth="100%"
                 :decodeHeight="screenWidth"
-                loadMode="async"
               />
               <Label
                 v-else
@@ -70,8 +69,7 @@
               <TextField
                 hint="My Healthy Recipe"
                 v-model="recipeContent.title"
-                autocapitalizationType="words"
-                autocorrect="true"
+                @loaded="setInputTypeText($event, 'words')"
               />
               <Label top="0" class="fieldLabel" text="Title" />
             </AbsoluteLayout>
@@ -79,13 +77,15 @@
               <TextField
                 :text="recipeContent.category"
                 editable="false"
-                @tap="showCategories"
+                @focus="modalOpen === false && showCategories(true)"
+                @tap="showCategories(false)"
               />
               <Label top="0" class="fieldLabel" text="Category" />
             </AbsoluteLayout>
             <GridLayout columns="*, 8, *">
               <AbsoluteLayout class="inputField" col="0">
                 <TextField
+                  ref="yieldQuantity"
                   v-model="recipeContent.yield.quantity"
                   hint="1"
                   keyboardType="number"
@@ -96,7 +96,8 @@
                 <TextField
                   :text="recipeContent.yield.unit"
                   editable="false"
-                  @tap="showYieldUnits"
+                  @focus="modalOpen === false && showYieldUnits(true)"
+                  @tap="showYieldUnits(false)"
                 />
                 <Label top="0" class="fieldLabel" text="Yield measured in" />
               </AbsoluteLayout>
@@ -104,9 +105,11 @@
             <GridLayout columns="*, 8, *">
               <AbsoluteLayout class="inputField" col="0">
                 <TextField
+                  ref="timeRequired"
                   :text="timeRequired"
                   editable="false"
-                  @tap="setTimeRequired"
+                  @focus="modalOpen === false && setTimeRequired(true)"
+                  @tap="setTimeRequired(false)"
                 />
                 <Label top="0" class="fieldLabel" text="Time required" />
               </AbsoluteLayout>
@@ -123,12 +126,11 @@
               :key="index"
             >
               <TextField
-                @loaded="focusField"
+                @loaded="focusField($event, 'sentence')"
                 col="0"
                 v-model="recipeContent.ingredients[index].item"
                 :hint="`Item ${index + 1}`"
-                autocapitalizationType="words"
-                autocorrect="true"
+                returnKeyType="next"
               />
               <TextField
                 width="68"
@@ -136,6 +138,7 @@
                 v-model="recipeContent.ingredients[index].quantity"
                 hint="1.00"
                 keyboardType="number"
+                returnKeyType="next"
               />
               <TextField
                 width="68"
@@ -143,7 +146,8 @@
                 v-model="recipeContent.ingredients[index].unit"
                 hint="Unit"
                 editable="false"
-                @tap="showUnits($event)"
+                @focus="modalOpen === false && showUnits($event, true)"
+                @tap="showUnits($event, false)"
               />
               <MDButton
                 variant="text"
@@ -171,12 +175,10 @@
               :key="index"
             >
               <TextView
-                @loaded="focusField"
+                @loaded="focusField($event, 'multiLine')"
                 col="0"
                 :hint="`Step ${index + 1}`"
                 v-model="recipeContent.instructions[index]"
-                editable="true"
-                autocorrect="true"
               />
               <MDButton
                 variant="text"
@@ -190,7 +192,7 @@
               variant="text"
               class="text-btn orkm"
               text="+ ADD STEP"
-              @tap="addInstruction()"
+              @tap="addInstruction"
             />
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
@@ -203,12 +205,10 @@
               :key="index"
             >
               <TextView
-                @loaded="focusField"
+                @loaded="focusField($event, 'multiLine')"
                 col="0"
-                v-model="recipeContent.notes[index]"
                 :hint="`Note ${index + 1}`"
-                editable="true"
-                autocorrect="true"
+                v-model="recipeContent.notes[index]"
               />
               <MDButton
                 variant="text"
@@ -222,12 +222,12 @@
               variant="text"
               class="text-btn orkm"
               text="+ ADD NOTE"
-              @tap="addNote()"
+              @tap="addNote"
             />
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <StackLayout margin="0 16">
+          <StackLayout margin="0 16 24">
             <Label text="References" class="sectionTitle" />
             <GridLayout
               columns="*,8,auto"
@@ -235,12 +235,10 @@
               :key="index"
             >
               <TextView
-                @loaded="focusField"
+                @loaded="focusField($event, 'multiLine')"
                 col="0"
                 v-model="recipeContent.references[index]"
                 hint="Text or Website/Video URL"
-                editable="true"
-                autocorrect="true"
               />
               <MDButton
                 variant="text"
@@ -254,9 +252,8 @@
               variant="text"
               class="text-btn orkm"
               text="+ ADD REFERENCE"
-              @tap="addReference()"
+              @tap="addReference"
             />
-            <StackLayout margin="32"></StackLayout>
           </StackLayout>
         </StackLayout>
       </ScrollView>
@@ -282,6 +279,7 @@ import {
 import * as Permissions from "@nativescript-community/perms"
 import * as Toast from "nativescript-toast"
 import * as ImagePicker from "@nativescript/imagepicker"
+import * as Filepicker from "nativescript-plugin-filepicker"
 import { ImageCropper } from "nativescript-imagecropper"
 import { mapState, mapActions } from "vuex"
 
@@ -323,6 +321,7 @@ export default {
       },
       tempRecipeContent: {},
       blockModal: false,
+      modalOpen: false,
       newRecipeID: null,
       showFab: false,
       imageLoading: false,
@@ -354,7 +353,7 @@ export default {
       let t = this.recipeContent.timeRequired.split(":")
       let h = parseInt(t[0])
       let m = parseInt(t[1])
-      return h ? (m ? `${h}h ${m}m` : `${h}h`) : `${m}m`
+      return h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`
     },
   },
   methods: {
@@ -370,10 +369,40 @@ export default {
     },
 
     // HELPERS
-    focusField(args) {
+    focusField(args, type) {
+      this.setInputTypeText(args, type)
       if (!args.object.text) {
         args.object.focus()
         setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 1)
+      }
+    },
+    setInputTypeText(args, type) {
+      let field = args.object
+      switch (type) {
+        case "words":
+          field.android.setInputType(
+            android.text.InputType.TYPE_CLASS_TEXT |
+              android.text.InputType.TYPE_TEXT_FLAG_CAP_WORDS |
+              android.text.InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+          )
+          break
+        case "sentence":
+          field.android.setInputType(
+            android.text.InputType.TYPE_CLASS_TEXT |
+              android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES |
+              android.text.InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+          )
+          break
+        case "multiLine":
+          field.android.setInputType(
+            android.text.InputType.TYPE_CLASS_TEXT |
+              android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE |
+              android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES |
+              android.text.InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+          )
+          break
+        default:
+          break
       }
     },
     getRandomID() {
@@ -384,13 +413,14 @@ export default {
       }
       return res
     },
-    setTimeRequired() {
+    setTimeRequired(focus) {
+      this.modalOpen = true
       let time = this.recipeContent.timeRequired.split(":")
       let hr = time[0]
       let min = time[1]
       this.$showModal(ListPicker, {
         props: {
-          title: "Approx. time required",
+          title: "Time required",
           action: "SET",
           selectedHr: hr,
           selectedMin: min,
@@ -398,6 +428,8 @@ export default {
       }).then((result) => {
         if (result) {
           this.recipeContent.timeRequired = result
+          this.modalOpen = false
+          if (focus) this.addIngredient()
         }
       })
     },
@@ -408,7 +440,8 @@ export default {
     },
 
     // DATA LIST
-    showCategories() {
+    showCategories(focus) {
+      this.modalOpen = true
       this.releaseBackEvent()
       this.$showModal(ActionDialog, {
         props: {
@@ -429,17 +462,28 @@ export default {
             if (category.length) {
               this.recipeContent.category = category
               this.addCategoryAction(category)
+              if (focus) this.autoFocusField("yieldQuantity")
+              this.modalOpen = false
             }
           })
         } else if (action) {
           this.recipeContent.category = action
           this.hijackBackEvent()
+          if (focus) this.autoFocusField("yieldQuantity")
+          this.modalOpen = false
         } else {
           this.hijackBackEvent()
         }
       })
     },
-    showYieldUnits() {
+    autoFocusField(ref) {
+      this.$refs[ref].nativeView.focus()
+      setTimeout(() => {
+        Utils.ad.showSoftInput(this.$refs[ref].nativeView.android)
+      }, 1)
+    },
+    showYieldUnits(focus) {
+      this.modalOpen = true
       this.releaseBackEvent()
       this.$showModal(ActionDialog, {
         props: {
@@ -460,27 +504,35 @@ export default {
             if (yieldUnit.length) {
               this.recipeContent.yield.unit = yieldUnit
               this.addYieldUnitAction(yieldUnit)
+              this.modalOpen = false
+              if (focus) this.autoFocusField("timeRequired")
             }
           })
         } else if (action) {
           this.recipeContent.yield.unit = action
           this.hijackBackEvent()
+          this.modalOpen = false
+          if (focus) this.autoFocusField("timeRequired")
         } else {
           this.hijackBackEvent()
         }
       })
     },
-    showUnits(e) {
+    showUnits(e, focus) {
+      this.modalOpen = true
       this.releaseBackEvent()
       this.$showModal(ActionDialog, {
         props: {
           title: "Unit",
           list: [...this.units],
-          // height: "420",
         },
       }).then((action) => {
         this.hijackBackEvent()
-        if (action) e.object.text = action
+        if (action) {
+          e.object.text = action
+          this.modalOpen = false
+          if (focus) this.addIngredient()
+        }
       })
     },
 
@@ -540,7 +592,10 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action) {
-            this.permissionCheck(this.permissionConfirmation, this.imagePicker)
+            this.permissionCheck(
+              this.permissionConfirmation,
+              this.imagePicker
+            )
           } else if (action != null) {
             this.recipeContent.imageSrc = null
             this.releaseBackEvent()
@@ -596,14 +651,15 @@ export default {
         knownFolders.temp().path,
         `${this.getRandomID()}.jpg`
       )
+      console.log(this.cacheImagePath)
       let screenWidth = Math.round(this.screenWidth * 2)
-      ImagePicker.create({
+      Filepicker.create({
         mode: "single",
-        mediaType: ImagePicker.ImagePickerMediaType.Image,
+        extensions: ["png", "jpeg", "jpg"],
       })
         .present()
         .then((selection) => {
-          let imgPath = selection[0]._android
+          let imgPath = selection[0]
           ImageSource.fromFile(imgPath).then((image) => {
             ImageCropper.prototype
               .show(
@@ -629,8 +685,39 @@ export default {
               })
           })
         })
+      // ImagePicker.create({
+      //   mode: "single",
+      //   mediaType: ImagePicker.ImagePickerMediaType.Image,
+      // })
+      //   .present()
+      //   .then((selection) => {
+      //     let imgPath = selection[0]._android
+      //     ImageSource.fromFile(imgPath).then((image) => {
+      //       ImageCropper.prototype
+      //         .show(
+      //           image,
+      //           {
+      //             width: screenWidth,
+      //             height: screenWidth,
+      //           },
+      //           {
+      //             hideBottomControls: true,
+      //             toolbarTitle: "Crop photo",
+      //             statusBarColor: "#ff5200",
+      //             toolbarTextColor:
+      //               this.appTheme == "light" ? "#212529" : "#f1f3f5",
+      //             toolbarColor:
+      //               this.appTheme == "light" ? "#f1f3f5" : "#212529",
+      //             cropFrameColor: "#ff5200",
+      //           }
+      //         )
+      //         .then((cropped) => {
+      //           cropped.image.saveToFile(this.cacheImagePath, "jpg", 75)
+      //           this.recipeContent.imageSrc = this.cacheImagePath
+      //         })
+      //     })
+      //   })
     },
-
     // INPUT FIELD HANDLERS
     fieldDeletionConfirm(item) {
       return this.$showModal(ConfirmDialog, {

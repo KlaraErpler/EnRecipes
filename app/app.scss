@@ -508,8 +508,9 @@ MDFloatingActionButton {
   min-width: 0;
 }
 MDButton.closeBtn {
-  padding: 4;
-  margin-top: 16;
+  margin: 16 0 0;
+  width: 32;
+  height: 32;
   min-width: 0;
   vertical-alignment: top;
 }
