@@ -91,6 +91,9 @@ Page,
   MDFloatingActionButton {
     color: white;
   }
+  .appIconContainer {
+    background: $orange;
+  }
 }
 
 .ns-dark {
@@ -149,6 +152,9 @@ Page,
   }
   MDFloatingActionButton {
     color: $gray9;
+  }
+  .appIconContainer {
+    background: $orange;
   }
 }
 // -----------------------------

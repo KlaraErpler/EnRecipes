@@ -371,7 +371,7 @@ export default {
     this.appTheme = ApplicationSettings.getString("appTheme", "Light")
     setTimeout((e) => {
       Theme.setMode(Theme[this.appTheme])
-    }, 50)
+    }, 10)
     this.initializeRecipes()
     this.initializeCategories()
     this.initializeYieldUnits()

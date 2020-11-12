@@ -20,7 +20,7 @@
           orientation="horizontal"
           class="appIconContainer"
         >
-          <Image src="res://logo_light" class="appIcon" stretch="aspectFit" />
+          <Image src="res://logo" class="appIcon" stretch="aspectFit" />
         </StackLayout>
         <StackLayout class="m-8"></StackLayout>
         <GridLayout columns="auto, *" class="option">
@@ -45,11 +45,14 @@
         <GridLayout columns="auto, *" class="option">
           <MDRipple colSpan="2" @tap="openURL('https://t.me/enrecipes')" />
           <Label col="0" class="bx" :text="icon.telegram" />
-          <Label
-            verticalAlignment="center"
-            col="1"
-            text="Join the Telegram group"
-          />
+          <StackLayout col="1">
+            <Label text="Join the Telegram group" />
+            <Label
+              text="for reporting issues, suggestions and feedback"
+              class="info"
+              textWrap="true"
+            />
+          </StackLayout>
         </GridLayout>
 
         <StackLayout class="hr m-10"></StackLayout>
