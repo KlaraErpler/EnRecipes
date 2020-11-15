@@ -20,9 +20,6 @@ Vue.use(FloatingActionButtonPlugin)
 import ProgressPlugin from "@nativescript-community/ui-material-progress/vue"
 Vue.use(ProgressPlugin)
 
-// import SpeedDialPlugin from "@nativescript-community/ui-material-speeddial/vue"
-// Vue.use(SpeedDialPlugin)
-
 Vue.registerElement(
   "RadSideDrawer",
   () => require("nativescript-ui-sidedrawer").RadSideDrawer

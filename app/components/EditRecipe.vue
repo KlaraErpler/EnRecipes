@@ -227,7 +227,7 @@
             <StackLayout class="hr" margin="24 16"></StackLayout>
           </StackLayout>
 
-          <StackLayout margin="0 16 24">
+          <StackLayout margin="0 16">
             <Label text="References" class="sectionTitle" />
             <GridLayout
               columns="*,8,auto"
@@ -254,6 +254,36 @@
               text="+ ADD REFERENCE"
               @tap="addReference"
             />
+            <StackLayout class="hr" margin="24 16"></StackLayout>
+          </StackLayout>
+
+          <StackLayout margin="0 16 24" v-if="recipes.length">
+            <Label text="Combinations" class="sectionTitle" />
+            <GridLayout
+              columns="*,8,auto"
+              v-for="(combination, index) in recipeContent.combinations"
+              :key="index"
+            >
+              <TextField
+                class="combinationToken"
+                col="0"
+                :text="getCombinationTitle(combination)"
+                editable="false"
+              />
+              <MDButton
+                variant="text"
+                col="2"
+                class="bx closeBtn"
+                :text="icon.close"
+                @tap="removeCombination(combination)"
+              />
+            </GridLayout>
+            <MDButton
+              variant="text"
+              class="text-btn orkm"
+              text="+ ADD COMBINATION"
+              @tap="showCombinations"
+            />
           </StackLayout>
         </StackLayout>
       </ScrollView>
@@ -273,6 +303,7 @@ import {
   path,
   Screen,
   Utils,
+  ObservableArray,
 } from "@nativescript/core"
 import * as Permissions from "@nativescript-community/perms"
 import * as Toast from "nativescript-toast"
@@ -281,13 +312,13 @@ import { ImageCropper } from "nativescript-imagecropper"
 import { mapState, mapActions } from "vuex"
 
 import ActionDialog from "./modal/ActionDialog.vue"
+import ActionDialogWithSearch from "./modal/ActionDialogWithSearch.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ListPicker from "./modal/ListPicker.vue"
 
 export default {
   props: [
-    "recipeIndex",
     "recipeID",
     "selectedCategory",
     "openAppSettingsPage",
@@ -311,6 +342,7 @@ export default {
         instructions: [],
         notes: [],
         references: [],
+        combinations: [],
         isFavorite: false,
         tried: false,
         lastTried: null,
@@ -323,6 +355,7 @@ export default {
       showFab: false,
       imageLoading: false,
       cacheImagePath: null,
+      unSyncCombinations: [],
     }
   },
   computed: {
@@ -360,6 +393,7 @@ export default {
       "overwriteRecipeAction",
       "addCategoryAction",
       "addYieldUnitAction",
+      "unSyncCombinationsAction",
     ]),
     onPageLoad() {
       this.showFab = true
@@ -367,7 +401,7 @@ export default {
 
     // HELPERS
     focusField(args, type) {
-      this.setInputTypeText(args, type)
+      if (type) this.setInputTypeText(args, type)
       if (!args.object.text) {
         args.object.focus()
         setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 1)
@@ -719,15 +753,46 @@ export default {
       } else this.recipeContent.instructions.splice(index, 1)
     },
 
+    getCombinationTitle(id) {
+      return this.recipes.filter((e) => e.id === id)[0].title
+    },
+    showCombinations() {
+      let existingCombinations = [
+        ...this.recipeContent.combinations,
+        this.recipeContent.id,
+      ]
+      console.log(existingCombinations)
+      let filteredRecipes = this.recipes.filter(
+        (e) => !existingCombinations.includes(e.id)
+      )
+      this.$showModal(ActionDialogWithSearch, {
+        props: {
+          title: "Select a recipe",
+          recipes: filteredRecipes,
+        },
+      }).then((res) => {
+        if (res) {
+          this.recipeContent.combinations.push(res)
+        }
+      })
+    },
+    removeCombination(id) {
+      let index = this.recipeContent.combinations.indexOf(id)
+      this.fieldDeletionConfirm("combination").then((res) => {
+        if (res) {
+          this.recipeContent.combinations.splice(index, 1)
+          this.unSyncCombinations.push(id)
+        }
+      })
+    },
+
     addNote() {
       this.recipeContent.notes.push("")
     },
     removeNote(index) {
       if (this.recipeContent.notes[index].length) {
         this.fieldDeletionConfirm("note").then((res) => {
-          if (res) {
-            this.recipeContent.notes.splice(index, 1)
-          }
+          if (res) this.recipeContent.notes.splice(index, 1)
         })
       } else this.recipeContent.notes.splice(index, 1)
     },
@@ -789,12 +854,15 @@ export default {
       } else if (this.tempRecipeContent.imageSrc) {
         getFileAccess().deleteFile(this.tempRecipeContent.imageSrc)
       }
+      this.unSyncCombinationsAction({
+        id: this.recipeID,
+        combinations: this.unSyncCombinations,
+      })
       this.saveRecipe()
     },
     saveRecipe() {
       if (this.recipeID) {
         this.overwriteRecipeAction({
-          index: this.recipeIndex,
           id: this.recipeID,
           recipe: this.recipeContent,
         })

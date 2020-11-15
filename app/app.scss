@@ -202,6 +202,7 @@ MDActivityIndicator {
 MDProgress {
   progress-color: $orange;
 }
+
 // -----------------------------
 // ActionBar
 ActionBar {
@@ -480,6 +481,7 @@ RadListView {
     .recipeLink {
       padding: 16;
       margin: 0;
+      line-height: 6;
     }
   }
   .recipeText {
@@ -522,6 +524,10 @@ MDButton.closeBtn {
   min-width: 0;
   vertical-alignment: top;
 }
+TextField.combinationToken {
+  border-width: 0;
+  background: white;
+}
 // -----------------------------
 // DIALOGS
 .dialogContainer {
@@ -547,6 +553,7 @@ MDButton.closeBtn {
   .actionItem {
     letter-spacing: 0;
     text-transform: none;
+    line-height: 6;
     padding: 16 24;
     margin: 0;
   }

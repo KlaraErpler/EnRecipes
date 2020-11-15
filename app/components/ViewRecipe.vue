@@ -13,8 +13,8 @@
         />
         <ScrollView
           row="1"
-          col="1"
-          colSpan="3"
+          col="0"
+          colSpan="4"
           orientation="horizontal"
           scrollBarIndicatorVisible="false"
         >
@@ -102,8 +102,8 @@
                   <Label :text="` ${formattedTime(recipe.timeRequired)}`" />
                 </StackLayout>
                 <GridLayout
-                  rows="auto,  auto"
-                  columns="*,  *"
+                  rows="auto, auto, auto"
+                  columns="*, *"
                   class="overviewContainer"
                 >
                   <GridLayout
@@ -142,12 +142,15 @@
                       class="itemCount"
                       :text="
                         `${recipe.instructions.length} ${
-                          recipe.instructions.length == 1 ? 'Step' : 'Steps'
+                          recipe.instructions.length == 1
+                            ? 'Instruction'
+                            : 'Instructions'
                         }`
                       "
                       textWrap="true"
                     />
                   </GridLayout>
+
                   <GridLayout
                     class="overviewItem"
                     row="1"
@@ -185,6 +188,28 @@
                           recipe.references.length == 1
                             ? 'Reference'
                             : 'References'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </GridLayout>
+                  <GridLayout
+                    class="overviewItem"
+                    row="2"
+                    col="0"
+                    rows="auto, auto"
+                    columns="*"
+                  >
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 5" />
+                    <Label row="0" class="bx" :text="icon.outline" />
+                    <Label
+                      row="1"
+                      class="itemCount"
+                      :text="
+                        `${recipe.combinations.length} ${
+                          recipe.combinations.length == 1
+                            ? 'Combination'
+                            : 'Combinations'
                         }`
                       "
                       textWrap="true"
@@ -415,6 +440,44 @@
             </StackLayout>
           </ScrollView>
         </TabViewItem>
+        <TabViewItem title="Combinations">
+          <ScrollView scrollBarIndicatorVisible="false">
+            <GridLayout
+              v-if="!recipe.combinations.length"
+              rows="*, auto, *, 88"
+              columns="*"
+              class="emptyStateContainer"
+            >
+              <StackLayout col="0" row="1" class="emptyState">
+                <Label class="bx icon" :text="icon.outline" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some combinations" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
+            <StackLayout v-else padding="10 0 132">
+              <GridLayout
+                columns="*"
+                v-for="(combination, index) in recipe.combinations"
+                :key="index"
+                androidElevation="1"
+                class="referenceItem"
+              >
+                <MDRipple col="0" @tap="viewCombination(combination)" />
+                <Label
+                  col="0"
+                  verticalAlignment="center"
+                  class="recipeLink"
+                  :text="getCombinationTitle(combination)"
+                  textWrap="true"
+                />
+              </GridLayout>
+            </StackLayout>
+          </ScrollView>
+        </TabViewItem>
       </TabView>
       <GridLayout id="btnFabContainer" rows="*, auto" columns="*, auto">
         <MDFloatingActionButton
@@ -440,6 +503,7 @@
 
 <script>
 import {
+  ApplicationSettings,
   Color,
   Device,
   File,
@@ -457,6 +521,7 @@ import { Application } from "@nativescript/core"
 import { mapActions, mapState } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
+import ViewRecipe from "./ViewRecipe.vue"
 import ShareChooser from "./modal/ShareChooser.vue"
 
 let feedback = new Feedback()
@@ -464,8 +529,8 @@ let feedback = new Feedback()
 export default {
   props: [
     "filterTrylater",
-    "recipeIndex",
     "recipeID",
+    "recipeIndex",
     "hijackGlobalBackEvent",
     "releaseGlobalBackEvent",
   ],
@@ -476,6 +541,7 @@ export default {
       recipe: null,
       showFab: false,
       selectedTabIndex: 0,
+      currentRecipeID: this.recipeID,
     }
   },
   computed: {
@@ -491,7 +557,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["toggleStateAction", "setCurrentComponentAction"]),
+    ...mapActions([
+      "toggleStateAction",
+      "setCurrentComponentAction",
+      "overwriteRecipeAction",
+    ]),
     onPageLoad() {
       this.releaseGlobalBackEvent()
       this.busy = false
@@ -501,6 +571,7 @@ export default {
       this.yieldMultiplier = this.recipe.yield.quantity
       this.showFab = true
       this.keepScreenOn(true)
+      this.syncCombinations()
     },
     onPageUnload() {
       feedback.hide()
@@ -569,23 +640,44 @@ export default {
       let pattern = new RegExp("^https?|www", "ig")
       return pattern.test(string)
     },
+    getCombinationTitle(id) {
+      return this.recipes.filter((e) => e.id === id)[0].title
+    },
+    syncCombinations() {
+      let combinationForOtherRecipes = this.recipes
+        .filter(
+          (e) =>
+            e.combinations.indexOf(this.currentRecipeID) >= 0 ||
+            this.recipe.combinations.includes(e.id)
+        )
+        .map((e) => e.id)
+      this.recipe.combinations = combinationForOtherRecipes
+      this.overwriteRecipeAction({
+        id: this.currentRecipeID,
+        recipe: this.recipe,
+      })
+    },
 
     // NAVIGATION HANDLERS
     editRecipe() {
       this.showFab = false
       this.busy = true
       this.$navigateTo(EditRecipe, {
-        // transition: {
-        //   name: "slide",
-        //   duration: 250,
-        //   curve: "easeOut",
-        // },
         props: {
-          recipeIndex: this.recipeIndex,
-          recipeID: this.recipeID,
+          recipeID: this.currentRecipeID,
         },
-        // backstackVisible: false,
       })
+    },
+    viewCombination(combination) {
+      this.recipe = this.recipes.filter((e) => e.id === combination)[0]
+      this.currentRecipeID = combination
+      this.syncCombinations()
+      this.selectedTabIndex = 0
+      setTimeout(
+        (e) =>
+          this.recipe.tried && this.recipe.lastTried && this.showLastTried(),
+        500
+      )
     },
 
     // SHARE ACTION
@@ -598,20 +690,6 @@ export default {
         }).then((result) => {
           switch (result) {
             case "photo":
-              // let cacheFilePath = path.join(
-              //   knownFolders.temp().path,
-              //   `${this.recipe.title}.jpg`
-              // )
-              // if (!File.exists(cacheFilePath)) {
-              //   File.fromPath(cacheFilePath).writeSync(
-              //     File.fromPath(this.recipe.imageSrc).readSync()
-              //   )
-              // }
-              // let shareFile = new ShareFile()
-              // shareFile.open({
-              //   path: cacheFilePath,
-              //   title: "Share recipe photo using",
-              // })
               ImageSource.fromFile(this.recipe.imageSrc).then((res) => {
                 SocialShare.shareImage(res, "Share recipe photo using")
               })
@@ -653,6 +731,13 @@ export default {
         })
         shareContent += instructions
       }
+      if (this.recipe.combinations.length) {
+        let combinations = `\nCombinations:\n\n`
+        this.recipe.combinations.forEach((e, i) => {
+          combinations += `${i + 1}. ${this.getCombinationTitle(e)}\n\n`
+        })
+        shareContent += combinations
+      }
       if (this.recipe.notes.length) {
         let notes = `\nNotes:\n\n`
         this.recipe.notes.forEach((e, i) => {
@@ -677,8 +762,7 @@ export default {
     // DATA HANDLERS
     toggle(key, setDate) {
       this.toggleStateAction({
-        index: this.recipeIndex,
-        id: this.recipeID,
+        id: this.currentRecipeID,
         recipe: this.recipe,
         key,
         setDate,
@@ -716,7 +800,7 @@ export default {
     },
   },
   created() {
-    this.recipe = this.recipes.filter((e) => e.id === this.recipeID)[0]
+    this.recipe = this.recipes.filter((e) => e.id === this.currentRecipeID)[0]
   },
   mounted() {
     this.showFab = true

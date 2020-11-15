@@ -182,6 +182,7 @@ export default new Vuex.Store({
       source: "\ueaa0",
       export: "\ued07",
       import: "\ued0c",
+      outline: "\ueb07",
     },
     currentComponent: "EnRecipes",
   },
@@ -306,7 +307,10 @@ export default new Vuex.Store({
       })
       state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
     },
-    overwriteRecipe(state, { index, id, recipe }) {
+    overwriteRecipe(state, { id, recipe }) {
+      let index = state.recipes.indexOf(
+        state.recipes.filter((e) => e.id === id)[0]
+      )
       Object.assign(state.recipes[index], recipe)
       EnRecipesDB.updateDocument(id, recipe)
     },
@@ -314,8 +318,17 @@ export default new Vuex.Store({
       getFileAccess().deleteFile(state.recipes[index].imageSrc)
       state.recipes.splice(index, 1)
       EnRecipesDB.deleteDocument(id)
+      state.recipes.forEach((e, i) => {
+        if (e.combinations.includes(id)) {
+          state.recipes[i].combinations.splice(e.combinations.indexOf(id), 1)
+          EnRecipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
+        }
+      })
     },
-    toggleState(state, { index, id, recipe, key, setDate }) {
+    toggleState(state, { id, recipe, key, setDate }) {
+      let index = state.recipes.indexOf(
+        state.recipes.filter((e) => e.id === id)[0]
+      )
       state.recipes[index][key] = !state.recipes[index][key]
       if (setDate) state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(id, recipe)
@@ -343,6 +356,14 @@ export default new Vuex.Store({
           EnRecipesDB.inBatch(() => {
             EnRecipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
           })
+        }
+      })
+    },
+    unSyncCombinations(state, { id, combinations }) {
+      state.recipes.forEach((e, i) => {
+        if (combinations.includes(e.id)) {
+          state.recipes[i].combinations.splice(e.combinations.indexOf(id), 1)
+          EnRecipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
         }
       })
     },
@@ -392,6 +413,9 @@ export default new Vuex.Store({
     },
     renameCategoryAction({ commit }, category) {
       commit("renameCategory", category)
+    },
+    unSyncCombinationsAction({ commit }, combinations) {
+      commit("unSyncCombinations", combinations)
     },
   },
 })

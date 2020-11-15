@@ -384,7 +384,6 @@ export default {
         // },
         props: {
           filterTrylater: this.filterTrylater,
-          recipeIndex: index,
           recipeID: item.id,
           hijackGlobalBackEvent: this.hijackGlobalBackEvent,
           releaseGlobalBackEvent: this.releaseGlobalBackEvent,
