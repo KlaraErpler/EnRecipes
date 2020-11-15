@@ -413,7 +413,11 @@
                   class="referenceItem"
                   androidElevation="1"
                 >
-                  <MDRipple colSpan="3" @tap="copyURL(reference)" />
+                  <MDRipple
+                    colSpan="2"
+                    @longPress="copyURL(reference)"
+                    @tap="openURL(reference)"
+                  />
                   <Label
                     col="0"
                     verticalAlignment="center"
@@ -421,14 +425,7 @@
                     :text="reference"
                     textWrap="false"
                   />
-                  <MDButton
-                    variant="text"
-                    automationText="openURL"
-                    col="1"
-                    class="bx"
-                    :text="icon.source"
-                    @tap="openURL(reference)"
-                  />
+                  <Label col="1" class="bx linkIcon" :text="icon.source" />
                 </GridLayout>
                 <Label
                   v-else
@@ -516,7 +513,6 @@ import {
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import * as Toast from "nativescript-toast"
 import * as SocialShare from "@nativescript/social-share"
-import { setText } from "nativescript-clipboard"
 import { Application } from "@nativescript/core"
 import { mapActions, mapState } from "vuex"
 
@@ -777,11 +773,11 @@ export default {
     toggleTrylater() {
       this.recipe.tried
         ? this.filterTrylater
-          ? Toast.makeText("Added back to Try later").show()
-          : Toast.makeText("Added to Try later").show()
+          ? Toast.makeText("Added back to Try Later").show()
+          : Toast.makeText("Added to Try Later").show()
         : this.filterTrylater
         ? Toast.makeText("You tried this recipe").show()
-        : Toast.makeText("Removed from Try later").show()
+        : Toast.makeText("Removed from Try Later").show()
       this.toggle("tried")
     },
     recipeTried() {
@@ -794,9 +790,12 @@ export default {
       Utils.openUrl(url)
     },
     copyURL(url) {
-      setText(url).then((e) => {
-        Toast.makeText("URL Copied").show()
-      })
+      const clipboard = Utils.ad
+        .getApplicationContext()
+        .getSystemService(android.content.Context.CLIPBOARD_SERVICE)
+      const clip = android.content.ClipData.newPlainText("Reference URl", url)
+      clipboard.setPrimaryClip(clip)
+      Toast.makeText("URL Copied").show()
     },
   },
   created() {

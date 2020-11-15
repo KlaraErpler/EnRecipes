@@ -32,6 +32,7 @@
         <StackLayout class="hr m-10"></StackLayout>
         <Label text="Database" class="group-header orkm" />
         <GridLayout columns="auto, *" class="option">
+          <!-- <MDRipple colSpan="2" @tap="folderPicker" /> -->
           <MDRipple colSpan="2" @tap="exportCheck" />
           <Label col="0" class="bx" :text="icon.export" />
           <StackLayout col="1">
@@ -62,7 +63,7 @@
           <StackLayout col="1">
             <Label text="Import from backup" />
             <Label
-              text="Supports full backups exported by this app."
+              text="Supports full backups exported by this app"
               class="info"
               textWrap="true"
             />
@@ -82,6 +83,7 @@ import {
   Application,
   File,
   Folder,
+  AndroidApplication,
 } from "@nativescript/core"
 import * as Permissions from "@nativescript-community/perms"
 import { Zip } from "@nativescript/zip"
@@ -97,7 +99,6 @@ export default {
   props: [
     "showDrawer",
     "restartApp",
-    "hijackGlobalBackEvent",
     "releaseGlobalBackEvent",
     "openAppSettingsPage",
   ],
@@ -194,9 +195,9 @@ export default {
         ("0" + date.getHours()).slice(-2) +
         ("0" + date.getMinutes()).slice(-2) +
         ("0" + date.getSeconds()).slice(-2)
-      const sdDownloadPath = android.os.Environment.getExternalStoragePublicDirectory(
-        android.os.Environment.DIRECTORY_DOWNLOADS
-      ).toString()
+      const sdDownloadPath = Folder.fromPath(
+        android.os.Environment.getExternalStorageDirectory().getAbsolutePath()
+      ).getFolder("Download").path
       let fromPath = path.join(knownFolders.documents().path, "EnRecipes")
       let destPath = path.join(
         sdDownloadPath,
@@ -216,7 +217,7 @@ export default {
         },
       }).then((success) => {
         Toast.makeText(
-          "Backup file successfully saved to Downloads",
+          "Backup file successfully saved to Download folder",
           "long"
         ).show()
         this.exportFiles("delete")

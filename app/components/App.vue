@@ -32,7 +32,24 @@
             <Label col="0" row="0" class="bx" :text="icon[item.icon]" />
             <Label col="2" row="0" :text="item.title" />
           </GridLayout>
-          <StackLayout class="hr m-10"></StackLayout>
+          <StackLayout class="hr m-8"></StackLayout>
+          <GridLayout
+            rows="48"
+            columns="auto, 24, *"
+            class="sd-item orkm"
+            :class="{
+              'selected-sd-item': currentComponent === 'MealPlanner',
+            }"
+          >
+            <MDRipple
+              row="0"
+              colSpan="3"
+              @tap="navigateTo(mealPlanner, true, false)"
+            />
+            <Label col="0" row="0" class="bx" :text="icon.calendar" />
+            <Label col="2" row="0" text="Meal Planner" />
+          </GridLayout>
+          <StackLayout class="hr m-8"></StackLayout>
           <GridLayout
             class="sd-group-header orkm"
             rows="auto"
@@ -137,6 +154,7 @@ import * as application from "tns-core-modules/application"
 import { mapActions, mapState } from "vuex"
 
 import EnRecipes from "./EnRecipes.vue"
+import MealPlanner from "./MealPlanner.vue"
 import Settings from "./Settings.vue"
 import About from "./About.vue"
 
@@ -163,8 +181,8 @@ export default {
           icon: "heart",
         },
         {
-          title: "Try later",
-          component: "Try later",
+          title: "Try Later",
+          component: "Try Later",
           icon: "trylater",
         },
       ],
@@ -182,6 +200,7 @@ export default {
       ],
       editCategory: false,
       appTheme: "Light",
+      mealPlanner: MealPlanner,
     }
   },
   computed: {
@@ -216,7 +235,7 @@ export default {
         // window.setNavigationBarColor(new Color("#e0e0e0").android)
       }
     },
-    
+
     // HELPERS
     toggleCatEdit() {
       this.editCategory = !this.editCategory
@@ -313,7 +332,7 @@ export default {
         vm.filterFavorites
           ? vm.setComponent("Favorites")
           : vm.filterTrylater
-          ? vm.setComponent("Try later")
+          ? vm.setComponent("Try Later")
           : vm.selectedCategory
           ? vm.setComponent(vm.selectedCategory)
           : vm.setComponent("EnRecipes")
@@ -323,7 +342,7 @@ export default {
         this.closeDrawer()
         this.editCategory = false
       } else if (
-        ["Favorites", "Try later", this.selectedCategory].includes(
+        ["Favorites", "Try Later", this.selectedCategory].includes(
           this.currentComponent
         )
       ) {
@@ -355,7 +374,7 @@ export default {
         this.setComponent(to)
         this.$navigateBack({ frame: "main-frame", backstackVisible: false })
         this.filterFavorites = to === "Favorites" ? true : false
-        this.filterTrylater = to === "Try later" ? true : false
+        this.filterTrylater = to === "Try Later" ? true : false
         this.selectedCategory = isCategory ? to : null
         this.$refs.enrecipes.updateFilter()
         this.closeDrawer()

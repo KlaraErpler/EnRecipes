@@ -293,7 +293,7 @@ export default {
       this.filterFavorites
         ? this.setComponent("Favorites")
         : this.filterTrylater
-        ? this.setComponent("Try later")
+        ? this.setComponent("Try Later")
         : this.selectedCategory
         ? this.setComponent(this.selectedCategory)
         : this.setComponent("EnRecipes")

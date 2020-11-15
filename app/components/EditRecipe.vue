@@ -126,6 +126,7 @@
               :key="index"
             >
               <TextField
+                ref="ingredient"
                 @loaded="focusField($event, 'sentence')"
                 col="0"
                 v-model="recipeContent.ingredients[index].item"
@@ -146,8 +147,8 @@
                 v-model="recipeContent.ingredients[index].unit"
                 hint="Unit"
                 editable="false"
-                @focus="modalOpen === false && showUnits($event, true)"
-                @tap="showUnits($event, false)"
+                @focus="modalOpen === false && showUnits($event, true, index)"
+                @tap="showUnits($event, false, index)"
               />
               <MDButton
                 variant="text"
@@ -404,7 +405,7 @@ export default {
       if (type) this.setInputTypeText(args, type)
       if (!args.object.text) {
         args.object.focus()
-        setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 1)
+        setTimeout((e) => Utils.ad.showSoftInput(args.object.android), 10)
       }
     },
     setInputTypeText(args, type) {
@@ -549,7 +550,7 @@ export default {
         }
       })
     },
-    showUnits(e, focus) {
+    showUnits(e, focus, index) {
       this.modalOpen = true
       this.releaseBackEvent()
       this.$showModal(ActionDialog, {
@@ -562,7 +563,20 @@ export default {
         if (action) {
           e.object.text = action
           this.modalOpen = false
-          if (focus) this.addIngredient()
+          if (focus) {
+            if (this.recipeContent.ingredients.length - 1 === index) {
+              this.addIngredient()
+            } else {
+              this.$refs.ingredient[index + 1].nativeView.focus()
+              setTimeout(
+                (e) =>
+                  Utils.ad.showSoftInput(
+                    this.$refs.ingredient[index + 1].nativeView.android
+                  ),
+                10
+              )
+            }
+          }
         }
       })
     },

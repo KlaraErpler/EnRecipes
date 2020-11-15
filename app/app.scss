@@ -61,7 +61,8 @@ Page,
   .referenceItem,
   .recipeText,
   .overviewItem,
-  .recipeItem {
+  .recipeItem,
+  TextField.combinationToken {
     background: white;
   }
 
@@ -124,7 +125,8 @@ Page,
   .referenceItem,
   .recipeText,
   .overviewItem,
-  .recipeItem {
+  .recipeItem,
+  TextField.combinationToken {
     background: $gray8;
   }
   .sd-item,
@@ -483,6 +485,9 @@ RadListView {
       margin: 0;
       line-height: 6;
     }
+    .linkIcon {
+      padding: 0 16 0 0;
+    }
   }
   .recipeText {
     font-size: 16;
@@ -526,7 +531,6 @@ MDButton.closeBtn {
 }
 TextField.combinationToken {
   border-width: 0;
-  background: white;
 }
 // -----------------------------
 // DIALOGS
