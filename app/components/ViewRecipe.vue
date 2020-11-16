@@ -39,16 +39,16 @@
             :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
             @tap="toggleFavorite"
           />
-          <MDButton
+          <!-- <MDButton
             variant="text"
             v-if="!filterTrylater"
             class="bx"
             :text="recipe.tried ? icon.trylaterOutline : icon.trylater"
             @tap="toggleTrylater"
-          />
+          /> -->
           <MDButton
             variant="text"
-            v-else
+            v-if="filterTrylater"
             class="bx"
             :text="icon.share"
             @tap="shareHandler"

@@ -20,9 +20,6 @@ Vue.use(FloatingActionButtonPlugin)
 import ProgressPlugin from "@nativescript-community/ui-material-progress/vue"
 Vue.use(ProgressPlugin)
 
-import CalendarView from "nativescript-ui-calendar/vue"
-Vue.use(CalendarView)
-
 Vue.registerElement(
   "RadSideDrawer",
   () => require("nativescript-ui-sidedrawer").RadSideDrawer

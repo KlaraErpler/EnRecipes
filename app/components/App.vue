@@ -32,7 +32,7 @@
             <Label col="0" row="0" class="bx" :text="icon[item.icon]" />
             <Label col="2" row="0" :text="item.title" />
           </GridLayout>
-          <StackLayout class="hr m-8"></StackLayout>
+          <!-- <StackLayout class="hr m-8"></StackLayout> -->
           <GridLayout
             rows="48"
             columns="auto, 24, *"
@@ -180,11 +180,11 @@ export default {
           component: "Favorites",
           icon: "heart",
         },
-        {
-          title: "Try Later",
-          component: "Try Later",
-          icon: "trylater",
-        },
+        // {
+        //   title: "Try Later",
+        //   component: "Try Later",
+        //   icon: "trylater",
+        // },
       ],
       bottommenu: [
         {

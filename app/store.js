@@ -183,7 +183,7 @@ export default new Vuex.Store({
       export: "\ued07",
       import: "\ued0c",
       outline: "\ueb07",
-      calendar: "\uec55",
+      calendar: "\uec57",
     },
     currentComponent: "EnRecipes",
   },
