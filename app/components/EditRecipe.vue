@@ -22,273 +22,271 @@
         <MDActivityIndicator col="2" v-if="imageLoading" :busy="imageLoading" />
       </GridLayout>
     </ActionBar>
-    <GridLayout rows="*" columns="*">
-      <ScrollView
-        row="0"
-        col="0"
-        @scroll="onScroll"
-        scrollBarIndicatorVisible="false"
-      >
-        <StackLayout width="100%" padding="0 0 128">
-          <AbsoluteLayout>
-            <StackLayout
+    <ScrollView
+      width="100%"
+      height="100%"
+      @scroll="onScroll"
+      scrollBarIndicatorVisible="false"
+    >
+      <StackLayout width="100%" padding="0 0 128">
+        <AbsoluteLayout>
+          <StackLayout
+            width="100%"
+            :height="screenWidth"
+            class="imageHolder"
+            verticalAlignment="center"
+          >
+            <Image
+              v-if="recipeContent.imageSrc"
+              :src="recipeContent.imageSrc"
+              stretch="aspectFill"
               width="100%"
               :height="screenWidth"
-              class="imageHolder"
-              verticalAlignment="center"
-            >
-              <Image
-                v-if="recipeContent.imageSrc"
-                :src="recipeContent.imageSrc"
-                stretch="aspectFill"
-                width="100%"
-                :height="screenWidth"
-              />
-              <Label
-                v-else
-                horizontalAlignment="center"
-                class="bx"
-                fontSize="160"
-                :text="icon.image"
-              />
-            </StackLayout>
-            <transition :name="recipeContent.imageSrc ? 'null' : 'bounce'">
-              <MDFloatingActionButton
-                v-if="showFab"
-                :top="screenWidth - 44"
-                :left="screenWidth - 88"
-                class="bx"
-                src="res://camera"
-                @tap="imageHandler"
-              />
-            </transition>
+            />
+            <Label
+              v-else
+              horizontalAlignment="center"
+              class="bx"
+              fontSize="160"
+              :text="icon.image"
+            />
+          </StackLayout>
+          <transition :name="recipeContent.imageSrc ? 'null' : 'bounce'">
+            <MDFloatingActionButton
+              v-if="showFab"
+              :top="screenWidth - 44"
+              :left="screenWidth - 88"
+              class="bx"
+              src="res://camera"
+              @tap="imageHandler"
+            />
+          </transition>
+        </AbsoluteLayout>
+
+        <StackLayout margin="0 16">
+          <AbsoluteLayout class="inputField">
+            <TextField
+              hint="My Healthy Recipe"
+              v-model="recipeContent.title"
+              @loaded="setInputTypeText($event, 'words')"
+            />
+            <Label top="0" class="fieldLabel" text="Title" />
           </AbsoluteLayout>
-
-          <StackLayout margin="0 16">
-            <AbsoluteLayout class="inputField">
+          <AbsoluteLayout class="inputField">
+            <TextField
+              :text="recipeContent.category"
+              editable="false"
+              @focus="modalOpen === false && showCategories(true)"
+              @tap="showCategories(false)"
+            />
+            <Label top="0" class="fieldLabel" text="Category" />
+          </AbsoluteLayout>
+          <GridLayout columns="*, 8, *">
+            <AbsoluteLayout class="inputField" col="0">
               <TextField
-                hint="My Healthy Recipe"
-                v-model="recipeContent.title"
-                @loaded="setInputTypeText($event, 'words')"
-              />
-              <Label top="0" class="fieldLabel" text="Title" />
-            </AbsoluteLayout>
-            <AbsoluteLayout class="inputField">
-              <TextField
-                :text="recipeContent.category"
-                editable="false"
-                @focus="modalOpen === false && showCategories(true)"
-                @tap="showCategories(false)"
-              />
-              <Label top="0" class="fieldLabel" text="Category" />
-            </AbsoluteLayout>
-            <GridLayout columns="*, 8, *">
-              <AbsoluteLayout class="inputField" col="0">
-                <TextField
-                  ref="yieldQuantity"
-                  v-model="recipeContent.yield.quantity"
-                  hint="1"
-                  keyboardType="number"
-                />
-                <Label top="0" class="fieldLabel" text="Yield quantity" />
-              </AbsoluteLayout>
-              <AbsoluteLayout class="inputField" col="2">
-                <TextField
-                  :text="recipeContent.yield.unit"
-                  editable="false"
-                  @focus="modalOpen === false && showYieldUnits(true)"
-                  @tap="showYieldUnits(false)"
-                />
-                <Label top="0" class="fieldLabel" text="Yield measured in" />
-              </AbsoluteLayout>
-            </GridLayout>
-            <GridLayout columns="*, 8, *">
-              <AbsoluteLayout class="inputField" col="0">
-                <TextField
-                  ref="timeRequired"
-                  :text="timeRequired"
-                  editable="false"
-                  @focus="modalOpen === false && setTimeRequired(true)"
-                  @tap="setTimeRequired(false)"
-                />
-                <Label top="0" class="fieldLabel" text="Time required" />
-              </AbsoluteLayout>
-            </GridLayout>
-
-            <StackLayout class="hr" margin="24 16"></StackLayout>
-          </StackLayout>
-
-          <StackLayout margin="0 16">
-            <Label text="Ingredients" class="sectionTitle" />
-            <GridLayout
-              columns="*,8,auto,8,auto,8,auto"
-              v-for="(ingredient, index) in recipeContent.ingredients"
-              :key="index"
-            >
-              <TextField
-                ref="ingredient"
-                @loaded="focusField($event, 'sentence')"
-                col="0"
-                v-model="recipeContent.ingredients[index].item"
-                :hint="`Item ${index + 1}`"
-                returnKeyType="next"
-              />
-              <TextField
-                width="68"
-                col="2"
-                v-model="recipeContent.ingredients[index].quantity"
-                hint="1.00"
+                ref="yieldQuantity"
+                v-model="recipeContent.yield.quantity"
+                hint="1"
                 keyboardType="number"
-                returnKeyType="next"
               />
+              <Label top="0" class="fieldLabel" text="Yield quantity" />
+            </AbsoluteLayout>
+            <AbsoluteLayout class="inputField" col="2">
               <TextField
-                width="68"
-                col="4"
-                v-model="recipeContent.ingredients[index].unit"
-                hint="Unit"
+                :text="recipeContent.yield.unit"
                 editable="false"
-                @focus="modalOpen === false && showUnits($event, true, index)"
-                @tap="showUnits($event, false, index)"
+                @focus="modalOpen === false && showYieldUnits(true)"
+                @tap="showYieldUnits(false)"
               />
-              <MDButton
-                variant="text"
-                col="6"
-                class="bx closeBtn"
-                :text="icon.close"
-                @tap="removeIngredient(index)"
-              />
-            </GridLayout>
-            <MDButton
-              variant="text"
-              class="text-btn orkm"
-              text="+ ADD INGREDIENT"
-              @tap="addIngredient()"
-            />
-
-            <StackLayout class="hr" margin="24 16"></StackLayout>
-          </StackLayout>
-
-          <StackLayout margin="0 16">
-            <Label text="Instructions" class="sectionTitle" />
-            <GridLayout
-              columns="*,8,auto"
-              v-for="(instruction, index) in recipeContent.instructions"
-              :key="index"
-            >
-              <TextView
-                @loaded="focusField($event, 'multiLine')"
-                col="0"
-                :hint="`Step ${index + 1}`"
-                v-model="recipeContent.instructions[index]"
-              />
-              <MDButton
-                variant="text"
-                col="2"
-                class="bx closeBtn"
-                :text="icon.close"
-                @tap="removeInstruction(index)"
-              />
-            </GridLayout>
-            <MDButton
-              variant="text"
-              class="text-btn orkm"
-              text="+ ADD STEP"
-              @tap="addInstruction"
-            />
-            <StackLayout class="hr" margin="24 16"></StackLayout>
-          </StackLayout>
-
-          <StackLayout margin="0 16">
-            <Label text="Notes" class="sectionTitle" />
-            <GridLayout
-              columns="*,8,auto"
-              v-for="(note, index) in recipeContent.notes"
-              :key="index"
-            >
-              <TextView
-                @loaded="focusField($event, 'multiLine')"
-                col="0"
-                :hint="`Note ${index + 1}`"
-                v-model="recipeContent.notes[index]"
-              />
-              <MDButton
-                variant="text"
-                col="2"
-                class="bx closeBtn"
-                :text="icon.close"
-                @tap="removeNote(index)"
-              />
-            </GridLayout>
-            <MDButton
-              variant="text"
-              class="text-btn orkm"
-              text="+ ADD NOTE"
-              @tap="addNote"
-            />
-            <StackLayout class="hr" margin="24 16"></StackLayout>
-          </StackLayout>
-
-          <StackLayout margin="0 16">
-            <Label text="References" class="sectionTitle" />
-            <GridLayout
-              columns="*,8,auto"
-              v-for="(reference, index) in recipeContent.references"
-              :key="index"
-            >
-              <TextView
-                @loaded="focusField($event, 'multiLine')"
-                col="0"
-                v-model="recipeContent.references[index]"
-                hint="Text or Website/Video URL"
-              />
-              <MDButton
-                variant="text"
-                col="2"
-                class="bx closeBtn"
-                :text="icon.close"
-                @tap="removeReference(index)"
-              />
-            </GridLayout>
-            <MDButton
-              variant="text"
-              class="text-btn orkm"
-              text="+ ADD REFERENCE"
-              @tap="addReference"
-            />
-            <StackLayout class="hr" margin="24 16"></StackLayout>
-          </StackLayout>
-
-          <StackLayout margin="0 16 24" v-if="recipes.length">
-            <Label text="Combinations" class="sectionTitle" />
-            <GridLayout
-              columns="*,8,auto"
-              v-for="(combination, index) in recipeContent.combinations"
-              :key="index"
-            >
+              <Label top="0" class="fieldLabel" text="Yield measured in" />
+            </AbsoluteLayout>
+          </GridLayout>
+          <GridLayout columns="*, 8, *">
+            <AbsoluteLayout class="inputField" col="0">
               <TextField
-                class="combinationToken"
-                col="0"
-                :text="getCombinationTitle(combination)"
+                ref="timeRequired"
+                :text="timeRequired"
                 editable="false"
+                @focus="modalOpen === false && setTimeRequired(true)"
+                @tap="setTimeRequired(false)"
               />
-              <MDButton
-                variant="text"
-                col="2"
-                class="bx closeBtn"
-                :text="icon.close"
-                @tap="removeCombination(combination)"
-              />
-            </GridLayout>
-            <MDButton
-              variant="text"
-              class="text-btn orkm"
-              text="+ ADD COMBINATION"
-              @tap="showCombinations"
-            />
-          </StackLayout>
+              <Label top="0" class="fieldLabel" text="Time required" />
+            </AbsoluteLayout>
+          </GridLayout>
+
+          <StackLayout class="hr" margin="24 16"></StackLayout>
         </StackLayout>
-      </ScrollView>
-    </GridLayout>
+
+        <StackLayout margin="0 16">
+          <Label text="Ingredients" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto,8,auto,8,auto"
+            v-for="(ingredient, index) in recipeContent.ingredients"
+            :key="index"
+          >
+            <TextField
+              ref="ingredient"
+              @loaded="focusField($event, 'sentence')"
+              col="0"
+              v-model="recipeContent.ingredients[index].item"
+              :hint="`Item ${index + 1}`"
+              returnKeyType="next"
+            />
+            <TextField
+              width="68"
+              col="2"
+              v-model="recipeContent.ingredients[index].quantity"
+              hint="1.00"
+              keyboardType="number"
+              returnKeyType="next"
+            />
+            <TextField
+              width="68"
+              col="4"
+              v-model="recipeContent.ingredients[index].unit"
+              hint="Unit"
+              editable="false"
+              @focus="modalOpen === false && showUnits($event, true, index)"
+              @tap="showUnits($event, false, index)"
+            />
+            <MDButton
+              variant="text"
+              col="6"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeIngredient(index)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD INGREDIENT"
+            @tap="addIngredient()"
+          />
+
+          <StackLayout class="hr" margin="24 16"></StackLayout>
+        </StackLayout>
+
+        <StackLayout margin="0 16">
+          <Label text="Instructions" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto"
+            v-for="(instruction, index) in recipeContent.instructions"
+            :key="index"
+          >
+            <TextView
+              @loaded="focusField($event, 'multiLine')"
+              col="0"
+              :hint="`Step ${index + 1}`"
+              v-model="recipeContent.instructions[index]"
+            />
+            <MDButton
+              variant="text"
+              col="2"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeInstruction(index)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD STEP"
+            @tap="addInstruction"
+          />
+          <StackLayout class="hr" margin="24 16"></StackLayout>
+        </StackLayout>
+
+        <StackLayout margin="0 16">
+          <Label text="Notes" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto"
+            v-for="(note, index) in recipeContent.notes"
+            :key="index"
+          >
+            <TextView
+              @loaded="focusField($event, 'multiLine')"
+              col="0"
+              :hint="`Note ${index + 1}`"
+              v-model="recipeContent.notes[index]"
+            />
+            <MDButton
+              variant="text"
+              col="2"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeNote(index)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD NOTE"
+            @tap="addNote"
+          />
+          <StackLayout class="hr" margin="24 16"></StackLayout>
+        </StackLayout>
+
+        <StackLayout margin="0 16">
+          <Label text="References" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto"
+            v-for="(reference, index) in recipeContent.references"
+            :key="index"
+          >
+            <TextView
+              @loaded="focusField($event, 'multiLine')"
+              col="0"
+              v-model="recipeContent.references[index]"
+              hint="Text or Website/Video URL"
+            />
+            <MDButton
+              variant="text"
+              col="2"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeReference(index)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD REFERENCE"
+            @tap="addReference"
+          />
+          <StackLayout class="hr" margin="24 16"></StackLayout>
+        </StackLayout>
+
+        <StackLayout margin="0 16 24" v-if="recipes.length">
+          <Label text="Combinations" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto"
+            v-for="(combination, index) in recipeContent.combinations"
+            :key="index"
+          >
+            <TextField
+              class="combinationToken"
+              col="0"
+              :text="getCombinationTitle(combination)"
+              editable="false"
+            />
+            <MDButton
+              variant="text"
+              col="2"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeCombination(combination)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD COMBINATION"
+            @tap="showCombinations"
+          />
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
   </Page>
 </template>
 
@@ -760,9 +758,7 @@ export default {
     removeInstruction(index) {
       if (this.recipeContent.instructions[index].length) {
         this.fieldDeletionConfirm("instruction").then((res) => {
-          if (res) {
-            this.recipeContent.instructions.splice(index, 1)
-          }
+          res && this.recipeContent.instructions.splice(index, 1)
         })
       } else this.recipeContent.instructions.splice(index, 1)
     },

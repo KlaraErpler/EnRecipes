@@ -14,6 +14,11 @@ $gray9: #212529;
 $orange: #ff5200;
 $fabRipple: #ff864d;
 $red: #c92a2a;
+$breakfast: #ffb180;
+$lunch: #ceff80;
+$dinner: #80ceff;
+$snacks: #b180ff;
+
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
 
@@ -79,11 +84,13 @@ Page,
     color: $gray4;
     background: $gray3;
   }
-  .count {
+  .count,
+  .marker {
     color: $gray1;
     background: $gray9;
   }
-  .instruction {
+  .instruction,
+  .dayContainer {
     border-color: $gray9;
   }
   MDProgress {
@@ -142,11 +149,13 @@ Page,
     color: $gray8;
     background: #111;
   }
-  .count {
+  .count,
+  .marker {
     color: $gray9;
     background: $gray1;
   }
-  .instruction {
+  .instruction,
+  .dayContainer {
     border-color: $gray1;
   }
   MDProgress {
@@ -362,6 +371,7 @@ RadListView {
 // -----------------------------
 // SETTINGS
 .group-header {
+  text-transform: uppercase;
   padding: 8;
 }
 .main-container {
@@ -531,6 +541,52 @@ MDButton.closeBtn {
 }
 TextField.combinationToken {
   border-width: 0;
+}
+// -----------------------------
+// MEAL PLANNER
+.mealPlanner {
+  padding: 16 16 128;
+  width: 100%;
+  .dayContainer {
+    padding: 8 0;
+    color: $gray9;
+    &.breakfast {
+      border-radius: 4 4 0 0;
+      background: $breakfast;
+    }
+    &.lunch {
+      background: $lunch;
+    }
+    &.dinner {
+      background: $dinner;
+    }
+    &.snacks {
+      border-radius: 0 0 4 4;
+      background: $snacks;
+    }
+    .periodLabel {
+      text-transform: uppercase;
+      vertical-alignment: center;
+      font-size: 16;
+      padding: 0 0 0 16;
+    }
+    .recipes {
+      margin: 8 8 0;
+      .recipeTitle {
+        font-size: 14;
+        padding: 6 8;
+        line-height: 4;
+      }
+      .closeBtn {
+        margin: 0 8;
+        vertical-alignment: top;
+      }
+    }
+    MDRipple,
+    MDButton {
+      ripple-color: rgba($gray6, 0.2);
+    }
+  }
 }
 // -----------------------------
 // DIALOGS

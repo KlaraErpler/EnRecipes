@@ -24,6 +24,7 @@
     "nativescript-imagecropper": "^4.0.1",
     "nativescript-plugin-filepicker": "^1.0.0",
     "nativescript-toast": "^2.0.0",
+    "nativescript-ui-calendar": "^7.0.2",
     "nativescript-ui-listview": "^9.0.4",
     "nativescript-ui-sidedrawer": "^9.0.3",
     "nativescript-vue": "^2.6.1",

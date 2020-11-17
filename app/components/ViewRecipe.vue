@@ -39,16 +39,16 @@
             :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
             @tap="toggleFavorite"
           />
-          <!-- <MDButton
-            variant="text"
+          <MDButton
             v-if="!filterTrylater"
+            variant="text"
             class="bx"
             :text="recipe.tried ? icon.trylaterOutline : icon.trylater"
             @tap="toggleTrylater"
-          /> -->
+          />
           <MDButton
+            v-else
             variant="text"
-            v-if="filterTrylater"
             class="bx"
             :text="icon.share"
             @tap="shareHandler"
@@ -557,6 +557,7 @@ export default {
       "toggleStateAction",
       "setCurrentComponentAction",
       "overwriteRecipeAction",
+      "setRecipeAsTriedAction",
     ]),
     onPageLoad() {
       this.releaseGlobalBackEvent()
@@ -781,7 +782,10 @@ export default {
       this.toggle("tried")
     },
     recipeTried() {
-      this.toggle("tried", true)
+      this.setRecipeAsTriedAction({
+        id: this.currentRecipeID,
+        recipe: this.recipe,
+      })
       this.$navigateBack()
     },
 

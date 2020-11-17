@@ -71,7 +71,7 @@
             columns="112, *"
             androidElevation="1"
           >
-            <MDRipple colSpan="2" @tap="viewRecipe(recipe)" />
+            <MDRipple colSpan="2" @tap="viewRecipe(recipe.id)" />
             <GridLayout class="imageHolder card" rows="112" columns="112">
               <Image
                 row="0"
@@ -361,11 +361,6 @@ export default {
       this.showFAB = false
       this.releaseGlobalBackEvent()
       this.$navigateTo(EditRecipe, {
-        // transition: {
-        //   name: "fade",
-        //   duration: 200,
-        //   curve: "easeOut",
-        // },
         props: {
           selectedCategory: this.selectedCategory,
           openAppSettingsPage: this.openAppSettingsPage,
@@ -373,8 +368,7 @@ export default {
         },
       })
     },
-    viewRecipe(item) {
-      let index = this.recipes.indexOf(item)
+    viewRecipe(recipeID) {
       this.showFAB = false
       this.$navigateTo(ViewRecipe, {
         // transition: {
@@ -384,7 +378,7 @@ export default {
         // },
         props: {
           filterTrylater: this.filterTrylater,
-          recipeID: item.id,
+          recipeID,
           hijackGlobalBackEvent: this.hijackGlobalBackEvent,
           releaseGlobalBackEvent: this.releaseGlobalBackEvent,
         },

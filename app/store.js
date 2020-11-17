@@ -334,6 +334,14 @@ export default new Vuex.Store({
       if (setDate) state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(id, recipe)
     },
+    setRecipeAsTried(state, { id, recipe }) {
+      let index = state.recipes.indexOf(
+        state.recipes.filter((e) => e.id === id)[0]
+      )
+      state.recipes[index].tried = true
+      state.recipes[index].lastTried = new Date()
+      EnRecipesDB.updateDocument(id, recipe)
+    },
     setLastTriedDate(state, index) {
       state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(state.recipes[index].id, state.recipes[index])
@@ -405,6 +413,9 @@ export default new Vuex.Store({
     },
     toggleStateAction({ commit }, toggledRecipe) {
       commit("toggleState", toggledRecipe)
+    },
+    setRecipeAsTriedAction({ commit }, recipe) {
+      commit("setRecipeAsTried", recipe)
     },
     setLastTriedDateAction({ commit }, index) {
       commit("setLastTriedDate", index)
