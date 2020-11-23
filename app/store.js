@@ -1,10 +1,13 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import { Couchbase } from "nativescript-couchbase-plugin"
-import { getFileAccess } from "@nativescript/core"
+import { Color, getFileAccess } from "@nativescript/core"
+import { CalendarEvent } from "nativescript-ui-calendar"
+import { stat } from "fs"
 const EnRecipesDB = new Couchbase("EnRecipes")
 const userCategoriesDB = new Couchbase("userCategories")
 const userYieldUnitsDB = new Couchbase("userYieldUnits")
+const mealPlansDB = new Couchbase("mealPlans")
 
 Vue.use(Vuex)
 
@@ -116,6 +119,7 @@ export default new Vuex.Store({
     units: [
       "unit",
       "tsp",
+      "dsp",
       "tbsp",
       "fl oz",
       "cup",
@@ -131,6 +135,7 @@ export default new Vuex.Store({
       "kg",
       "cm",
       "in",
+      "leaf",
       "clove",
       "pinch",
       "drop",
@@ -142,6 +147,7 @@ export default new Vuex.Store({
     ],
     yieldUnits: [],
     userYieldUnits: [],
+    mealPlans: [],
     icon: {
       home: "\ued3b",
       heart: "\ued36",
@@ -183,7 +189,8 @@ export default new Vuex.Store({
       export: "\ued07",
       import: "\ued0c",
       outline: "\ueb07",
-      calendar: "\uec57",
+      calendar: "\uec55",
+      today: "\ue97c",
     },
     currentComponent: "EnRecipes",
   },
@@ -230,12 +237,16 @@ export default new Vuex.Store({
       }
       state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
     },
-    addRecipe(state, { id, recipe }) {
-      state.recipes.push(recipe)
-      EnRecipesDB.createDocument(recipe, id)
+    initializeMealPlans(state) {
+      let isMealPlansDBStored = mealPlansDB.query({ select: [] }).length
+      if (isMealPlansDBStored) {
+        state.mealPlans = mealPlansDB.getDocument("mealPlans").mealPlans
+      } else {
+        mealPlansDB.createDocument({ mealPlans: [] }, "mealPlans")
+      }
     },
+
     importRecipes(state, recipes) {
-      console.log("hello")
       let localRecipesIDs, partition
       if (state.recipes.length) {
         localRecipesIDs = state.recipes.map((e) => e.id)
@@ -254,23 +265,58 @@ export default new Vuex.Store({
         createDocuments(recipes)
       }
       function createDocuments(data) {
-        console.log("creating")
         state.recipes = [...state.recipes, ...data]
         data.forEach((recipe) => {
           EnRecipesDB.createDocument(recipe, recipe.id)
         })
       }
       function updateDocuments(data) {
-        console.log("updating")
         data.forEach((recipe) => {
           let recipeIndex = state.recipes
-            .map((e, i) => (e.id === recipe.id ? i : -1))
+            .map((e, i) => {
+              let d1 = new Date(e.lastModified).getTime()
+              let d2 = new Date(recipe.lastModified).getTime()
+              return e.id === recipe.id && d1 < d2 ? i : -1
+            })
             .filter((e) => e >= 0)[0]
-          console.log(recipeIndex)
-          Object.assign(state.recipes[recipeIndex], recipe)
-          EnRecipesDB.updateDocument(recipe.id, recipe)
+          if (recipeIndex >= 0) {
+            Object.assign(state.recipes[recipeIndex], recipe)
+            EnRecipesDB.updateDocument(recipe.id, recipe)
+          }
         })
       }
+    },
+    importCategories(state, categories) {
+      state.userCategories = new Set([...state.userCategories, ...categories])
+      userCategoriesDB.updateDocument("userCategories", {
+        userCategories: [...state.userCategories],
+      })
+      state.categories = [...defaultCategories, ...state.userCategories]
+      state.categories.sort()
+    },
+    importYieldUnits(state, yieldUnits) {
+      state.userYieldUnits = new Set([...state.userYieldUnits, ...yieldUnits])
+      userYieldUnitsDB.updateDocument("userYieldUnits", {
+        userYieldUnits: [...state.userYieldUnits],
+      })
+      state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
+    },
+    importMealPlans(state, mealPlans) {
+      let newMealPlans = mealPlans.filter(
+        (e) =>
+          !state.mealPlans.some(
+            (f) => f.title === e.title && f.startDate === e.startDate
+          )
+      )
+      state.mealPlans = [...state.mealPlans, ...newMealPlans]
+      mealPlansDB.updateDocument("mealPlans", {
+        mealPlans: [...state.mealPlans],
+      })
+    },
+
+    addRecipe(state, { id, recipe }) {
+      state.recipes.push(recipe)
+      EnRecipesDB.createDocument(recipe, id)
     },
     addCategory(state, category) {
       let lowercase = state.categories.map((e) => e.toLowerCase())
@@ -283,14 +329,6 @@ export default new Vuex.Store({
         state.categories.sort()
       }
     },
-    importCategories(state, categories) {
-      state.userCategories = new Set([...state.userCategories, ...categories])
-      userCategoriesDB.updateDocument("userCategories", {
-        userCategories: [...state.userCategories],
-      })
-      state.categories = [...defaultCategories, ...state.userCategories]
-      state.categories.sort()
-    },
     addYieldUnit(state, yieldUnit) {
       let lowercase = state.yieldUnits.map((e) => e.toLowerCase())
       if (lowercase.indexOf(yieldUnit.toLowerCase()) == -1) {
@@ -301,20 +339,18 @@ export default new Vuex.Store({
         state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
       }
     },
-    importYieldUnits(state, yieldUnits) {
-      state.userYieldUnits = new Set([...state.userYieldUnits, ...yieldUnits])
-      userYieldUnitsDB.updateDocument("userYieldUnits", {
-        userYieldUnits: [...state.userYieldUnits],
+    addMealPlan(state, { event, eventColor }) {
+      state.mealPlans.push({
+        title: event.title,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        eventColor,
       })
-      state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
+      mealPlansDB.updateDocument("mealPlans", {
+        mealPlans: [...state.mealPlans],
+      })
     },
-    overwriteRecipe(state, { id, recipe }) {
-      let index = state.recipes.indexOf(
-        state.recipes.filter((e) => e.id === id)[0]
-      )
-      Object.assign(state.recipes[index], recipe)
-      EnRecipesDB.updateDocument(id, recipe)
-    },
+
     deleteRecipe(state, { index, id }) {
       getFileAccess().deleteFile(state.recipes[index].imageSrc)
       state.recipes.splice(index, 1)
@@ -325,6 +361,29 @@ export default new Vuex.Store({
           EnRecipesDB.updateDocument(state.recipes[i].id, state.recipes[i])
         }
       })
+    },
+    deleteMealPlan(state, { title, startDate }) {
+      let mealPlan = state.mealPlans.filter((e) => {
+        console.log(e.startDate, startDate)
+        let sd = new Date(e.startDate).getTime()
+        return e.title === title && sd === startDate.getTime()
+      })[0]
+      let index = state.mealPlans.indexOf(mealPlan)
+      state.mealPlans.splice(index, 1)
+      state.mealPlans = [...state.mealPlans]
+      let mealPlans = mealPlansDB.getDocument("mealPlans").mealPlans
+      mealPlans.splice(index, 1)
+      mealPlansDB.updateDocument("mealPlans", {
+        mealPlans: [...mealPlans],
+      })
+    },
+
+    overwriteRecipe(state, { id, recipe }) {
+      let index = state.recipes.indexOf(
+        state.recipes.filter((e) => e.id === id)[0]
+      )
+      Object.assign(state.recipes[index], recipe)
+      EnRecipesDB.updateDocument(id, recipe)
     },
     toggleState(state, { id, recipe, key, setDate }) {
       let index = state.recipes.indexOf(
@@ -346,9 +405,6 @@ export default new Vuex.Store({
       state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(state.recipes[index].id, state.recipes[index])
     },
-    setCurrentComponent(state, comp) {
-      state.currentComponent = comp
-    },
     renameCategory(state, { current, updated }) {
       let lowercase = state.categories.map((e) => e.toLowerCase())
       if (lowercase.indexOf(updated.toLowerCase()) == -1) {
@@ -367,6 +423,9 @@ export default new Vuex.Store({
           })
         }
       })
+    },
+    setCurrentComponent(state, comp) {
+      state.currentComponent = comp
     },
     unSyncCombinations(state, { id, combinations }) {
       state.recipes.forEach((e, i) => {
@@ -387,29 +446,45 @@ export default new Vuex.Store({
     initializeYieldUnits({ commit }) {
       commit("initializeYieldUnits")
     },
-    addRecipeAction({ commit }, recipe) {
-      commit("addRecipe", recipe)
+    initializeMealPlans({ commit }) {
+      commit("initializeMealPlans")
     },
+
     importRecipesAction({ commit }, recipes) {
       commit("importRecipes", recipes)
-    },
-    addCategoryAction({ commit }, category) {
-      commit("addCategory", category)
     },
     importCategoriesAction({ commit }, categories) {
       commit("importCategories", categories)
     },
-    addYieldUnitAction({ commit }, yieldUnit) {
-      commit("addYieldUnit", yieldUnit)
-    },
     importYieldUnitsAction({ commit }, yieldUnits) {
       commit("importYieldUnits", yieldUnits)
     },
-    overwriteRecipeAction({ commit }, updatedRecipe) {
-      commit("overwriteRecipe", updatedRecipe)
+    importMealPlansAction({ commit }, mealPlans) {
+      commit("importMealPlans", mealPlans)
+    },
+
+    addRecipeAction({ commit }, recipe) {
+      commit("addRecipe", recipe)
+    },
+    addYieldUnitAction({ commit }, yieldUnit) {
+      commit("addYieldUnit", yieldUnit)
+    },
+    addCategoryAction({ commit }, category) {
+      commit("addCategory", category)
+    },
+    addMealPlanAction({ commit }, mealPlan) {
+      commit("addMealPlan", mealPlan)
+    },
+
+    deleteMealPlanAction({ commit }, mealPlan) {
+      commit("deleteMealPlan", mealPlan)
     },
     deleteRecipeAction({ commit }, recipe) {
       commit("deleteRecipe", recipe)
+    },
+
+    overwriteRecipeAction({ commit }, updatedRecipe) {
+      commit("overwriteRecipe", updatedRecipe)
     },
     toggleStateAction({ commit }, toggledRecipe) {
       commit("toggleState", toggledRecipe)
@@ -420,11 +495,11 @@ export default new Vuex.Store({
     setLastTriedDateAction({ commit }, index) {
       commit("setLastTriedDate", index)
     },
-    setCurrentComponentAction({ commit }, comp) {
-      commit("setCurrentComponent", comp)
-    },
     renameCategoryAction({ commit }, category) {
       commit("renameCategory", category)
+    },
+    setCurrentComponentAction({ commit }, comp) {
+      commit("setCurrentComponent", comp)
     },
     unSyncCombinationsAction({ commit }, combinations) {
       commit("unSyncCombinations", combinations)

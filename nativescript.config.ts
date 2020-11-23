@@ -2,11 +2,11 @@ import { NativeScriptConfig } from "@nativescript/core"
 
 export default {
   id: "com.vishnuraghav.enrecipes",
-  appResourcesPath: "app/App_Resources",
+  appResourcesPath: "App_Resources",
   android: {
     v8Flags: "--expose_gc",
     markingMode: "none",
     codeCache: true,
-  },
-  appPath: "app",
+  }
+  // appPath: "app",
 } as NativeScriptConfig

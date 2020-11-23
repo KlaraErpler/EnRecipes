@@ -4,9 +4,6 @@
   "description": "A native application built with NativeScript-Vue",
   "author": "Vishnu Raghav <design@vishnuraghav.com>",
   "license": "GPL",
-  "scripts": {
-    "run": "ns run android"
-  },
   "dependencies": {
     "@nativescript-community/perms": "^2.1.1",
     "@nativescript-community/ui-material-activityindicator": "^5.0.30",
@@ -27,19 +24,19 @@
     "nativescript-ui-calendar": "^7.0.2",
     "nativescript-ui-listview": "^9.0.4",
     "nativescript-ui-sidedrawer": "^9.0.3",
-    "nativescript-vue": "^2.6.1",
-    "vuex": "^3.3.0"
+    "nativescript-vue": "^2.8.1",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
     "@nativescript/android": "7.0.1",
-    "@types/node": "^14.0.27",
-    "babel-loader": "^8.1.0",
-    "nativescript-vue-template-compiler": "^2.6.0",
-    "node-sass": "^4.13.1",
-    "vue-loader": "^15.9.1",
-    "@nativescript/webpack": "~3.0.0"
+    "@nativescript/webpack": "^3.0.8",
+    "@types/node": "^14.14.8",
+    "babel-loader": "^8.2.1",
+    "nativescript-vue-template-compiler": "^2.8.1",
+    "node-sass": "^4.14.1",
+    "vue-loader": "^15.9.5"
   },
   "main": "main"
 }

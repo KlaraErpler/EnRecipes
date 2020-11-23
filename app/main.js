@@ -23,10 +23,9 @@ Vue.use(ProgressPlugin)
 import CalendarView from "nativescript-ui-calendar/vue"
 Vue.use(CalendarView)
 
-Vue.registerElement(
-  "RadSideDrawer",
-  () => require("nativescript-ui-sidedrawer").RadSideDrawer
-)
+import RadSideDrawer from "nativescript-ui-sidedrawer/vue"
+Vue.use(RadSideDrawer)
+
 import { CheckBox } from "@nstudio/nativescript-checkbox"
 Vue.registerElement("CheckBox", () => CheckBox, {
   model: {
@@ -35,11 +34,6 @@ Vue.registerElement("CheckBox", () => CheckBox, {
   },
 })
 
-if (TNS_ENV !== "production") {
-  // Vue.use(VueDevtools)
-}
-
-// Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = TNS_ENV === "production"
 
 new Vue({

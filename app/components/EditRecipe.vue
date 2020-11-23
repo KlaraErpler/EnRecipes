@@ -13,20 +13,20 @@
         <Label class="title orkm" :text="title" col="1" />
         <MDButton
           variant="text"
-          v-if="hasChanges && !imageLoading"
+          v-if="hasChanges && !saving"
           class="bx"
           :text="icon.save"
           col="2"
           @tap="saveOperation"
         />
-        <MDActivityIndicator col="2" v-if="imageLoading" :busy="imageLoading" />
+        <MDActivityIndicator col="2" v-if="saving" :busy="saving" />
       </GridLayout>
     </ActionBar>
     <ScrollView
       width="100%"
       height="100%"
       @scroll="onScroll"
-      scrollBarIndicatorVisible="false"
+      scrollBarIndicatorVisible="true"
     >
       <StackLayout width="100%" padding="0 0 128">
         <AbsoluteLayout>
@@ -257,7 +257,7 @@
           <StackLayout class="hr" margin="24 16"></StackLayout>
         </StackLayout>
 
-        <StackLayout margin="0 16 24" v-if="recipes.length">
+        <StackLayout margin="0 16 24">
           <Label text="Combinations" class="sectionTitle" />
           <GridLayout
             columns="*,8,auto"
@@ -316,14 +316,10 @@ import ConfirmDialog from "./modal/ConfirmDialog.vue"
 import PromptDialog from "./modal/PromptDialog.vue"
 import ListPicker from "./modal/ListPicker.vue"
 
+import * as utils from "~/shared/utils"
+
 export default {
-  props: [
-    "recipeID",
-    "selectedCategory",
-    "openAppSettingsPage",
-    "filterFavorites",
-    "filterTrylater",
-  ],
+  props: ["recipeID", "selectedCategory", "filterFavorites", "filterTrylater"],
   data() {
     return {
       title: "New recipe",
@@ -343,7 +339,7 @@ export default {
         references: [],
         combinations: [],
         isFavorite: false,
-        tried: false,
+        tried: true,
         lastTried: null,
         lastModified: null,
       },
@@ -352,7 +348,7 @@ export default {
       modalOpen: false,
       newRecipeID: null,
       showFab: false,
-      imageLoading: false,
+      saving: false,
       cacheImagePath: null,
       unSyncCombinations: [],
     }
@@ -680,7 +676,7 @@ export default {
       } else {
         Permissions.check("photo").then((res) => {
           res[0] !== "authorized"
-            ? confirmation().then((e) => e && this.openAppSettingsPage())
+            ? confirmation().then((e) => e && utils.openAppSettingsPage())
             : action()
         })
       }
@@ -771,7 +767,6 @@ export default {
         ...this.recipeContent.combinations,
         this.recipeContent.id,
       ]
-      console.log(existingCombinations)
       let filteredRecipes = this.recipes.filter(
         (e) => !existingCombinations.includes(e.id)
       )
@@ -838,7 +833,7 @@ export default {
       clearEmpty("references")
     },
     saveOperation() {
-      this.imageLoading = true
+      this.saving = true
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
       if (this.cacheImagePath) {
@@ -884,7 +879,7 @@ export default {
         })
       }
       setTimeout(() => {
-        this.imageLoading = false
+        this.saving = false
       }, 100)
       this.$navigateBack()
     },

@@ -57,9 +57,6 @@
 		<item name="contentInsetEnd">
 			0dp
 		</item>
-		<item name="android:divider">
-			#ff0000
-		</item>
 		<item name="android:background">
 			@color/ns_primary
 		</item>
@@ -77,8 +74,10 @@
 		<item name="searchHintIcon">
 			@null
 		</item>
-		<!-- <item name="closeIcon">
-			@null
-		</item> -->
+		<!--
+		<item name="closeIcon">
+		@null
+		</item>
+		-->
 	</style>
 </resources>

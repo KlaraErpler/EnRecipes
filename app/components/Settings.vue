@@ -13,7 +13,7 @@
         <Label class="title orkm" text="Settings" col="1" />
       </GridLayout>
     </ActionBar>
-    <ScrollView scrollBarIndicatorVisible="false" @scroll="onScroll">
+    <ScrollView scrollBarIndicatorVisible="true" @scroll="onScroll">
       <StackLayout class="main-container">
         <Label text="Interface" class="group-header orkm" />
         <GridLayout columns="auto, *" class="option">
@@ -26,7 +26,7 @@
           />
           <StackLayout col="1">
             <Label text="Theme" />
-            <Label :text="appTheme" class="info" textWrap="true" />
+            <Label :text="appTheme" class="info" />
           </StackLayout>
         </GridLayout>
         <StackLayout class="hr m-10"></StackLayout>
@@ -37,11 +37,13 @@
           <Label col="0" class="bx" :text="icon.export" />
           <StackLayout col="1">
             <Label text="Export a full backup" />
-            <GridLayout
-              class="progressContainer"
-              v-if="backupInProgress"
-              columns="*, 64"
-            >
+            <Label
+              v-if="!backupInProgress"
+              text="Generates a zip file that contains all your data. This file can be imported back."
+              class="info"
+              textWrap="true"
+            />
+            <GridLayout class="progressContainer" v-else columns="*, 64">
               <MDProgress
                 col="0"
                 :value="backupProgress"
@@ -49,12 +51,6 @@
               ></MDProgress>
               <Label col="1" :text="`  ${backupProgress}%`" />
             </GridLayout>
-            <Label
-              v-else
-              text="Generates a zip file that contains all your data. This file can be imported back."
-              class="info"
-              textWrap="true"
-            />
           </StackLayout>
         </GridLayout>
         <GridLayout columns="auto, *" class="option"
@@ -95,13 +91,9 @@ import { mapState, mapActions } from "vuex"
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
+import * as utils from "~/shared/utils"
+
 export default {
-  props: [
-    "showDrawer",
-    "restartApp",
-    "releaseGlobalBackEvent",
-    "openAppSettingsPage",
-  ],
   data() {
     return {
       viewIsScrolled: false,
@@ -116,6 +108,7 @@ export default {
       "recipes",
       "userCategories",
       "userYieldUnits",
+      "mealPlans",
       "currentComponent",
     ]),
   },
@@ -125,13 +118,15 @@ export default {
       "importCategoriesAction",
       "importYieldUnitsAction",
       "importRecipesAction",
+      "importMealPlansAction",
     ]),
     onPageLoad() {
       this.setCurrentComponentAction("Settings")
-      this.releaseGlobalBackEvent()
     },
-
     // HELPERS
+    showDrawer() {
+      utils.showDrawer()
+    },
     onScroll(args) {
       args.scrollY
         ? (this.viewIsScrolled = true)
@@ -160,7 +155,7 @@ export default {
             if (result) {
               this.appTheme = action
               ApplicationSettings.setString("appTheme", action)
-              setTimeout((e) => this.restartApp(), 250)
+              setTimeout((e) => utils.restartApp(), 250)
             }
           })
         }
@@ -209,11 +204,6 @@ export default {
         archive: destPath,
         onProgress: (progress) => {
           this.backupProgress = progress
-          if (progress == 100) {
-            setTimeout((e) => {
-              this.backupInProgress = false
-            }, 2000)
-          }
         },
       }).then((success) => {
         Toast.makeText(
@@ -225,8 +215,8 @@ export default {
     },
     exportFiles(option) {
       const folder = path.join(knownFolders.documents().path, "EnRecipes")
-      const EnRecipesFile = File.fromPath(path.join(folder, "EnRecipes.json"))
-      let userCategoriesFile, userYieldUnitsFile
+      const EnRecipesFile = File.fromPath(path.join(folder, "recipes.json"))
+      let userCategoriesFile, userYieldUnitsFile, mealPlansFile
       if (this.userCategories.length) {
         userCategoriesFile = File.fromPath(
           path.join(folder, "userCategories.json")
@@ -237,6 +227,9 @@ export default {
           path.join(folder, "userYieldUnits.json")
         )
       }
+      if (this.mealPlans.length) {
+        mealPlansFile = File.fromPath(path.join(folder, "mealPlans.json"))
+      }
       switch (option) {
         case "create":
           this.writeDataToFile(EnRecipesFile, this.recipes)
@@ -244,11 +237,14 @@ export default {
             this.writeDataToFile(userCategoriesFile, this.userCategories)
           this.userYieldUnits.length &&
             this.writeDataToFile(userYieldUnitsFile, this.userYieldUnits)
+          this.mealPlans.length &&
+            this.writeDataToFile(mealPlansFile, this.mealPlans)
           break
         case "delete":
           EnRecipesFile.remove()
           this.userCategories.length && userCategoriesFile.remove()
           this.userYieldUnits.length && userYieldUnitsFile.remove()
+          this.mealPlans.length && mealPlansFile.remove()
           break
         default:
           break
@@ -290,6 +286,9 @@ export default {
         case "userYieldUnitsDB":
           this.importYieldUnitsAction(data)
           break
+        case "mealPlansDB":
+          this.importMealPlansAction(data)
+          break
         default:
           break
       }
@@ -312,9 +311,10 @@ export default {
         overwrite: true,
       }).then((extractedFolderPath) => {
         let cacheFolderPath = extractedFolderPath + "/EnRecipes"
-        const EnRecipesFilePath = cacheFolderPath + "/EnRecipes.json"
+        const EnRecipesFilePath = cacheFolderPath + "/recipes.json"
         const userCategoriesFilePath = cacheFolderPath + "/userCategories.json"
         const userYieldUnitsFilePath = cacheFolderPath + "/userYieldUnits.json"
+        const mealPlansFilePath = cacheFolderPath + "/mealPlans.json"
         if (Folder.exists(cacheFolderPath)) {
           this.isFileDataValid([
             {
@@ -324,6 +324,7 @@ export default {
             },
             { zipPath, path: userCategoriesFilePath, db: "userCategoriesDB" },
             { zipPath, path: userYieldUnitsFilePath, db: "userYieldUnitsDB" },
+            { zipPath, path: mealPlansFilePath, db: "mealPlansDB" },
           ])
         } else {
           Folder.fromPath(extractedFolderPath).remove()
@@ -368,7 +369,7 @@ export default {
           let status = res[Object.keys(res)[0]]
           if (status !== "authorized") {
             confirmation(description).then((e) => {
-              e && this.openAppSettingsPage()
+              e && utils.openAppSettingsPage()
             })
           } else action()
         })
@@ -385,7 +386,7 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     this.appTheme = ApplicationSettings.getString("appTheme", "Light")
   },
 }

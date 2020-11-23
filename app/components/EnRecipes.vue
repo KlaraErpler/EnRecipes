@@ -237,15 +237,16 @@ import ViewRecipe from "./ViewRecipe.vue"
 import ActionDialog from "./modal/ActionDialog.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
 
+import * as utils from "~/shared/utils"
+
 export default {
   props: [
     "filterFavorites",
     "filterTrylater",
+    "closeDrawer",
     "selectedCategory",
-    "showDrawer",
     "hijackGlobalBackEvent",
     "releaseGlobalBackEvent",
-    "openAppSettingsPage",
   ],
   components: {
     EditRecipe,
@@ -301,6 +302,9 @@ export default {
     },
 
     // HELPERS
+    showDrawer() {
+      utils.showDrawer()
+    },
     openSearch() {
       this.showSearch = true
       this.showFAB = false
@@ -355,6 +359,7 @@ export default {
     },
     searchBackEvent(args) {
       args.cancel = true
+      this.closeDrawer()
       this.closeSearch()
     },
     addRecipe() {
@@ -363,7 +368,6 @@ export default {
       this.$navigateTo(EditRecipe, {
         props: {
           selectedCategory: this.selectedCategory,
-          openAppSettingsPage: this.openAppSettingsPage,
           filterFavorites: this.filterFavorites,
         },
       })
@@ -371,16 +375,9 @@ export default {
     viewRecipe(recipeID) {
       this.showFAB = false
       this.$navigateTo(ViewRecipe, {
-        // transition: {
-        //   name: "fade",
-        //   duration: 200,
-        //   curve: "easeOut",
-        // },
         props: {
           filterTrylater: this.filterTrylater,
           recipeID,
-          hijackGlobalBackEvent: this.hijackGlobalBackEvent,
-          releaseGlobalBackEvent: this.releaseGlobalBackEvent,
         },
       })
     },

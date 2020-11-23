@@ -6,7 +6,7 @@ $gray1: #f1f3f5;
 $gray2: #e9ecef;
 $gray3: #dee2e6;
 $gray4: #ced4da;
-$gray5: #adb5bd; // rgb(173,181,189)
+$gray5: #adb5bd;
 $gray6: #868e96;
 $gray7: #495057;
 $gray8: #343a40;
@@ -255,7 +255,7 @@ ActionBar {
   }
   // prettier-ignore
   Label {
-    padding: 0 16 0 0;
+    padding: 2 16 0 0;
     font-size: 16;
     vertical-alignment: center;
     &.bx{
@@ -544,14 +544,13 @@ TextField.combinationToken {
 }
 // -----------------------------
 // MEAL PLANNER
-.mealPlanner {
-  padding: 16 16 128;
+.dayPlan {
+  padding: 0;
   width: 100%;
-  .dayContainer {
-    padding: 8 0;
+  .plansContainer {
+    padding: 8 4;
     color: $gray9;
     &.breakfast {
-      border-radius: 4 4 0 0;
       background: $breakfast;
     }
     &.lunch {
@@ -561,17 +560,16 @@ TextField.combinationToken {
       background: $dinner;
     }
     &.snacks {
-      border-radius: 0 0 4 4;
       background: $snacks;
     }
     .periodLabel {
       text-transform: uppercase;
       vertical-alignment: center;
-      font-size: 16;
+      font-size: 14;
       padding: 0 0 0 16;
     }
     .recipes {
-      margin: 8 8 0;
+      margin: 4 8 4;
       .recipeTitle {
         font-size: 14;
         padding: 6 8;
@@ -591,6 +589,7 @@ TextField.combinationToken {
 // -----------------------------
 // DIALOGS
 .dialogContainer {
+  max-width: 480;
   width: 100%;
   color: $gray9;
   background: $gray1;
@@ -600,6 +599,7 @@ TextField.combinationToken {
     background: $gray9;
   }
   .dialogTitle {
+    line-height: 6;
     padding: 24 24 16;
     font-size: 20;
   }

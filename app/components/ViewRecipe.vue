@@ -66,7 +66,7 @@
         class="viewRecipe"
       >
         <TabViewItem title="Overview">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <StackLayout>
               <StackLayout
                 width="100%"
@@ -221,7 +221,7 @@
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="Ingredients">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <GridLayout
               v-if="!recipe.ingredients.length"
               rows="*, auto, *, 88"
@@ -265,24 +265,9 @@
                 :key="index"
               >
                 <check-box
-                  v-if="filterTrylater"
                   class="ingredient-check"
                   checkPadding="16"
                   fillColor="#ff5200"
-                  :text="
-                    `${
-                      roundedQuantity(item.quantity)
-                        ? roundedQuantity(item.quantity) + ' '
-                        : ''
-                    }${roundedQuantity(item.quantity) ? item.unit + ' ' : ''}${
-                      item.item
-                    }`
-                  "
-                />
-                <Label
-                  v-else
-                  class="ingredient"
-                  textWrap="true"
                   :text="
                     `${
                       roundedQuantity(item.quantity)
@@ -298,7 +283,7 @@
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="Instructions">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <GridLayout
               v-if="!recipe.instructions.length"
               rows="*, auto, *, 88"
@@ -343,7 +328,7 @@
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="Notes">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <GridLayout
               v-if="!recipe.notes.length"
               rows="*, auto, *, 88"
@@ -385,7 +370,7 @@
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="References">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <GridLayout
               v-if="!recipe.references.length"
               rows="*, auto, *, 88"
@@ -438,7 +423,7 @@
           </ScrollView>
         </TabViewItem>
         <TabViewItem title="Combinations">
-          <ScrollView scrollBarIndicatorVisible="false">
+          <ScrollView scrollBarIndicatorVisible="true">
             <GridLayout
               v-if="!recipe.combinations.length"
               rows="*, auto, *, 88"
@@ -523,13 +508,7 @@ import ShareChooser from "./modal/ShareChooser.vue"
 let feedback = new Feedback()
 
 export default {
-  props: [
-    "filterTrylater",
-    "recipeID",
-    "recipeIndex",
-    "hijackGlobalBackEvent",
-    "releaseGlobalBackEvent",
-  ],
+  props: ["filterTrylater", "recipeID"],
   data() {
     return {
       busy: false,
@@ -560,7 +539,6 @@ export default {
       "setRecipeAsTriedAction",
     ]),
     onPageLoad() {
-      this.releaseGlobalBackEvent()
       this.busy = false
       setTimeout((e) => {
         this.setCurrentComponentAction("ViewRecipe")

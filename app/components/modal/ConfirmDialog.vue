@@ -1,7 +1,7 @@
 <template>
   <Page>
     <StackLayout class="dialogContainer" :class="appTheme">
-      <Label class="dialogTitle orkm" :text="title" />
+      <Label class="dialogTitle orkm" :text="title" textWrap="true"/>
       <Label
         v-if="description"
         class="dialogDescription"

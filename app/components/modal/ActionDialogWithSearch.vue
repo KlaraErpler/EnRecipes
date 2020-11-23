@@ -2,7 +2,10 @@
   <Page>
     <StackLayout class="dialogContainer" :class="appTheme">
       <Label class="dialogTitle orkm" :text="title" />
-      <StackLayout padding="0 24 24">
+      <StackLayout
+        v-if="filteredRecipes.length || searchTerm"
+        padding="0 24 24"
+      >
         <TextField hint="Search" v-model="searchTerm" />
       </StackLayout>
       <ScrollView width="100%" :height="height ? height : screenHeight - 320">
@@ -18,11 +21,11 @@
             @tap="tapAction(recipe)"
           />
           <Label
-            padding="0 24"
+            padding="24"
             lineHeight="6"
             v-if="!filteredRecipes.length"
-            text="Nothing here! Add some recipes that goes well with this and try again."
-            horizontalAlignment="center"
+            text="Nothing here! Add some recipes and try again."
+            textAlignment="center"
             textWrap="true"
           />
         </StackLayout>

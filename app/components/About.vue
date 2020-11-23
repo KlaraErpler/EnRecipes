@@ -13,7 +13,7 @@
         <Label class="title orkm" text="About" col="1" />
       </GridLayout>
     </ActionBar>
-    <ScrollView scrollBarIndicatorVisible="false" @scroll="onScroll">
+    <ScrollView scrollBarIndicatorVisible="true" @scroll="onScroll">
       <StackLayout class="main-container">
         <StackLayout
           horizontalAlignment="center"
@@ -64,7 +64,7 @@
             @tap="openURL('https://www.vishnuraghav.com')"
           />
           <Label col="0" class="bx" :text="icon.user" />
-          <Label verticalAlignment="center" col="1" text="Vishnu Raghav" />
+          <Label verticalAlignment="center" col="1" text="Vishnu Raghav B" />
         </GridLayout>
         <GridLayout columns="auto, *" class="option">
           <MDRipple
@@ -90,8 +90,10 @@
 <script>
 import { Application, Utils } from "@nativescript/core"
 import { mapActions, mapState } from "vuex"
+
+import * as utils from "~/shared/utils"
+
 export default {
-  props: ["showDrawer", "title"],
   computed: {
     ...mapState(["icon", "currentComponent"]),
     getVersion() {
@@ -112,6 +114,9 @@ export default {
       this.setCurrentComponentAction("About")
     },
     // HELPERS
+    showDrawer() {
+      utils.showDrawer()
+    },
     onScroll(args) {
       args.scrollY
         ? (this.viewIsScrolled = true)

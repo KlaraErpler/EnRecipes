@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="ns_primary">
-		#fafafa
+		#ff5200
 	</color>
 	<color name="ns_primaryDark">
 		#ff5200

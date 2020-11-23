@@ -1,14 +1,16 @@
 <template>
   <Page
     @loaded="onPageLoad"
+    @unloaded="onPageUnload"
     actionBarHidden="true"
     :androidStatusBarBackground="appTheme == 'Light' ? '#f1f3f5' : '#212529'"
   >
     <RadSideDrawer
-      ref="drawer"
       allowEdgeSwipe="true"
-      drawerContentSize="270"
       showOverNavigation="true"
+      ref="drawer"
+      id="sideDrawer"
+      drawerContentSize="270"
       gesturesEnabled="true"
       drawerTransition="SlideInOnTopTransition"
     >
@@ -44,8 +46,9 @@
             <MDRipple
               row="0"
               colSpan="3"
-              @tap="navigateTo(mealPlanner, true, false)"
+              @tap="navigateTo(MealPlanner, true, false)"
             />
+
             <Label col="0" row="0" class="bx" :text="icon.calendar" />
             <Label col="2" row="0" text="Meal Planner" />
           </GridLayout>
@@ -120,21 +123,18 @@
           </GridLayout>
         </StackLayout>
       </GridLayout>
-      <GridLayout ~mainContent rows="*" columns="*">
-        <Frame row="0" col="0" ref="mainFrame" id="main-frame">
-          <!-- Home  -->
-          <EnRecipes
-            ref="enrecipes"
-            :filterFavorites="filterFavorites"
-            :filterTrylater="filterTrylater"
-            :selectedCategory="selectedCategory"
-            :showDrawer="showDrawer"
-            :hijackGlobalBackEvent="hijackGlobalBackEvent"
-            :releaseGlobalBackEvent="releaseGlobalBackEvent"
-            :openAppSettingsPage="openAppSettingsPage"
-          />
-        </Frame>
-      </GridLayout>
+      <Frame ~mainContent id="main-frame">
+        <!-- Home  -->
+        <EnRecipes
+          ref="enrecipes"
+          :filterFavorites="filterFavorites"
+          :filterTrylater="filterTrylater"
+          :selectedCategory="selectedCategory"
+          :closeDrawer="closeDrawer"
+          :hijackGlobalBackEvent="hijackGlobalBackEvent"
+          :releaseGlobalBackEvent="releaseGlobalBackEvent"
+        />
+      </Frame>
     </RadSideDrawer>
   </Page>
 </template>
@@ -153,22 +153,20 @@ import * as Toast from "nativescript-toast"
 import * as application from "tns-core-modules/application"
 import { mapActions, mapState } from "vuex"
 
-import EnRecipes from "./EnRecipes.vue"
-import MealPlanner from "./MealPlanner.vue"
-import Settings from "./Settings.vue"
-import About from "./About.vue"
+import EnRecipes from "./EnRecipes"
+import MealPlanner from "./MealPlanner"
+import Settings from "./Settings"
+import About from "./About"
 
-import PromptDialog from "./modal/PromptDialog.vue"
+import PromptDialog from "./modal/PromptDialog"
 
 export default {
-  components: {
-    EnRecipes,
-  },
   data() {
     return {
       selectedCategory: null,
       filterFavorites: false,
       filterTrylater: false,
+      MealPlanner: MealPlanner,
       topmenu: [
         {
           title: "Home",
@@ -200,8 +198,11 @@ export default {
       ],
       editCategory: false,
       appTheme: "Light",
-      mealPlanner: MealPlanner,
     }
+  },
+  components: {
+    EnRecipes,
+    MealPlanner,
   },
   computed: {
     ...mapState([
@@ -209,6 +210,7 @@ export default {
       "recipes",
       "categories",
       "yieldUnits",
+      "mealPlans",
       "currentComponent",
     ]),
     categoriesWithRecipes() {
@@ -224,6 +226,7 @@ export default {
       "initializeRecipes",
       "initializeCategories",
       "initializeYieldUnits",
+      "initializeMealPlans",
       "renameCategoryAction",
     ]),
     onPageLoad() {
@@ -234,6 +237,9 @@ export default {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         // window.setNavigationBarColor(new Color("#e0e0e0").android)
       }
+    },
+    onPageUnload() {
+      // this.releaseGlobalBackEvent()
     },
 
     // HELPERS
@@ -268,44 +274,7 @@ export default {
       this.selectedCategory = e.item
       this.closeDrawer()
     },
-    restartApp() {
-      // Code from nativescript-master-technology
-      const mStartActivity = new android.content.Intent(
-        application.android.context,
-        application.android.startActivity.getClass()
-      )
-      const mPendingIntentId = parseInt(Math.random() * 100000, 10)
-      const mPendingIntent = android.app.PendingIntent.getActivity(
-        application.android.context,
-        mPendingIntentId,
-        mStartActivity,
-        android.app.PendingIntent.FLAG_CANCEL_CURRENT
-      )
-      const mgr = application.android.context.getSystemService(
-        android.content.Context.ALARM_SERVICE
-      )
-      mgr.set(
-        android.app.AlarmManager.RTC,
-        java.lang.System.currentTimeMillis() + 100,
-        mPendingIntent
-      )
-      android.os.Process.killProcess(android.os.Process.myPid())
-    },
-    openAppSettingsPage() {
-      const intent = new android.content.Intent(
-        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-      )
-      intent.addCategory(android.content.Intent.CATEGORY_DEFAULT)
-      intent.setData(
-        android.net.Uri.parse(
-          "package:" + Application.android.context.getPackageName()
-        )
-      )
-      Application.android.foregroundActivity.startActivity(intent)
-    },
-    showDrawer() {
-      this.$refs.drawer.nativeView.showDrawer()
-    },
+
     closeDrawer() {
       this.$refs.drawer.nativeView.closeDrawer()
     },
@@ -358,13 +327,6 @@ export default {
       if (isTrueComponent) {
         this.$navigateTo(to, {
           frame: "main-frame",
-          props: {
-            showDrawer: this.showDrawer,
-            restartApp: this.restartApp,
-            hijackGlobalBackEvent: this.hijackGlobalBackEvent,
-            releaseGlobalBackEvent: this.releaseGlobalBackEvent,
-            openAppSettingsPage: this.openAppSettingsPage,
-          },
           backstackVisible: false,
         })
         this.closeDrawer()
@@ -391,9 +353,10 @@ export default {
     setTimeout((e) => {
       Theme.setMode(Theme[this.appTheme])
     }, 10)
-    this.initializeRecipes()
-    this.initializeCategories()
-    this.initializeYieldUnits()
+    if (!this.recipes.length) this.initializeRecipes()
+    if (!this.categories.length) this.initializeCategories()
+    if (!this.yieldUnits.length) this.initializeYieldUnits()
+    if (!this.mealPlans.length) this.initializeMealPlans()
   },
 }
 </script>
