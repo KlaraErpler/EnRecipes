@@ -12,9 +12,9 @@
           @tap="$navigateBack()"
         />
         <!-- <ScrollView
-          row="0"
-          col="1"
-          :colSpan="hideActionBar ? 2 : 1"
+          row="1"
+          col="0"
+          colSpan="3"
           orientation="horizontal"
           scrollBarIndicatorVisible="false"
         >
