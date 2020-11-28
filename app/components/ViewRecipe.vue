@@ -1,7 +1,7 @@
 <template>
   <Page @loaded="onPageLoad" @unloaded="onPageUnload">
-    <ActionBar height="112" margin="0" flat="true">
-      <GridLayout rows="64, 48" columns="auto, *, auto,auto, auto">
+    <ActionBar flat="true">
+      <GridLayout rows="48" columns="auto, *, auto">
         <MDButton
           variant="text"
           row="0"
@@ -11,10 +11,10 @@
           automationText="Back"
           @tap="$navigateBack()"
         />
-        <ScrollView
-          row="1"
-          col="0"
-          colSpan="4"
+        <!-- <ScrollView
+          row="0"
+          col="1"
+          :colSpan="hideActionBar ? 2 : 1"
           orientation="horizontal"
           scrollBarIndicatorVisible="false"
         >
@@ -23,22 +23,8 @@
             :text="recipe.title"
             verticalAlignment="bottom"
           />
-        </ScrollView>
+        </ScrollView> -->
         <FlexboxLayout row="0" col="2" alignItems="center">
-          <MDButton
-            variant="text"
-            v-if="!busy"
-            class="bx"
-            :text="icon.edit"
-            @tap="editRecipe"
-          />
-          <MDActivityIndicator v-else :busy="busy" />
-          <MDButton
-            variant="text"
-            class="bx"
-            :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
-            @tap="toggleFavorite"
-          />
           <MDButton
             v-if="!filterTrylater"
             variant="text"
@@ -50,23 +36,54 @@
             v-else
             variant="text"
             class="bx"
-            :text="icon.share"
-            @tap="shareHandler"
+            :text="icon.check"
+            @tap="recipeTried"
           />
+          <MDButton
+            variant="text"
+            class="bx"
+            :text="recipe.isFavorite ? icon.heart : icon.heartOutline"
+            @tap="toggleFavorite"
+          />
+          <MDButton
+            variant="text"
+            v-if="!busy"
+            class="bx"
+            :text="icon.edit"
+            @tap="editRecipe"
+          />
+          <MDActivityIndicator v-else :busy="busy" />
         </FlexboxLayout>
       </GridLayout>
     </ActionBar>
     <AbsoluteLayout>
-      <TabView
-        :selectedIndex="selectedTabIndex"
-        @selectedIndexChange="selectedIndexChange"
-        androidElevation="0"
+      <Tabs
         width="100%"
         height="100%"
+        :selectedIndex="selectedTabIndex"
+        @selectedIndexChange="selectedIndexChange"
         class="viewRecipe"
       >
-        <TabViewItem title="Overview">
-          <ScrollView scrollBarIndicatorVisible="true">
+        <TabStrip :androidElevation="viewIsScrolled ? 4 : 0">
+          <TabStripItem>
+            <Label text="Overview"></Label>
+          </TabStripItem>
+          <TabStripItem>
+            <Label text="Ingredients"></Label>
+          </TabStripItem>
+          <TabStripItem>
+            <Label text="Instructions"></Label>
+          </TabStripItem>
+          <TabStripItem>
+            <Label text="Combinations"></Label>
+          </TabStripItem>
+          <TabStripItem>
+            <Label text="Notes"></Label>
+          </TabStripItem>
+        </TabStrip>
+
+        <TabContentItem>
+          <ScrollView @scroll="onScroll">
             <StackLayout>
               <StackLayout
                 width="100%"
@@ -89,7 +106,7 @@
                   :text="icon.image"
                 />
               </StackLayout>
-              <StackLayout margin="16 8 144">
+              <StackLayout margin="16 8 80">
                 <Label class="category orkm" :text="recipe.category" />
                 <Label
                   margin="0 8"
@@ -102,7 +119,7 @@
                   <Label :text="` ${formattedTime(recipe.timeRequired)}`" />
                 </StackLayout>
                 <GridLayout
-                  rows="auto, auto, auto"
+                  rows="auto, auto"
                   columns="*, *"
                   class="overviewContainer"
                 >
@@ -150,7 +167,6 @@
                       textWrap="true"
                     />
                   </GridLayout>
-
                   <GridLayout
                     class="overviewItem"
                     row="1"
@@ -159,48 +175,6 @@
                     columns="*"
                   >
                     <MDRipple rowSpan="2" @tap="selectedTabIndex = 3" />
-                    <Label row="0" class="bx" :text="icon.note" />
-                    <Label
-                      row="1"
-                      class="itemCount"
-                      :text="
-                        `${recipe.notes.length} ${
-                          recipe.notes.length == 1 ? 'Note' : 'Notes'
-                        }`
-                      "
-                      textWrap="true"
-                    />
-                  </GridLayout>
-                  <GridLayout
-                    class="overviewItem"
-                    row="1"
-                    col="1"
-                    rows="auto, auto"
-                    columns="*"
-                  >
-                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 4" />
-                    <Label row="0" class="bx" :text="icon.source" />
-                    <Label
-                      row="1"
-                      class="itemCount"
-                      :text="
-                        `${recipe.references.length} ${
-                          recipe.references.length == 1
-                            ? 'Reference'
-                            : 'References'
-                        }`
-                      "
-                      textWrap="true"
-                    />
-                  </GridLayout>
-                  <GridLayout
-                    class="overviewItem"
-                    row="2"
-                    col="0"
-                    rows="auto, auto"
-                    columns="*"
-                  >
-                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 5" />
                     <Label row="0" class="bx" :text="icon.outline" />
                     <Label
                       row="1"
@@ -215,13 +189,33 @@
                       textWrap="true"
                     />
                   </GridLayout>
+                  <GridLayout
+                    class="overviewItem"
+                    row="1"
+                    col="1"
+                    rows="auto, auto"
+                    columns="*"
+                  >
+                    <MDRipple rowSpan="2" @tap="selectedTabIndex = 4" />
+                    <Label row="0" class="bx" :text="icon.note" />
+                    <Label
+                      row="1"
+                      class="itemCount"
+                      :text="
+                        `${recipe.notes.length} ${
+                          recipe.notes.length == 1 ? 'Note' : 'Notes'
+                        }`
+                      "
+                      textWrap="true"
+                    />
+                  </GridLayout>
                 </GridLayout>
               </StackLayout>
             </StackLayout>
           </ScrollView>
-        </TabViewItem>
-        <TabViewItem title="Ingredients">
-          <ScrollView scrollBarIndicatorVisible="true">
+        </TabContentItem>
+        <TabContentItem>
+          <ScrollView @scroll="onScroll">
             <GridLayout
               v-if="!recipe.ingredients.length"
               rows="*, auto, *, 88"
@@ -238,7 +232,7 @@
                 <Label text="to add some ingredients" textWrap="true" />
               </StackLayout>
             </GridLayout>
-            <StackLayout v-else padding="32 16 134">
+            <StackLayout v-else padding="24 16 72">
               <AbsoluteLayout class="inputField">
                 <TextField
                   width="50%"
@@ -265,7 +259,7 @@
                 :key="index"
               >
                 <check-box
-                  class="ingredient-check"
+                  class="ingredient"
                   checkPadding="16"
                   fillColor="#ff5200"
                   :text="
@@ -281,9 +275,9 @@
               </StackLayout>
             </StackLayout>
           </ScrollView>
-        </TabViewItem>
-        <TabViewItem title="Instructions">
-          <ScrollView scrollBarIndicatorVisible="true">
+        </TabContentItem>
+        <TabContentItem>
+          <ScrollView @scroll="onScroll">
             <GridLayout
               v-if="!recipe.instructions.length"
               rows="*, auto, *, 88"
@@ -300,7 +294,7 @@
                 <Label text="to add some instructions" textWrap="true" />
               </StackLayout>
             </GridLayout>
-            <StackLayout v-else padding="32 16 132">
+            <StackLayout v-else padding="28 16 62">
               <GridLayout
                 columns="auto ,*"
                 v-for="(instruction, index) in recipe.instructions"
@@ -326,104 +320,9 @@
               </GridLayout>
             </StackLayout>
           </ScrollView>
-        </TabViewItem>
-        <TabViewItem title="Notes">
-          <ScrollView scrollBarIndicatorVisible="true">
-            <GridLayout
-              v-if="!recipe.notes.length"
-              rows="*, auto, *, 88"
-              columns="*"
-              class="emptyStateContainer"
-            >
-              <StackLayout col="0" row="1" class="emptyState">
-                <Label class="bx icon" :text="icon.note" textWrap="true" />
-                <StackLayout orientation="horizontal" class="title orkm">
-                  <Label text="Use the " />
-                  <Label class="bx" :text="icon.edit" />
-                  <Label text=" button" />
-                </StackLayout>
-                <Label text="to add some notes" textWrap="true" />
-              </StackLayout>
-            </GridLayout>
-            <StackLayout v-else padding="32 16 132">
-              <GridLayout
-                columns="auto ,*"
-                v-for="(note, index) in recipe.notes"
-                :key="index"
-              >
-                <Label
-                  col="0"
-                  colSpan="2"
-                  class="note"
-                  :text="note"
-                  textWrap="true"
-                />
-                <Label
-                  verticalAlignment="top"
-                  horizontalAlignment="center"
-                  class="count square orkm"
-                  col="0"
-                  :text="index + 1"
-                />
-              </GridLayout>
-            </StackLayout>
-          </ScrollView>
-        </TabViewItem>
-        <TabViewItem title="References">
-          <ScrollView scrollBarIndicatorVisible="true">
-            <GridLayout
-              v-if="!recipe.references.length"
-              rows="*, auto, *, 88"
-              columns="*"
-              class="emptyStateContainer"
-            >
-              <StackLayout col="0" row="1" class="emptyState">
-                <Label class="bx icon" :text="icon.source" textWrap="true" />
-                <StackLayout orientation="horizontal" class="title orkm">
-                  <Label text="Use the " />
-                  <Label class="bx" :text="icon.edit" />
-                  <Label text=" button" />
-                </StackLayout>
-                <Label text="to add some references" textWrap="true" />
-              </StackLayout>
-            </GridLayout>
-            <StackLayout v-else padding="10 0 132">
-              <StackLayout
-                v-for="(reference, index) in recipe.references"
-                :key="index"
-              >
-                <GridLayout
-                  v-if="isValidURL(reference)"
-                  columns="*, auto"
-                  class="referenceItem"
-                  androidElevation="1"
-                >
-                  <MDRipple
-                    colSpan="2"
-                    @longPress="copyURL(reference)"
-                    @tap="openURL(reference)"
-                  />
-                  <Label
-                    col="0"
-                    verticalAlignment="center"
-                    class="recipeLink"
-                    :text="reference"
-                    textWrap="false"
-                  />
-                  <Label col="1" class="bx linkIcon" :text="icon.source" />
-                </GridLayout>
-                <Label
-                  v-else
-                  class="recipeText"
-                  :text="reference"
-                  textWrap="true"
-                />
-              </StackLayout>
-            </StackLayout>
-          </ScrollView>
-        </TabViewItem>
-        <TabViewItem title="Combinations">
-          <ScrollView scrollBarIndicatorVisible="true">
+        </TabContentItem>
+        <TabContentItem>
+          <ScrollView @scroll="onScroll">
             <GridLayout
               v-if="!recipe.combinations.length"
               rows="*, auto, *, 88"
@@ -440,42 +339,81 @@
                 <Label text="to add some combinations" textWrap="true" />
               </StackLayout>
             </GridLayout>
-            <StackLayout v-else padding="10 0 132">
+            <StackLayout v-else padding="8 0 80">
               <GridLayout
-                columns="*"
+                columns="auto, *"
                 v-for="(combination, index) in recipe.combinations"
                 :key="index"
                 androidElevation="1"
-                class="referenceItem"
+                class="urlCard"
               >
-                <MDRipple col="0" @tap="viewCombination(combination)" />
+                <MDRipple colSpan="2" @tap="viewCombination(combination)" />
+                <Label col="0" class="bx linkIcon" :text="icon.food" />
                 <Label
-                  col="0"
+                  col="1"
                   verticalAlignment="center"
-                  class="recipeLink"
+                  class="link"
                   :text="getCombinationTitle(combination)"
                   textWrap="true"
                 />
               </GridLayout>
             </StackLayout>
           </ScrollView>
-        </TabViewItem>
-      </TabView>
+        </TabContentItem>
+        <TabContentItem>
+          <ScrollView @scroll="onScroll">
+            <GridLayout
+              v-if="!recipe.notes.length"
+              rows="*, auto, *, 88"
+              columns="*"
+              class="emptyStateContainer"
+            >
+              <StackLayout col="0" row="1" class="emptyState">
+                <Label class="bx icon" :text="icon.note" textWrap="true" />
+                <StackLayout orientation="horizontal" class="title orkm">
+                  <Label text="Use the " />
+                  <Label class="bx" :text="icon.edit" />
+                  <Label text=" button" />
+                </StackLayout>
+                <Label text="to add some notes" textWrap="true" />
+              </StackLayout>
+            </GridLayout>
+            <StackLayout v-else padding="8 0 80">
+              <StackLayout v-for="(note, index) in recipe.notes" :key="index">
+                <GridLayout
+                  v-if="isValidURL(note)"
+                  columns="auto, *"
+                  class="urlCard"
+                  androidElevation="1"
+                >
+                  <MDRipple
+                    colSpan="2"
+                    @longPress="copyURL(note)"
+                    @tap="openURL(note)"
+                  />
+                  <Label col="0" class="bx linkIcon" :text="icon.source" />
+                  <Label
+                    col="1"
+                    verticalAlignment="center"
+                    class="link"
+                    :text="note"
+                    textWrap="false"
+                  />
+                </GridLayout>
+                <Label v-else class="textCard" :text="note" textWrap="true" />
+              </StackLayout>
+            </StackLayout>
+          </ScrollView>
+        </TabContentItem>
+      </Tabs>
       <GridLayout id="btnFabContainer" rows="*, auto" columns="*, auto">
-        <MDFloatingActionButton
-          row="1"
-          col="1"
-          src="res://check"
-          @tap="recipeTried"
-          v-if="filterTrylater"
-        />
         <transition name="dolly" appear>
           <MDFloatingActionButton
             row="1"
             col="1"
             src="res://share"
             @tap="shareHandler"
-            v-if="!filterTrylater && showFab"
+            v-if="showFab"
           />
         </transition>
       </GridLayout>
@@ -494,6 +432,8 @@ import {
   ImageSource,
   Screen,
   Utils,
+  GestureTypes,
+  Tabs,
 } from "@nativescript/core"
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import * as Toast from "nativescript-toast"
@@ -517,6 +457,9 @@ export default {
       showFab: false,
       selectedTabIndex: 0,
       currentRecipeID: this.recipeID,
+      viewIsScrolled: false,
+      isScrolled: [false, false, false, false, false, false],
+      hideActionBar: false,
     }
   },
   computed: {
@@ -525,7 +468,9 @@ export default {
       return Screen.mainScreen.widthDIPs
     },
     positiveYieldMultiplier() {
-      return this.yieldMultiplier > 0 ? parseFloat(this.yieldMultiplier) : 1
+      return Math.abs(this.yieldMultiplier) > 0
+        ? Math.abs(parseFloat(this.yieldMultiplier))
+        : 1
     },
     isLightMode() {
       return Application.systemAppearance() === "light"
@@ -543,8 +488,8 @@ export default {
       setTimeout((e) => {
         this.setCurrentComponentAction("ViewRecipe")
       }, 500)
-      this.yieldMultiplier = this.recipe.yield.quantity
       this.showFab = true
+      this.yieldMultiplier = this.recipe.yield.quantity
       this.keepScreenOn(true)
       this.syncCombinations()
     },
@@ -572,6 +517,7 @@ export default {
     },
     selectedIndexChange(args) {
       this.selectedTabIndex = args.object.selectedIndex
+      this.viewIsScrolled = this.isScrolled[this.selectedTabIndex]
     },
     showLastTried() {
       feedback.show({
@@ -583,7 +529,7 @@ export default {
       })
     },
     roundedQuantity(quantity) {
-      return (
+      return Math.abs(
         Math.round(
           (quantity / this.recipe.yield.quantity) *
             this.positiveYieldMultiplier *
@@ -612,7 +558,7 @@ export default {
       return h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`
     },
     isValidURL(string) {
-      let pattern = new RegExp("^https?|www", "ig")
+      let pattern = new RegExp("^https?|^www", "ig")
       return pattern.test(string)
     },
     getCombinationTitle(id) {
@@ -634,13 +580,20 @@ export default {
     },
 
     // NAVIGATION HANDLERS
+    onScroll(args) {
+      this.viewIsScrolled = this.isScrolled[this.selectedTabIndex] =
+        args.scrollY > 8 ? true : false
+    },
     editRecipe() {
       this.showFab = false
       this.busy = true
       this.$navigateTo(EditRecipe, {
         props: {
+          navigationFromView: true,
+          filterTrylater: this.filterTrylater,
           recipeID: this.currentRecipeID,
         },
+        backstackVisible: false,
       })
     },
     viewCombination(combination) {
@@ -720,13 +673,6 @@ export default {
         })
         shareContent += notes
       }
-      if (this.recipe.references.length) {
-        let references = `\nReferences:\n\n`
-        this.recipe.references.forEach((e, i) => {
-          references += `${i + 1}. ${e}\n\n`
-        })
-        shareContent += references
-      }
       let sharenote = "\nCreated and shared via EnRecipes. Get it on F-Droid."
 
       shareContent += sharenote
@@ -775,7 +721,7 @@ export default {
       const clipboard = Utils.ad
         .getApplicationContext()
         .getSystemService(android.content.Context.CLIPBOARD_SERVICE)
-      const clip = android.content.ClipData.newPlainText("Reference URl", url)
+      const clip = android.content.ClipData.newPlainText("URl", url)
       clipboard.setPrimaryClip(clip)
       Toast.makeText("URL Copied").show()
     },

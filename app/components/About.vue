@@ -1,6 +1,6 @@
 <template>
   <Page @loaded="onPageLoad">
-    <ActionBar :flat="viewIsScrolled ? false : true">
+    <ActionBar :androidElevation="viewIsScrolled ? 4 : 0">
       <GridLayout rows="*" columns="auto, *">
         <MDButton
           variant="text"
@@ -13,7 +13,7 @@
         <Label class="title orkm" text="About" col="1" />
       </GridLayout>
     </ActionBar>
-    <ScrollView scrollBarIndicatorVisible="true" @scroll="onScroll">
+    <ScrollView @scroll="onScroll">
       <StackLayout class="main-container">
         <StackLayout
           horizontalAlignment="center"
@@ -118,9 +118,7 @@ export default {
       utils.showDrawer()
     },
     onScroll(args) {
-      args.scrollY
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
+      this.viewIsScrolled = args.scrollY ? true : false
     },
     openURL(url) {
       Utils.openUrl(url)

@@ -1,6 +1,6 @@
 <template>
   <Page @loaded="onPageLoad">
-    <ActionBar :flat="viewIsScrolled ? false : true">
+    <ActionBar :androidElevation="viewIsScrolled ? 4 : 0">
       <!-- Search Actionbar -->
       <GridLayout
         v-if="showSearch"
@@ -114,12 +114,11 @@
           </GridLayout>
         </v-template>
         <v-template name="footer">
-          <StackLayout height="128"></StackLayout>
+          <StackLayout height="80"></StackLayout>
         </v-template>
       </RadListView>
       <GridLayout rows="*, auto, *, 88" columns="*" class="emptyStateContainer">
         <StackLayout
-          col="0"
           row="1"
           class="emptyState"
           v-if="
@@ -143,20 +142,6 @@
           </StackLayout>
         </StackLayout>
         <StackLayout
-          col="0"
-          row="1"
-          class="emptyState"
-          v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
-        >
-          <Label class="bx icon" :text="icon.heartOutline" textWrap="true" />
-          <Label class="title orkm" text="No favorites yet" textWrap="true" />
-          <Label
-            text="Recipes you mark as favorite will be listed here"
-            textWrap="true"
-          />
-        </StackLayout>
-        <StackLayout
-          col="0"
           row="1"
           class="emptyState"
           v-if="!filteredRecipes.length && filterTrylater && !searchQuery"
@@ -169,15 +154,21 @@
           />
         </StackLayout>
         <StackLayout
-          col="0"
           row="1"
           class="emptyState"
-          v-if="
-            !filteredRecipes.length &&
-              !filterFavorites &&
-              !filterTrylater &&
-              selectedCategory
-          "
+          v-if="!filteredRecipes.length && filterFavorites && !searchQuery"
+        >
+          <Label class="bx icon" :text="icon.heartOutline" textWrap="true" />
+          <Label class="title orkm" text="No favorites yet" textWrap="true" />
+          <Label
+            text="Recipes you mark as favorite will be listed here"
+            textWrap="true"
+          />
+        </StackLayout>
+        <StackLayout
+          row="1"
+          class="emptyState"
+          v-if="!filteredRecipes.length && !searchQuery && selectedCategory"
         >
           <Label class="bx icon" :text="icon.labelOutline" textWrap="true" />
           <Label
@@ -192,20 +183,15 @@
           </StackLayout>
         </StackLayout>
         <StackLayout
-          col="0"
-          row="0"
-          class="emptyState noResult"
+          row="1"
+          class="emptyState"
           v-if="!filteredRecipes.length && searchQuery"
         >
           <Label class="bx icon" :text="icon.search" textWrap="true" />
           <Label class="title orkm" text="No recipes found" textWrap="true" />
           <Label
             :text="
-              `Your search &quot;${searchQuery}&quot; did not match any recipes${
-                filterFavorites || filterTrylater || selectedCategory
-                  ? ' in this category'
-                  : ''
-              }`
+              `Your search &quot;${searchQuery}&quot; did not match any recipes${noResultFor}`
             "
             textWrap="true"
           />
@@ -287,6 +273,12 @@ export default {
         )
       }
     },
+    noResultFor() {
+      if (this.selectedCategory) return " in this category"
+      if (this.filterFavorites) return " in your favorites"
+      if (this.filterTrylater) return " in your try later list"
+      return ""
+    },
   },
   methods: {
     ...mapActions(["setCurrentComponentAction", "deleteRecipeAction"]),
@@ -337,9 +329,7 @@ export default {
       }
     },
     onScroll(args) {
-      args.scrollOffset
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
+      this.viewIsScrolled = args.scrollOffset ? true : false
     },
 
     // NAVIGATION HANDLERS
@@ -379,6 +369,7 @@ export default {
           filterTrylater: this.filterTrylater,
           recipeID,
         },
+        backstackVisible: false,
       })
     },
 
@@ -389,7 +380,7 @@ export default {
         props: {
           title: "Sort by",
           list: ["Natural order", "Title", "Duration", "Last modified"],
-          height: "225",
+          height: "192",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.sortType !== action) {

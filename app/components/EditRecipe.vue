@@ -1,6 +1,6 @@
 <template>
   <Page @loaded="onPageLoad" @unloaded="releaseBackEvent">
-    <ActionBar :flat="viewIsScrolled ? false : true">
+    <ActionBar :androidElevation="viewIsScrolled ? 4 : 0">
       <GridLayout rows="*" columns="auto, *, auto">
         <MDButton
           variant="text"
@@ -22,13 +22,8 @@
         <MDActivityIndicator col="2" v-if="saving" :busy="saving" />
       </GridLayout>
     </ActionBar>
-    <ScrollView
-      width="100%"
-      height="100%"
-      @scroll="onScroll"
-      scrollBarIndicatorVisible="true"
-    >
-      <StackLayout width="100%" padding="0 0 128">
+    <ScrollView width="100%" height="100%" @scroll="onScroll">
+      <StackLayout width="100%" padding="0 0 88">
         <AbsoluteLayout>
           <StackLayout
             width="100%"
@@ -133,7 +128,7 @@
               returnKeyType="next"
             />
             <TextField
-              width="68"
+              width="60"
               col="2"
               v-model="recipeContent.ingredients[index].quantity"
               hint="1.00"
@@ -141,7 +136,7 @@
               returnKeyType="next"
             />
             <TextField
-              width="68"
+              width="76"
               col="4"
               v-model="recipeContent.ingredients[index].unit"
               hint="Unit"
@@ -198,66 +193,6 @@
         </StackLayout>
 
         <StackLayout margin="0 16">
-          <Label text="Notes" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto"
-            v-for="(note, index) in recipeContent.notes"
-            :key="index"
-          >
-            <TextView
-              @loaded="focusField($event, 'multiLine')"
-              col="0"
-              :hint="`Note ${index + 1}`"
-              v-model="recipeContent.notes[index]"
-            />
-            <MDButton
-              variant="text"
-              col="2"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeNote(index)"
-            />
-          </GridLayout>
-          <MDButton
-            variant="text"
-            class="text-btn orkm"
-            text="+ ADD NOTE"
-            @tap="addNote"
-          />
-          <StackLayout class="hr" margin="24 16"></StackLayout>
-        </StackLayout>
-
-        <StackLayout margin="0 16">
-          <Label text="References" class="sectionTitle" />
-          <GridLayout
-            columns="*,8,auto"
-            v-for="(reference, index) in recipeContent.references"
-            :key="index"
-          >
-            <TextView
-              @loaded="focusField($event, 'multiLine')"
-              col="0"
-              v-model="recipeContent.references[index]"
-              hint="Text or Website/Video URL"
-            />
-            <MDButton
-              variant="text"
-              col="2"
-              class="bx closeBtn"
-              :text="icon.close"
-              @tap="removeReference(index)"
-            />
-          </GridLayout>
-          <MDButton
-            variant="text"
-            class="text-btn orkm"
-            text="+ ADD REFERENCE"
-            @tap="addReference"
-          />
-          <StackLayout class="hr" margin="24 16"></StackLayout>
-        </StackLayout>
-
-        <StackLayout margin="0 16 24">
           <Label text="Combinations" class="sectionTitle" />
           <GridLayout
             columns="*,8,auto"
@@ -283,6 +218,36 @@
             class="text-btn orkm"
             text="+ ADD COMBINATION"
             @tap="showCombinations"
+          />
+          <StackLayout class="hr" margin="24 16"></StackLayout>
+        </StackLayout>
+
+        <StackLayout margin="0 16">
+          <Label text="Notes" class="sectionTitle" />
+          <GridLayout
+            columns="*,8,auto"
+            v-for="(note, index) in recipeContent.notes"
+            :key="index"
+          >
+            <TextView
+              @loaded="focusField($event, 'multiLine')"
+              col="0"
+              hint="Text or URL"
+              v-model="recipeContent.notes[index]"
+            />
+            <MDButton
+              variant="text"
+              col="2"
+              class="bx closeBtn"
+              :text="icon.close"
+              @tap="removeNote(index)"
+            />
+          </GridLayout>
+          <MDButton
+            variant="text"
+            class="text-btn orkm"
+            text="+ ADD NOTE"
+            @tap="addNote"
           />
         </StackLayout>
       </StackLayout>
@@ -310,6 +275,8 @@ import * as Filepicker from "nativescript-plugin-filepicker"
 import { ImageCropper } from "nativescript-imagecropper"
 import { mapState, mapActions } from "vuex"
 
+import ViewRecipe from "./ViewRecipe.vue"
+
 import ActionDialog from "./modal/ActionDialog.vue"
 import ActionDialogWithSearch from "./modal/ActionDialogWithSearch.vue"
 import ConfirmDialog from "./modal/ConfirmDialog.vue"
@@ -319,7 +286,13 @@ import ListPicker from "./modal/ListPicker.vue"
 import * as utils from "~/shared/utils"
 
 export default {
-  props: ["recipeID", "selectedCategory", "filterFavorites", "filterTrylater"],
+  props: [
+    "recipeID",
+    "selectedCategory",
+    "filterFavorites",
+    "filterTrylater",
+    "navigationFromView",
+  ],
   data() {
     return {
       title: "New recipe",
@@ -335,9 +308,8 @@ export default {
         },
         ingredients: [],
         instructions: [],
-        notes: [],
-        references: [],
         combinations: [],
+        notes: [],
         isFavorite: false,
         tried: true,
         lastTried: null,
@@ -460,9 +432,7 @@ export default {
       })
     },
     onScroll(args) {
-      args.scrollY
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
+      this.viewIsScrolled = args.scrollY ? true : false
     },
 
     // DATA LIST
@@ -576,6 +546,17 @@ export default {
     },
 
     // NAVIGATION HANDLERS
+    navigateBackController() {
+      if (this.navigationFromView) {
+        this.$navigateTo(ViewRecipe, {
+          props: {
+            filterTrylater: this.filterTrylater,
+            recipeID: this.recipeID,
+          },
+          backstackVisible: false,
+        })
+      } else this.$navigateBack()
+    },
     navigateBack() {
       if (this.hasChanges) {
         this.blockModal = true
@@ -590,12 +571,12 @@ export default {
         }).then((action) => {
           this.blockModal = false
           if (action != null && !action) {
-            this.$navigateBack()
+            this.navigateBackController()
             this.releaseBackEvent()
           }
         })
       } else {
-        this.$navigateBack()
+        this.navigateBackController()
         this.releaseBackEvent()
       }
     },
@@ -722,12 +703,12 @@ export default {
     },
 
     // INPUT FIELD HANDLERS
-    fieldDeletionConfirm(item) {
+    fieldDeletionConfirm(title) {
       return this.$showModal(ConfirmDialog, {
         props: {
-          title: `Delete ${item}?`,
+          title,
           cancelButtonText: "CANCEL",
-          okButtonText: "DELETE",
+          okButtonText: "REMOVE",
         },
       })
     },
@@ -740,7 +721,7 @@ export default {
     },
     removeIngredient(index) {
       if (this.recipeContent.ingredients[index].item.length) {
-        this.fieldDeletionConfirm("ingredient").then((res) => {
+        this.fieldDeletionConfirm("Remove ingredient").then((res) => {
           if (res) {
             this.recipeContent.ingredients.splice(index, 1)
           }
@@ -753,7 +734,7 @@ export default {
     },
     removeInstruction(index) {
       if (this.recipeContent.instructions[index].length) {
-        this.fieldDeletionConfirm("instruction").then((res) => {
+        this.fieldDeletionConfirm("Remove instruction").then((res) => {
           res && this.recipeContent.instructions.splice(index, 1)
         })
       } else this.recipeContent.instructions.splice(index, 1)
@@ -783,7 +764,7 @@ export default {
     },
     removeCombination(id) {
       let index = this.recipeContent.combinations.indexOf(id)
-      this.fieldDeletionConfirm("combination").then((res) => {
+      this.fieldDeletionConfirm("Remove combination").then((res) => {
         if (res) {
           this.recipeContent.combinations.splice(index, 1)
           this.unSyncCombinations.push(id)
@@ -796,23 +777,10 @@ export default {
     },
     removeNote(index) {
       if (this.recipeContent.notes[index].length) {
-        this.fieldDeletionConfirm("note").then((res) => {
+        this.fieldDeletionConfirm("Remove note").then((res) => {
           if (res) this.recipeContent.notes.splice(index, 1)
         })
       } else this.recipeContent.notes.splice(index, 1)
-    },
-
-    addReference() {
-      this.recipeContent.references.push("")
-    },
-    removeReference(index) {
-      if (this.recipeContent.references[index].length) {
-        this.fieldDeletionConfirm("reference").then((res) => {
-          if (res) {
-            this.recipeContent.references.splice(index, 1)
-          }
-        })
-      } else this.recipeContent.references.splice(index, 1)
     },
 
     // SAVE OPERATION
@@ -830,10 +798,9 @@ export default {
       }
       clearEmpty("instructions")
       clearEmpty("notes")
-      clearEmpty("references")
     },
     saveOperation() {
-      this.saving = true
+      this.saving = this.modalOpen = true
       this.clearEmptyFields()
       this.recipeContent.lastModified = new Date()
       if (this.cacheImagePath) {
@@ -881,7 +848,7 @@ export default {
       setTimeout(() => {
         this.saving = false
       }, 100)
-      this.$navigateBack()
+      this.navigateBackController()
     },
   },
   created() {

@@ -2,7 +2,7 @@
   <Page>
     <StackLayout class="dialogContainer" :class="appTheme">
       <Label class="dialogTitle orkm" :text="title" />
-      <ScrollView width="100%" :height="height ? height : screenHeight - 320">
+      <ScrollView width="100%" :height="height ? height : screenHeight - 256">
         <StackLayout>
           <MDButton
             v-for="(item, index) in list"

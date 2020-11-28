@@ -1,6 +1,6 @@
 <template>
   <Page @loaded="onPageLoad">
-    <ActionBar :flat="viewIsScrolled ? false : true">
+    <ActionBar :androidElevation="viewIsScrolled ? 4 : 0">
       <GridLayout rows="*" columns="auto, *">
         <MDButton
           class="bx left"
@@ -13,7 +13,7 @@
         <Label class="title orkm" text="Settings" col="1" />
       </GridLayout>
     </ActionBar>
-    <ScrollView scrollBarIndicatorVisible="true" @scroll="onScroll">
+    <ScrollView @scroll="onScroll">
       <StackLayout class="main-container">
         <Label text="Interface" class="group-header orkm" />
         <GridLayout columns="auto, *" class="option">
@@ -128,9 +128,7 @@ export default {
       utils.showDrawer()
     },
     onScroll(args) {
-      args.scrollY
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
+      this.viewIsScrolled = args.scrollY ? true : false
     },
 
     // THEME SELECTION
@@ -139,7 +137,7 @@ export default {
         props: {
           title: "Theme",
           list: ["Light", "Dark"],
-          height: "113",
+          height: "96",
         },
       }).then((action) => {
         if (action && action !== "Cancel" && this.appTheme !== action) {

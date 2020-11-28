@@ -104,9 +104,6 @@ export default new Vuex.Store({
       //   notes: [
       //     "Nutrition Facts: 3/4 cup: 409 calories, 22g fat (12g saturated fat), 61mg cholesterol, 667mg sodium, 41g carbohydrate (3g sugars, 2g fiber), 11g protein.",
       //   ],
-      //   references: [
-      //     "https://www.tasteofhome.com/recipes/mushroom-spinach-risotto/",
-      //   ],
       //   isFavorite: false,
       //   tried: false,
       //   lastTried: "2020-10-28T18:19:06.528Z",
@@ -180,7 +177,7 @@ export default new Vuex.Store({
       trylaterOutline: "\ue94a",
       note: "\ueb04",
       copy: "\ue9e6",
-      check: "\ue9ab",
+      check: "\ue9a4",
       telegram: "\ueec7",
       time: "\ueba2",
       item: "\ue99d",

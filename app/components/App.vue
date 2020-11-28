@@ -169,19 +169,19 @@ export default {
       MealPlanner: MealPlanner,
       topmenu: [
         {
-          title: "Home",
+          title: "EnRecipes",
           component: "EnRecipes",
           icon: "home",
-        },
-        {
-          title: "Favorites",
-          component: "Favorites",
-          icon: "heart",
         },
         {
           title: "Try Later",
           component: "Try Later",
           icon: "trylater",
+        },
+        {
+          title: "Favorites",
+          component: "Favorites",
+          icon: "heart",
         },
       ],
       bottommenu: [

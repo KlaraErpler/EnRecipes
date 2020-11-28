@@ -1,6 +1,6 @@
 <template>
   <Page @loaded="onPageLoad">
-    <ActionBar :flat="viewIsScrolled ? false : true">
+    <ActionBar flat="true">
       <GridLayout rows="*" columns="auto, *, auto">
         <MDButton
           class="bx left"
@@ -23,6 +23,7 @@
     </ActionBar>
     <GridLayout rows="280, *">
       <RadCalendar
+        :androidElevation="viewIsScrolled ? 4 : 0"
         class="orkm"
         row="0"
         ref="calendar"
@@ -35,12 +36,7 @@
         :eventsViewMode="eventsViewMode"
         :eventSource="getMealPlans"
       ></RadCalendar>
-      <ScrollView
-        row="1"
-        width="100%"
-        height="100%"
-        scrollBarIndicatorVisible="true"
-      >
+      <ScrollView row="1" width="100%" height="100%" @scroll="onScroll">
         <StackLayout class="dayPlan">
           <StackLayout
             v-for="(mealType, index) in mealTimes"
@@ -186,7 +182,7 @@ export default {
       dayNameCellStyle.cellBorderColor = this.isLightMode
         ? this.color.gray2
         : this.color.black
-      dayNameCellStyle.cellTextSize = 12
+      dayNameCellStyle.cellTextSize = 10
       dayNameCellStyle.cellAlignment = CalendarCellAlignment.Center
       dayNameCellStyle.cellTextFontName = this.appFontMedium
       monthViewStyle.dayNameCellStyle = dayNameCellStyle
@@ -200,7 +196,7 @@ export default {
       dayCellStyle.cellTextSize = 16
       dayCellStyle.cellTextColor = this.isLightMode
         ? this.color.gray9
-        : this.color.gray2
+        : this.color.gray1
       dayCellStyle.cellAlignment = CalendarCellAlignment.Bottom
       dayCellStyle.cellBackgroundColor = this.isLightMode
         ? this.color.gray1
@@ -328,9 +324,7 @@ export default {
       utils.showDrawer()
     },
     onScroll(args) {
-      args.scrollY
-        ? (this.viewIsScrolled = true)
-        : (this.viewIsScrolled = false)
+      this.viewIsScrolled = args.scrollY ? true : false
     },
     getDate(index) {
       let date = new Date()
