@@ -350,6 +350,7 @@ export default {
             filterTrylater: true,
             recipeID,
           },
+          backstackVisible: false,
         })
       }
     },
