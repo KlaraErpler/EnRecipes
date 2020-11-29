@@ -11,7 +11,7 @@ const mealPlansDB = new Couchbase("mealPlans")
 
 Vue.use(Vuex)
 
-let defaultCategories = [
+const defaultCategories = [
   "Appetizers",
   "BBQ",
   "Beverages",
@@ -38,7 +38,7 @@ let defaultCategories = [
   "Vegan",
   "Vegetarian",
 ]
-let defaultYieldUnits = [
+const defaultYieldUnits = [
   "Serving",
   "Piece",
   "Teaspoon",
@@ -59,58 +59,7 @@ let defaultYieldUnits = [
 
 export default new Vuex.Store({
   state: {
-    recipes: [
-      // {
-      //   imageSrc: null,
-      //   title: "Mushroom & Spinach Risotto",
-      //   category: "Lunch",
-      //   timeRequired: "01:45",
-      //   yield: {
-      //     quantity: 1,
-      //     unit: "Serving",
-      //   },
-      //   ingredients: [
-      //     {
-      //       item: "reduced-sodium chicken broth",
-      //       unit: "cup",
-      //       quantity: "5.25",
-      //     },
-      //     { item: "sliced fresh mushrooms", unit: "cup", quantity: "2.5" },
-      //     { item: "medium onion, finely chopped", unit: "unit", quantity: "1" },
-      //     { item: "butter", unit: "Tbsp", quantity: "3" },
-      //     { item: "Garlic", unit: "unit", quantity: "3" },
-      //     {
-      //       item: "white wine or reduced-sodium chicken broth",
-      //       unit: "l",
-      //       quantity: ".75",
-      //     },
-      //     { item: "heavy whipping cream", unit: "cup", quantity: "1" },
-      //     { item: "uncooked arborio rice", unit: "cup", quantity: "1.75" },
-      //     { item: "olive oil", unit: "Tbsp", quantity: "2" },
-      //     {
-      //       item: "frozen chopped spinach, thawed and squeezed dry",
-      //       unit: "cup",
-      //       quantity: "1.5",
-      //     },
-      //     { item: "pepper", unit: "tsp", quantity: ".5" },
-      //     { item: "Salt", unit: "tsp", quantity: ".25" },
-      //     { item: "grated Parmesan cheese", unit: "cup", quantity: "1" },
-      //   ],
-      //   instructions: [
-      //     "In a large saucepan, heat broth and keep warm. In a large skillet, saute mushrooms and onion in butter until tender. Add garlic; cook 1 minute longer. Stir in wine. Bring to a boil; cook until liquid is reduced by half. Add cream; cook and stir over medium heat until slightly thickened",
-      //     "In a large saucepan, saute rice in oil for 2-3 minutes or until rice is lightly browned. Stir in 1/2 cup hot broth. Reduce heat; cook and stir for 20 minutes or until broth is absorbed.",
-      //     "Continue adding hot broth, 1/2 cup at a time, and stirring until all the broth has been absorbed and rice is tender but firm. Add the mushroom mixture, spinach, pepper, salt and grated Parmesan cheese; cook and stir until heated through. If desired, sprinkle with parsley and shaved Parmesan cheese. Serve immediately.",
-      //   ],
-      //   notes: [
-      //     "Nutrition Facts: 3/4 cup: 409 calories, 22g fat (12g saturated fat), 61mg cholesterol, 667mg sodium, 41g carbohydrate (3g sugars, 2g fiber), 11g protein.",
-      //   ],
-      //   isFavorite: false,
-      //   tried: false,
-      //   lastTried: "2020-10-28T18:19:06.528Z",
-      //   lastModified: "2020-10-28T06:19:06.528Z",
-      //   id: "57qm8oqxdr",
-      // },
-    ],
+    recipes: [],
     categories: [],
     userCategories: [],
     units: [

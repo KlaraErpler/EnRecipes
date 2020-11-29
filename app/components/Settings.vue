@@ -256,7 +256,7 @@ export default {
     importCheck() {
       this.permissionCheck(
         this.permissionConfirmation,
-        "EnRecipes requires storage permission in order to restore your data from a previous backup.",
+        "EnRecipes requires storage permission in order to import your data from a previous backup.",
         this.openFilePicker
       )
     },
