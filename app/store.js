@@ -1,9 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import { Couchbase } from "nativescript-couchbase-plugin"
-import { Color, getFileAccess } from "@nativescript/core"
-import { CalendarEvent } from "nativescript-ui-calendar"
-import { stat } from "fs"
+import { getFileAccess } from "@nativescript/core"
 const EnRecipesDB = new Couchbase("EnRecipes")
 const userCategoriesDB = new Couchbase("userCategories")
 const userYieldUnitsDB = new Couchbase("userYieldUnits")
