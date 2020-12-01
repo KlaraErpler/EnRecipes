@@ -208,13 +208,26 @@ export default new Vuex.Store({
       } else {
         createDocuments(recipes)
       }
+      function getUpdatedData(data) {
+        return data.map((recipe) => {
+          let r = Object.assign({}, recipe)
+          if (r.timeRequired) {
+            r.prepTime = "00:00"
+            r.cookTime = r.timeRequired
+            delete r.timeRequired
+          }
+          return r
+        })
+      }
       function createDocuments(data) {
+        data = getUpdatedData(data)
         state.recipes = [...state.recipes, ...data]
         data.forEach((recipe) => {
           EnRecipesDB.createDocument(recipe, recipe.id)
         })
       }
       function updateDocuments(data) {
+        data = getUpdatedData(data)
         data.forEach((recipe) => {
           let recipeIndex = state.recipes
             .map((e, i) => {

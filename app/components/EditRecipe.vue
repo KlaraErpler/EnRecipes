@@ -79,10 +79,37 @@
           <GridLayout columns="*, 8, *">
             <AbsoluteLayout class="inputField" col="0">
               <TextField
+                ref="prepTime"
+                :text="timeRequired('prepTime')"
+                editable="false"
+                @focus="
+                  modalOpen === false && setTimeRequired(true, 'prepTime')
+                "
+                @tap="setTimeRequired(false, 'prepTime')"
+              />
+              <Label top="0" class="fieldLabel" text="Preparation time" />
+            </AbsoluteLayout>
+            <AbsoluteLayout class="inputField" col="2">
+              <TextField
+                ref="cookTime"
+                :text="timeRequired('cookTime')"
+                editable="false"
+                @focus="
+                  modalOpen === false && setTimeRequired(true, 'cookTime')
+                "
+                @tap="setTimeRequired(false, 'cookTime')"
+              />
+              <Label top="0" class="fieldLabel" text="Cooking time" />
+            </AbsoluteLayout>
+          </GridLayout>
+          <GridLayout columns="*, 8, *">
+            <AbsoluteLayout class="inputField" col="0">
+              <TextField
                 ref="yieldQuantity"
                 v-model="recipeContent.yield.quantity"
                 hint="1"
                 keyboardType="number"
+                returnKeyType="next"
               />
               <Label top="0" class="fieldLabel" text="Yield quantity" />
             </AbsoluteLayout>
@@ -96,19 +123,6 @@
               <Label top="0" class="fieldLabel" text="Yield measured in" />
             </AbsoluteLayout>
           </GridLayout>
-          <GridLayout columns="*, 8, *">
-            <AbsoluteLayout class="inputField" col="0">
-              <TextField
-                ref="timeRequired"
-                :text="timeRequired"
-                editable="false"
-                @focus="modalOpen === false && setTimeRequired(true)"
-                @tap="setTimeRequired(false)"
-              />
-              <Label top="0" class="fieldLabel" text="Time required" />
-            </AbsoluteLayout>
-          </GridLayout>
-
           <StackLayout class="hr" margin="24 16"></StackLayout>
         </StackLayout>
 
@@ -301,7 +315,8 @@ export default {
         imageSrc: null,
         title: undefined,
         category: "Undefined",
-        timeRequired: "00:00",
+        prepTime: "00:00",
+        cookTime: "00:00",
         yield: {
           quantity: undefined,
           unit: "Servings",
@@ -346,12 +361,6 @@ export default {
         JSON.stringify(this.tempRecipeContent)
       )
     },
-    timeRequired() {
-      let t = this.recipeContent.timeRequired.split(":")
-      let h = parseInt(t[0])
-      let m = parseInt(t[1])
-      return h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`
-    },
   },
   methods: {
     ...mapActions([
@@ -364,6 +373,12 @@ export default {
     ]),
     onPageLoad() {
       this.showFab = true
+    },
+    timeRequired(time) {
+      let t = this.recipeContent[time].split(":")
+      let h = parseInt(t[0])
+      let m = parseInt(t[1])
+      return h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`
     },
 
     // HELPERS
@@ -411,23 +426,34 @@ export default {
       }
       return res
     },
-    setTimeRequired(focus) {
+    setTimeRequired(focus, time) {
       this.modalOpen = true
-      let time = this.recipeContent.timeRequired.split(":")
-      let hr = time[0]
-      let min = time[1]
+      let t = this.recipeContent[time].split(":")
+      let hr = t[0]
+      let min = t[1]
       this.$showModal(ListPicker, {
         props: {
-          title: "Time required",
+          title: `${time == "prepTime" ? "Preparation" : "Cooking"} time`,
           action: "SET",
           selectedHr: hr,
           selectedMin: min,
         },
       }).then((result) => {
         if (result) {
-          this.recipeContent.timeRequired = result
+          this.recipeContent[time] = result
           this.modalOpen = false
-          if (focus) this.addIngredient()
+          if (focus) {
+            switch (time) {
+              case "prepTime":
+                this.autoFocusField("cookTime", false)
+                break
+              case "cookTime":
+                this.autoFocusField("yieldQuantity",true)
+                break
+              default:
+                break
+            }
+          }
         }
       })
     },
@@ -458,25 +484,27 @@ export default {
             if (category.length) {
               this.recipeContent.category = category
               this.addCategoryAction(category)
-              if (focus) this.autoFocusField("yieldQuantity")
               this.modalOpen = false
+              if (focus) this.autoFocusField("prepTime",false)
             }
           })
         } else if (action) {
           this.recipeContent.category = action
           this.hijackBackEvent()
-          if (focus) this.autoFocusField("yieldQuantity")
           this.modalOpen = false
+          if (focus) this.autoFocusField("prepTime",false)
         } else {
           this.hijackBackEvent()
         }
       })
     },
-    autoFocusField(ref) {
+    autoFocusField(ref, showSoftInput) {
       this.$refs[ref].nativeView.focus()
-      setTimeout(() => {
-        Utils.ad.showSoftInput(this.$refs[ref].nativeView.android)
-      }, 1)
+      if (showSoftInput) {
+        setTimeout(() => {
+          Utils.ad.showSoftInput(this.$refs[ref].nativeView.android)
+        }, 1)
+      }
     },
     showYieldUnits(focus) {
       this.modalOpen = true
@@ -501,14 +529,14 @@ export default {
               this.recipeContent.yield.unit = yieldUnit
               this.addYieldUnitAction(yieldUnit)
               this.modalOpen = false
-              if (focus) this.autoFocusField("timeRequired")
+              if (focus) this.addIngredient()
             }
           })
         } else if (action) {
           this.recipeContent.yield.unit = action
           this.hijackBackEvent()
           this.modalOpen = false
-          if (focus) this.autoFocusField("timeRequired")
+          if (focus) this.addIngredient()
         } else {
           this.hijackBackEvent()
         }

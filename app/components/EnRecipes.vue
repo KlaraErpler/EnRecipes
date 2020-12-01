@@ -100,7 +100,11 @@
                 <Label class="bx small" :text="icon.time" />
                 <Label
                   class="time"
-                  :text="`${formattedTime(recipe.timeRequired).time}`"
+                  :text="
+                    `${
+                      formattedTotalTime(recipe.prepTime, recipe.cookTime).time
+                    }`
+                  "
                 />
               </StackLayout>
             </StackLayout>
@@ -319,10 +323,11 @@ export default {
         this.updateFilter()
       }
     },
-    formattedTime(time) {
-      let t = time.split(":")
-      let h = parseInt(t[0])
-      let m = parseInt(t[1])
+    formattedTotalTime(prepTime, cookTime) {
+      let t1 = prepTime.split(":")
+      let t2 = cookTime.split(":")
+      let h = parseInt(t1[0]) + parseInt(t2[0])
+      let m = parseInt(t1[1]) + parseInt(t2[1])
       return {
         time: h ? (m ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`,
         duration: `${h}${m}`,
@@ -401,8 +406,9 @@ export default {
         .localeCompare(otherItem.title.toLowerCase(), "en", {
           ignorePunctuation: true,
         })
-      let d1 = this.formattedTime(item.timeRequired).duration
-      let d2 = this.formattedTime(otherItem.timeRequired).duration
+      let d1 = this.formattedTotalTime(item.prepTime, item.cookTime).duration
+      let d2 = this.formattedTotalTime(otherItem.prepTime, otherItem.cookTime)
+        .duration
       let ld1 = new Date(item.lastModified)
       let ld2 = new Date(otherItem.lastModified)
       switch (this.sortType) {

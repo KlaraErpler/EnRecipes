@@ -115,8 +115,12 @@
                   textWrap="true"
                 />
                 <StackLayout orientation="horizontal" class="time">
-                  <Label text="Time required:" />
-                  <Label :text="` ${formattedTime(recipe.timeRequired)}`" />
+                  <Label text="Preparation time:" />
+                  <Label :text="` ${formattedTime(recipe.prepTime)}`" />
+                </StackLayout>
+                <StackLayout orientation="horizontal" class="time">
+                  <Label text="Cooking time:" />
+                  <Label :text="` ${formattedTime(recipe.cookTime)}`" />
                 </StackLayout>
                 <GridLayout
                   rows="auto, auto"
@@ -637,7 +641,9 @@ export default {
     shareRecipe() {
       let overview = `${
         this.recipe.title
-      }\n\nTime required: ${this.formattedTime(this.recipe.timeRequired)}\n`
+      }\n\nPreparation time: ${this.formattedTime(
+        this.recipe.prepTime
+      )}\nCooking time: ${this.formattedTime(this.recipe.cookTime)}\n`
       let shareContent = overview
       if (this.recipe.ingredients.length) {
         let ingredients = `\n\nIngredients for ${
