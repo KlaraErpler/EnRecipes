@@ -1,0 +1,98 @@
+[
+    {
+        "name": "@nativescript-community/perms",
+        "directory": "../../node_modules/@nativescript-community/perms"
+    },
+    {
+        "name": "@nativescript-community/ui-material-activityindicator",
+        "directory": "../../node_modules/@nativescript-community/ui-material-activityindicator"
+    },
+    {
+        "name": "@nativescript-community/ui-material-button",
+        "directory": "../../node_modules/@nativescript-community/ui-material-button"
+    },
+    {
+        "name": "@nativescript-community/ui-material-floatingactionbutton",
+        "directory": "../../node_modules/@nativescript-community/ui-material-floatingactionbutton"
+    },
+    {
+        "name": "@nativescript-community/ui-material-progress",
+        "directory": "../../node_modules/@nativescript-community/ui-material-progress"
+    },
+    {
+        "name": "@nativescript-community/ui-material-ripple",
+        "directory": "../../node_modules/@nativescript-community/ui-material-ripple"
+    },
+    {
+        "name": "@nativescript/core",
+        "directory": "../../node_modules/@nativescript/core"
+    },
+    {
+        "name": "@nativescript/social-share",
+        "directory": "../../node_modules/@nativescript/social-share"
+    },
+    {
+        "name": "@nativescript/theme",
+        "directory": "../../node_modules/@nativescript/theme"
+    },
+    {
+        "name": "@nativescript/zip",
+        "directory": "../../node_modules/@nativescript/zip"
+    },
+    {
+        "name": "@nstudio/nativescript-checkbox",
+        "directory": "../../node_modules/@nstudio/nativescript-checkbox"
+    },
+    {
+        "name": "nativescript-couchbase-plugin",
+        "directory": "../../node_modules/nativescript-couchbase-plugin"
+    },
+    {
+        "name": "nativescript-feedback",
+        "directory": "../../node_modules/nativescript-feedback"
+    },
+    {
+        "name": "nativescript-imagecropper",
+        "directory": "../../node_modules/nativescript-imagecropper"
+    },
+    {
+        "name": "nativescript-plugin-filepicker",
+        "directory": "../../node_modules/nativescript-plugin-filepicker"
+    },
+    {
+        "name": "nativescript-toast",
+        "directory": "../../node_modules/nativescript-toast"
+    },
+    {
+        "name": "nativescript-ui-calendar",
+        "directory": "../../node_modules/nativescript-ui-calendar"
+    },
+    {
+        "name": "nativescript-ui-listview",
+        "directory": "../../node_modules/nativescript-ui-listview"
+    },
+    {
+        "name": "nativescript-ui-sidedrawer",
+        "directory": "../../node_modules/nativescript-ui-sidedrawer"
+    },
+    {
+        "name": "nativescript-vue",
+        "directory": "../../node_modules/nativescript-vue"
+    },
+    {
+        "name": "@nativescript-community/ui-material-core",
+        "directory": "../../node_modules/@nativescript-community/ui-material-core"
+    },
+    {
+        "name": "@nativescript-community/text",
+        "directory": "../../node_modules/@nativescript-community/text"
+    },
+    {
+        "name": "nativescript-permissions",
+        "directory": "../../node_modules/nativescript-permissions"
+    },
+    {
+        "name": "nativescript-ui-core",
+        "directory": "../../node_modules/nativescript-ui-core"
+    }
+]

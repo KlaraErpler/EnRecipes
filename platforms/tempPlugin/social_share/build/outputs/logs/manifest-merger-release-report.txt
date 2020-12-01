@@ -1,0 +1,49 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+	package
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:70-109
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:1-8:12
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:3:3-7:17
+provider#android.support.v4.content.FileProvider
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:4:5-6:16
+	android:grantUriPermissions
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:4:143-177
+	android:authorities
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:4:70-117
+	android:exported
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:4:118-142
+	android:name
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:4:15-69
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:5:7-109
+	android:resource
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:5:69-107
+	android:name
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml:5:18-68
+uses-sdk
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/social_share/src/main/AndroidManifest.xml

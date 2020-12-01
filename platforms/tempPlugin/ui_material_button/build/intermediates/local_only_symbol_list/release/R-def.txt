@@ -1,0 +1,18 @@
+R_DEF: Internal format may change without notice
+local
+layout material_button
+layout material_button_flat
+layout material_button_flat_icon
+layout material_button_icon
+layout material_button_outline
+layout material_button_outline_icon
+layout material_button_text
+layout material_button_text_icon
+style Button.Custom
+style Button.Custom.Icon
+style OutlinedButton.Custom
+style OutlinedButton.Custom.Icon
+style TextButton.Custom
+style TextButton.Custom.Icon
+style UnelevatedButton.Custom
+style UnelevatedButton.Custom.Icon

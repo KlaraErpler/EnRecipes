@@ -338,7 +338,7 @@ export default {
     },
     getRecipeTitle(id) {
       let recipe = this.recipes.filter((e) => e.id === id)[0]
-      return recipe ? recipe.title : "[Recipe not found]"
+      return recipe ? recipe.title : "[Deleted Recipe]"
     },
 
     // NAVIGATION HANDLERS

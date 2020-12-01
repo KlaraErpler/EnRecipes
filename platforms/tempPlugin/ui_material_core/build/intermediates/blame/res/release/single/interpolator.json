@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/mtrl_linear.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/interpolator/mtrl_linear.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/fast_out_slow_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/fast_out_slow_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_0.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_1.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_1.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_radio_to_on_mtrl_animation_interpolator_0.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_radio_to_on_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_1.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_1.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/mtrl_linear_out_slow_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/interpolator/mtrl_linear_out_slow_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/mtrl_fast_out_linear_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/interpolator/mtrl_fast_out_linear_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_radio_to_off_mtrl_animation_interpolator_0.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_radio_to_off_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/mtrl_fast_out_slow_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/interpolator/mtrl_fast_out_slow_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_0.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/70264ed71b86436432b6d3963ae4f060/appcompat-1.2.0/res/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_0.xml"
+    }
+]
