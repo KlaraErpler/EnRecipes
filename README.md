@@ -40,16 +40,16 @@ Lots of interesting features on the way...
 
 ## Screenshots
 
-![EnRecipes](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
-![Delete Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
-![View Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
-![Ingredients](fastlane/metadata/android/en-US/images/phoneScreenshots/4.png)
-![Edit Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/5.png)
-![Share](fastlane/metadata/android/en-US/images/phoneScreenshots/6.png)
-![Side Drawer](fastlane/metadata/android/en-US/images/phoneScreenshots/7.png)
-![Mealplanner](fastlane/metadata/android/en-US/images/phoneScreenshots/8.png)
-![About](fastlane/metadata/android/en-US/images/phoneScreenshots/9.png)
-![Dark Mode](fastlane/metadata/android/en-US/images/phoneScreenshots/10.png)
+![EnRecipes](assets/Screenshots/1.png)
+![Delete Recipe](assets/Screenshots/2.png)
+![View Recipe](assets/Screenshots/3.png)
+![Ingredients](assets/Screenshots/4.png)
+![Edit Recipe](assets/Screenshots/5.png)
+![Share](assets/Screenshots/6.png)
+![Side Drawer](assets/Screenshots/7.png)
+![Mealplanner](assets/Screenshots/8.png)
+![About](assets/Screenshots/9.png)
+![Dark Mode](assets/Screenshots/10.png)
 
 ## Credits
 
