@@ -383,29 +383,7 @@
               </StackLayout>
             </GridLayout>
             <StackLayout v-else padding="8 0 80">
-              <StackLayout v-for="(note, index) in recipe.notes" :key="index">
-                <GridLayout
-                  v-if="isValidURL(note)"
-                  columns="auto, *"
-                  class="urlCard"
-                  androidElevation="1"
-                >
-                  <MDRipple
-                    colSpan="2"
-                    @longPress="copyURL(note)"
-                    @tap="openURL(note)"
-                  />
-                  <Label col="0" class="bx linkIcon" :text="icon.source" />
-                  <Label
-                    col="1"
-                    verticalAlignment="center"
-                    class="link"
-                    :text="note"
-                    textWrap="false"
-                  />
-                </GridLayout>
-                <Label v-else class="textCard" :text="note" textWrap="true" />
-              </StackLayout>
+              <StackLayout @loaded="createNotes"></StackLayout>
             </StackLayout>
           </ScrollView>
         </TabContentItem>
@@ -438,6 +416,10 @@ import {
   Utils,
   GestureTypes,
   Tabs,
+  Span,
+  FormattedString,
+  Label,
+  StackLayout,
 } from "@nativescript/core"
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import * as Toast from "nativescript-toast"
@@ -723,13 +705,44 @@ export default {
     openURL(url) {
       Utils.openUrl(url)
     },
-    copyURL(url) {
-      const clipboard = Utils.ad
-        .getApplicationContext()
-        .getSystemService(android.content.Context.CLIPBOARD_SERVICE)
-      const clip = android.content.ClipData.newPlainText("URl", url)
-      clipboard.setPrimaryClip(clip)
-      Toast.makeText("URL Copied").show()
+    createNote(note) {
+      const vm = this
+      let regex = /(https?:\/\/[^\s]+)/g
+      let label = new Label()
+      label.class = "textCard"
+      label.textWrap = true
+      let dispDensity = Utils.layout.getDisplayDensity()
+      let formattedString = new FormattedString()
+      let textArray = note.split(regex)
+      console.log(dispDensity)
+
+      function createSpan(text, isUrl) {
+        let span = new Span()
+        span.text = text
+        span.fontSize = 16
+        if (isUrl) {
+          span.textDecoration = "underline"
+          span.color = "#ff5200"
+          span.on("linkTap", () => Utils.openUrl(text))
+        }
+        formattedString.spans.push(span)
+      }
+
+      textArray.forEach((text) => {
+        createSpan(text, regex.test(text))
+      })
+
+      label.formattedText = formattedString
+
+      return label
+    },
+    createNotes(args) {
+      const stack = args.object
+      if (!stack.getChildrenCount()) {
+        this.recipe.notes.forEach((note) => {
+          stack.addChild(this.createNote(note))
+        })
+      }
     },
   },
   created() {

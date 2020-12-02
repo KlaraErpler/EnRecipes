@@ -38,6 +38,19 @@ EnRecipes is an easy to use, privacy-friendly digital cookbook that lets you cre
 
 Lots of interesting features on the way...
 
+## Screenshots
+
+![EnRecipes](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+![Delete Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
+![View Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+![Ingredients](fastlane/metadata/android/en-US/images/phoneScreenshots/4.png)
+![Edit Recipe](fastlane/metadata/android/en-US/images/phoneScreenshots/5.png)
+![Share](fastlane/metadata/android/en-US/images/phoneScreenshots/6.png)
+![Side Drawer](fastlane/metadata/android/en-US/images/phoneScreenshots/7.png)
+![Mealplanner](fastlane/metadata/android/en-US/images/phoneScreenshots/8.png)
+![About](fastlane/metadata/android/en-US/images/phoneScreenshots/9.png)
+![Dark Mode](fastlane/metadata/android/en-US/images/phoneScreenshots/10.png)
+
 ## Credits
 
 This app was written in my free time using NativeScript. I would like to thank all those people who helped me understand the concepts during the process and my special thanks to the NativeScript team and the community.
