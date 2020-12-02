@@ -246,7 +246,7 @@
             <TextView
               @loaded="focusField($event, 'multiLine')"
               col="0"
-              hint="Text or URL"
+              :hint="`Note ${index + 1}`"
               v-model="recipeContent.notes[index]"
             />
             <MDButton
@@ -281,7 +281,6 @@ import {
   path,
   Screen,
   Utils,
-  ObservableArray,
 } from "@nativescript/core"
 import * as Permissions from "@nativescript-community/perms"
 import * as Toast from "nativescript-toast"
@@ -448,7 +447,7 @@ export default {
                 this.autoFocusField("cookTime", false)
                 break
               case "cookTime":
-                this.autoFocusField("yieldQuantity",true)
+                this.autoFocusField("yieldQuantity", true)
                 break
               default:
                 break
@@ -485,14 +484,14 @@ export default {
               this.recipeContent.category = category
               this.addCategoryAction(category)
               this.modalOpen = false
-              if (focus) this.autoFocusField("prepTime",false)
+              if (focus) this.autoFocusField("prepTime", false)
             }
           })
         } else if (action) {
           this.recipeContent.category = action
           this.hijackBackEvent()
           this.modalOpen = false
-          if (focus) this.autoFocusField("prepTime",false)
+          if (focus) this.autoFocusField("prepTime", false)
         } else {
           this.hijackBackEvent()
         }

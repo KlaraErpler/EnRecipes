@@ -405,26 +405,18 @@
 
 <script>
 import {
-  ApplicationSettings,
+  Application,
   Color,
-  Device,
-  File,
-  knownFolders,
-  path,
   ImageSource,
   Screen,
   Utils,
-  GestureTypes,
-  Tabs,
   Span,
   FormattedString,
   Label,
-  StackLayout,
 } from "@nativescript/core"
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import * as Toast from "nativescript-toast"
 import * as SocialShare from "@nativescript/social-share"
-import { Application } from "@nativescript/core"
 import { mapActions, mapState } from "vuex"
 
 import EditRecipe from "./EditRecipe.vue"
@@ -701,20 +693,15 @@ export default {
       this.$navigateBack()
     },
 
-    // URL ACTION
-    openURL(url) {
-      Utils.openUrl(url)
-    },
+    // NOTES
     createNote(note) {
       const vm = this
       let regex = /(https?:\/\/[^\s]+)/g
       let label = new Label()
       label.class = "textCard"
       label.textWrap = true
-      let dispDensity = Utils.layout.getDisplayDensity()
       let formattedString = new FormattedString()
       let textArray = note.split(regex)
-      console.log(dispDensity)
 
       function createSpan(text, isUrl) {
         let span = new Span()

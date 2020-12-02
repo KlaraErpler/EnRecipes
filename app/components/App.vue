@@ -1,7 +1,6 @@
 <template>
   <Page
     @loaded="onPageLoad"
-    @unloaded="onPageUnload"
     actionBarHidden="true"
     :androidStatusBarBackground="appTheme == 'Light' ? '#f1f3f5' : '#212529'"
   >
@@ -143,10 +142,7 @@
 import {
   ApplicationSettings,
   AndroidApplication,
-  ApplicationEventData,
   Application,
-  Color,
-  Utils,
 } from "@nativescript/core"
 import Theme from "@nativescript/theme"
 import * as Toast from "nativescript-toast"
@@ -235,11 +231,7 @@ export default {
         const window = Application.android.startActivity.getWindow()
         const decorView = window.getDecorView()
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        // window.setNavigationBarColor(new Color("#e0e0e0").android)
       }
-    },
-    onPageUnload() {
-      // this.releaseGlobalBackEvent()
     },
 
     // HELPERS
@@ -342,10 +334,6 @@ export default {
         this.closeDrawer()
       }
       this.editCategory = false
-    },
-
-    donate() {
-      Utils.openUrl("https://www.vishnuraghav.com/donate/")
     },
   },
   created() {

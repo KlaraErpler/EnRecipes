@@ -74,12 +74,9 @@
 import {
   ApplicationSettings,
   path,
-  getFileAccess,
   knownFolders,
-  Application,
   File,
   Folder,
-  AndroidApplication,
 } from "@nativescript/core"
 import * as Permissions from "@nativescript-community/perms"
 import { Zip } from "@nativescript/zip"
