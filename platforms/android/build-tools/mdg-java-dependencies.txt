@@ -66,4 +66,3 @@
 /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/exploded-dependencies/f6c42e8b6175577193537a9c1b5e13d2/classes.jar
 /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/exploded-dependencies/39c5dfb35f6724eb4c60ea816555b478/classes.jar
 /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/exploded-dependencies/2b629eb649750cef8d001184e23dc2f9/classes.jar
-/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/javac/release

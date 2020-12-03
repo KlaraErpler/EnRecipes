@@ -1,8 +1,8 @@
 {
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/tns-java-classes.js": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/PlayStore-Icon.png": "df6b1bc0a96376aefd4fb61c4a50d7cfcef7ca3b",
-	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/PlayStore-Icon@2x.png": "3760fc04bd3a0671310e70bce99afc855d906fe6",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/drawable-hdpi/camera.png": "73911d2bab8115193301e1638d74e6a9efdb7305",
+	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/PlayStore-Icon@2x.png": "3760fc04bd3a0671310e70bce99afc855d906fe6",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/drawable-hdpi/check.png": "2ada1b51e9a252908f7cc45ef53d6618910dd0e5",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/drawable-hdpi/detail.png": "dde1aae9a0523df821a8ce26841ed37d2ef7b89c",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/App_Resources/Android/src/main/res/drawable-hdpi/ic_launcher.png": "1f6cb451f5e8f74fca7dd14a6e2078bb40c3def4",
@@ -60,7 +60,7 @@
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/package.json": "b5c23d281c6a3d2b571a570721d60bbce6c9be29",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/runtime.js": "46d6b98a238721f34ab9bc68b90c0cdea00153cf",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/vendor.js.LICENSE.txt": "fe0ae576f8684fbe78596ad84eddafc528dba50c",
-	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/bundle.js": "0ca7099ac59c7ebd179afbe76cdbe9847fe14b9f",
+	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/bundle.js": "1c019889573c02a5dbc350843863ea2d626b4464",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/fonts/boxicons.ttf": "6c9944326ed3c901afcb78a9ed07906f04f9cbb2",
 	"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/assets/app/vendor.js": "bed05d377b4836523b46f38e23bb10cea7a7fa5f"
 }

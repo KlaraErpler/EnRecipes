@@ -653,7 +653,8 @@ export default {
         })
         shareContent += notes
       }
-      let sharenote = "\nCreated and shared via EnRecipes. Get it on F-Droid."
+      let sharenote =
+        "\nCreated and shared via EnRecipes. Get it on Play Store or F-Droid."
 
       shareContent += sharenote
 
