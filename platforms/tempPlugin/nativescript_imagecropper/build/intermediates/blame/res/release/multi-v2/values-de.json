@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-de/values-de.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-de/values-de.xml",
             "map": [
-                {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values-de/values-de.xml",
-                    "from": {
-                        "startLines": "2,3,4",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,121,179",
-                        "endColumns": "65,57,55",
-                        "endOffsets": "116,174,230"
-                    },
-                    "to": {
-                        "startLines": "31,32,33",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "3026,3092,3150",
-                        "endColumns": "65,57,55",
-                        "endOffsets": "3087,3145,3201"
-                    }
-                },
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/f56e78dfb4dba2bc9fa9266793730fe4/core-1.0.0/res/values-de/values-de.xml",
                     "from": {
@@ -35,6 +18,23 @@
                         "startOffsets": "2925",
                         "endColumns": "100",
                         "endOffsets": "3021"
+                    }
+                },
+                {
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values-de/values-de.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,121,179",
+                        "endColumns": "65,57,55",
+                        "endOffsets": "116,174,230"
+                    },
+                    "to": {
+                        "startLines": "31,32,33",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "3026,3092,3150",
+                        "endColumns": "65,57,55",
+                        "endOffsets": "3087,3145,3201"
                     }
                 },
                 {
@@ -50,25 +50,8 @@
             ]
         },
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values-de/values-de.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values-de/values-de.xml",
             "map": [
-                {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values-de/values-de.xml",
-                    "from": {
-                        "startLines": "2,3,4",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,121,179",
-                        "endColumns": "65,57,55",
-                        "endOffsets": "116,174,230"
-                    },
-                    "to": {
-                        "startLines": "31,32,33",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "3026,3092,3150",
-                        "endColumns": "65,57,55",
-                        "endOffsets": "3087,3145,3201"
-                    }
-                },
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/f56e78dfb4dba2bc9fa9266793730fe4/core-1.0.0/res/values-de/values-de.xml",
                     "from": {
@@ -84,6 +67,23 @@
                         "startOffsets": "2925",
                         "endColumns": "100",
                         "endOffsets": "3021"
+                    }
+                },
+                {
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values-de/values-de.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,121,179",
+                        "endColumns": "65,57,55",
+                        "endOffsets": "116,174,230"
+                    },
+                    "to": {
+                        "startLines": "31,32,33",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "3026,3092,3150",
+                        "endColumns": "65,57,55",
+                        "endOffsets": "3087,3145,3201"
                     }
                 },
                 {

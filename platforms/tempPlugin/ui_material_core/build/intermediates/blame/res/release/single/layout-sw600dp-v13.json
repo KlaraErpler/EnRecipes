@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-sw600dp-v13/design_layout_snackbar.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-sw600dp-v13/design_layout_snackbar.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/layout-sw600dp-v13/design_layout_snackbar.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-sw600dp-v13/mtrl_layout_snackbar.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-sw600dp-v13/mtrl_layout_snackbar.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ae1bf0e3b8f63074db6797692c14ed12/material-1.2.1/res/layout-sw600dp-v13/mtrl_layout_snackbar.xml"
     }
 ]

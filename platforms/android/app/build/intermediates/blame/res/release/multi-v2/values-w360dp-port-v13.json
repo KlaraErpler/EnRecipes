@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-w360dp-port-v13/values-w360dp-port-v13.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-w360dp-port-v13/values-w360dp-port-v13.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/res/values-w360dp-port-v13/values-w360dp-port-v13.xml",

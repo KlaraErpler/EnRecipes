@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/layout-watch-v20/abc_alert_dialog_button_bar_material.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/layout-watch-v20/abc_alert_dialog_button_bar_material.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/layout-watch-v20/abc_alert_dialog_button_bar_material.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/layout-watch-v20/abc_alert_dialog_title_material.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/layout-watch-v20/abc_alert_dialog_title_material.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/layout-watch-v20/abc_alert_dialog_title_material.xml"
     }
 ]

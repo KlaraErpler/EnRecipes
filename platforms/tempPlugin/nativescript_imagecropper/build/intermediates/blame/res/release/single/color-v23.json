@@ -1,42 +1,42 @@
 [
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_btn_checkable.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_btn_checkable.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_default.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_default.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_edittext.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_edittext.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/design_tint_password_toggle.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/color-v23/design_tint_password_toggle.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_spinner.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_spinner.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_btn_colored_borderless_text_material.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_btn_colored_borderless_text_material.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_switch_track.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_switch_track.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_btn_colored_text_material.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_btn_colored_text_material.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_btn_colored_text_material.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_seek_thumb.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_seek_thumb.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_seek_thumb.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_color_highlight_material.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_btn_checkable.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_btn_colored_borderless_text_material.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/design_tint_password_toggle.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/color-v23/design_tint_password_toggle.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_color_highlight_material.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_spinner.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_spinner.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_edittext.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_edittext.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_default.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_default.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/color-v23/abc_tint_switch_track.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/color-v23/abc_tint_switch_track.xml"
     }
 ]

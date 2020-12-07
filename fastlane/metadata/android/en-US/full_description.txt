@@ -5,9 +5,9 @@ EnRecipes is an easy to use, privacy-friendly digital cookbook that lets you cre
 ▸ Add photo, notes and combinations to your recipes
 ▸ Organise your recipes by category
 ▸ Quickly search for your recipes
-▸ Mark recipes as favorites and add them to your Try Later list
+▸ Mark recipes as favourites and add them to your Try Later list
 ▸ Scale your recipe ingredients to serve more or less people
-▸ Get notified of the last time you tried a recipe
+▸ Get notified of when you last tried a recipe
 ▸ Share your recipe to anyone by any means as a nicely formatted message. You can share the recipe photo too.
 ▸ Create meal plans
 ▸ Import/Export recipes
@@ -15,8 +15,6 @@ EnRecipes is an easy to use, privacy-friendly digital cookbook that lets you cre
 ▸ No annoying ads or pop-ups
 ▸ No internet access is required and never asks for any unwanted permissions
 ▸ 100% free and open-source
-
-Lots of interesting features on the way...
 
 <b>Credits</b>
 This app was written in my free time using NativeScript. I would like to thank all those people who helped me understand the concepts during the process and my special thanks to the NativeScript team and the community.

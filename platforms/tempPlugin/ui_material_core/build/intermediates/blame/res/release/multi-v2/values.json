@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/values/values.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/2360668a531bed4d12d655a44310d7a4/transition-1.2.0/res/values/values.xml",
@@ -175,7 +175,7 @@
             ]
         },
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/values/values.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/2360668a531bed4d12d655a44310d7a4/transition-1.2.0/res/values/values.xml",

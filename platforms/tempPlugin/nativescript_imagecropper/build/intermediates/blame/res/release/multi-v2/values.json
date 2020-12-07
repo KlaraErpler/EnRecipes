@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values/values.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/values/values.xml",
@@ -61,7 +61,7 @@
                     }
                 },
                 {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values/values.xml",
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values/values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,53,60,69,78,87,93,101",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -156,7 +156,7 @@
             ]
         },
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values/values.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/values/values.xml",
@@ -216,7 +216,7 @@
                     }
                 },
                 {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values/values.xml",
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values/values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,53,60,69,78,87,93,101",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

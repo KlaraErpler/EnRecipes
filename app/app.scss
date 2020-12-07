@@ -1,7 +1,6 @@
 // NativeScript core theme
 // @see https://docs.nativescript.org/ui/theme
-@import "~@nativescript/theme/core";
-// Override variables here
+@import "~@nativescript/theme/core"; // Override variables here
 $gray1: #f1f3f5;
 $gray2: #e9ecef;
 $gray3: #dee2e6;
@@ -17,20 +16,17 @@ $red: #c92a2a;
 $breakfast: #ffb180;
 $lunch: #ceff80;
 $dinner: #80ceff;
-$snacks: #b180ff;
-
-// Global SCSS styling
+$snacks: #b180ff; // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
-
-Page,
-.ns-modal {
-  font-family: "Orkney-Regular";
+.ns-modal,
+Page {
+  font-family: 'Orkney-Regular';
 }
 .orkm {
-  font-family: "Orkney-Medium";
+  font-family: 'Orkney-Medium';
 }
 .bx {
-  font-family: "boxicons";
+  font-family: 'boxicons';
   font-size: 24;
   vertical-alignment: center;
   &.small {
@@ -39,38 +35,37 @@ Page,
   }
 }
 .ns-light {
-  Page,
   ActionBar,
+  ListPicker,
+  Page,
   SearchBar,
-  Tabs,
   TabStripItem,
-  ListPicker {
+  Tabs {
     color: $gray9;
     background: $gray1;
   }
-  MDRipple,
-  MDButton {
+  MDButton,
+  MDRipple {
     ripple-color: rgba($gray6, 0.2);
   }
   .hr {
     border-color: $gray3;
   }
-  .sd,
-  .fieldLabel {
+  .fieldLabel,
+  .sd {
     background: $gray1;
   }
-  .urlCard,
-  .textCard,
   .overviewItem,
-  .recipeItem {
+  .recipeItem,
+  .textCard,
+  .urlCard {
     background: white;
   }
   TextField.combinationToken {
     background: $gray3;
   }
-
-  .sd-item,
   .sd-group-header,
+  .sd-item,
   .time .bx {
     color: $gray8;
   }
@@ -87,8 +82,8 @@ Page,
     color: $gray1;
     background: $gray9;
   }
-  .instruction,
-  .dayContainer {
+  .dayContainer,
+  .instruction {
     border-color: $gray9;
   }
   MDProgress {
@@ -101,14 +96,13 @@ Page,
     background: $orange;
   }
 }
-
 .ns-dark {
-  Page,
   ActionBar,
+  ListPicker,
+  Page,
   SearchBar,
-  Tabs,
   TabStripItem,
-  ListPicker {
+  Tabs {
     color: $gray1;
     background: $gray9;
   }
@@ -116,27 +110,26 @@ Page,
   //   tab-background-color: $gray9;
   //   selected-tab-text-color: $gray1;
   // }
-  MDRipple,
-  MDButton {
+  MDButton,
+  MDRipple {
     ripple-color: rgba($gray4, 0.1);
   }
-
   .hr {
     border-color: #111;
   }
-  .sd,
-  .fieldLabel {
+  .fieldLabel,
+  .sd {
     background: $gray9;
   }
-  .urlCard,
-  .textCard,
   .overviewItem,
   .recipeItem,
+  .textCard,
+  .urlCard,
   TextField.combinationToken {
     background: $gray8;
   }
-  .sd-item,
   .sd-group-header,
+  .sd-item,
   .time .bx {
     color: $gray3;
   }
@@ -153,8 +146,8 @@ Page,
     color: $gray9;
     background: $gray1;
   }
-  .instruction,
-  .dayContainer {
+  .dayContainer,
+  .instruction {
     border-color: $gray1;
   }
   MDProgress {
@@ -176,7 +169,7 @@ TimePickerField {
   border-width: 1;
   font-size: 14;
   padding: 14 14 13;
-  margin: 8 0 0 0;
+  margin: 8 0 0;
   border-radius: 4;
   border-color: $gray6;
   placeholder-color: $gray6;
@@ -184,8 +177,11 @@ TimePickerField {
 TextView {
   line-height: 12;
 }
+ListPicker {
+  width: 25%;
+}
 SearchBar {
-  font-family: "Orkney-Regular";
+  font-family: 'Orkney-Regular';
   font-size: 16;
   text-field-hint-color: $gray6;
 }
@@ -203,16 +199,15 @@ TabView {
 .progressContainer {
   width: 100%;
 }
-.text-btn,
-.group-header,
 .category,
+.group-header,
+.text-btn,
 MDActivityIndicator {
   color: $orange;
 }
 MDProgress {
   progress-color: $orange;
 }
-
 // -----------------------------
 // ActionBar
 ActionBar {
@@ -260,17 +255,20 @@ ActionBar {
     padding: 2 16 0 0;
     font-size: 16;
     vertical-alignment: center;
-    &.bx{
+    &.bx {
       padding: 0 0 0 16;
     }
   }
   MDRipple {
     padding: 0 16;
   }
+  MDButton.bx {
+    margin: 0;
+  }
 }
 .sd-group-header {
   width: 100%;
-  padding: 8;
+  padding: 0 0 8 8;
 }
 MDRipple {
   border-radius: 4;
@@ -313,7 +311,7 @@ MDButton {
     font-size: 20;
     text-align: center;
     padding: 0;
-    margin: 0;
+    margin: 0 0 8;
     horizontal-alignment: center;
     .bx {
       font-size: 24;
@@ -356,8 +354,8 @@ RadListView {
     border-radius: 4 0 0 4;
     // prettier-ignore
     Image {
-    border-radius: 4 0 0 4;
-  }
+      border-radius: 4 0 0 4;
+    }
   }
 }
 .swipe-item {
@@ -404,8 +402,8 @@ RadListView {
 // VIEW RECIPE
 .viewRecipe {
   .category,
-  .time,
-  .ingredient {
+  .ingredient,
+  .time {
     font-size: 16;
   }
   .category {
@@ -413,13 +411,14 @@ RadListView {
   }
   .time {
     margin: 0 8;
-    .bx {
-      vertical-align: top;
-    }
   }
   .title {
     font-size: 22;
     line-height: 6;
+  }
+  .subTitle {
+    font-size: 18;
+    line-height: 4;
   }
   .overviewContainer {
     margin-top: 12;
@@ -507,7 +506,7 @@ MDFloatingActionButton {
   font-size: 14;
   horizontal-alignment: left;
   padding: 12;
-  margin: 8 0 0 0;
+  margin: 8 0 0;
   min-width: 0;
 }
 MDButton.closeBtn {
@@ -544,7 +543,7 @@ MDButton.closeBtn {
       padding: 0 0 0 16;
     }
     .recipes {
-      margin: 4 8 4;
+      margin: 4 8;
       .recipeTitle {
         font-size: 14;
         padding: 6 8;
@@ -555,8 +554,8 @@ MDButton.closeBtn {
         vertical-alignment: top;
       }
     }
-    MDRipple,
-    MDButton {
+    MDButton,
+    MDRipple {
       ripple-color: rgba($gray6, 0.2);
     }
   }
@@ -612,7 +611,6 @@ MDButton.closeBtn {
     margin: 0 16 16;
   }
 }
-
 // -----------------------------
 MDActivityIndicator {
   width: 24;
@@ -647,7 +645,6 @@ MDActivityIndicator {
   75% {
     transform: scale(1.1);
   }
-
   100% {
     transform: scale(1);
   }
@@ -656,7 +653,6 @@ MDActivityIndicator {
   0% {
     transform: scale(1);
   }
-
   100% {
     transform: scale(0);
     opacity: 0;

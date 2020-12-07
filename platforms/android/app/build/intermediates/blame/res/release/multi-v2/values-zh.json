@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-zh/values-zh.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-zh/values-zh.xml",
             "map": [
                 {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/4e930eb8ff1619b628088c5abaff8ad9/jetified-ucrop-2.2.3/res/values-zh/values-zh.xml",
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a1ac0e418c7c22501d8d66a2f6fbfb08/jetified-ucrop-2.2.3/res/values-zh/values-zh.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

@@ -1,18 +1,18 @@
 [
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/58eba07e0934f562cb04861ee798fe68/core-1.3.0/res/layout-v21/notification_template_icon_group.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/58eba07e0934f562cb04861ee798fe68/core-1.3.0/res/layout-v21/notification_action.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/58eba07e0934f562cb04861ee798fe68/core-1.3.0/res/layout-v21/notification_template_custom_big.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/58eba07e0934f562cb04861ee798fe68/core-1.3.0/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/ui_material_core/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/58eba07e0934f562cb04861ee798fe68/core-1.3.0/res/layout-v21/notification_template_icon_group.xml"
     }
 ]

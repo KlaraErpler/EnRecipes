@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values-fr/values-fr.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-fr/values-fr.xml",
             "map": [
                 {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values-fr/values-fr.xml",
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values-fr/values-fr.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",
@@ -50,10 +50,10 @@
             ]
         },
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-fr/values-fr.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/values-fr/values-fr.xml",
             "map": [
                 {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/values-fr/values-fr.xml",
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/values-fr/values-fr.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

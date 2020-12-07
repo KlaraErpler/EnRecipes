@@ -1,13 +1,13 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/4e930eb8ff1619b628088c5abaff8ad9/jetified-ucrop-2.2.3/AndroidManifest.xml:2:1-11:12
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/a1ac0e418c7c22501d8d66a2f6fbfb08/jetified-ucrop-2.2.3/AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.material:material:1.2.1] /home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat:1.2.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/be4c35a38818aae510fb57719aacbd93/appcompat-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:19:1-33:12
+MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:19:1-33:12
 MERGED from [com.tapadoo.android:alerter:6.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/f007109fd2aa316a2d047d3a40f1c468/jetified-alerter-6.1.0/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/0abc97bfc9304af81765047eb4107a07/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/f349b0cb3b3906414a07e83cac50d0d6/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
@@ -19,7 +19,7 @@ MERGED from [androidx.transition:transition:1.3.1] /home/vrb/.gradle/caches/tran
 MERGED from [:nativescript-optimized:] /home/vrb/.gradle/caches/transforms-2/files-2.1/0e49ad87c670a24c3d6afa1aa9146788/jetified-nativescript-optimized/AndroidManifest.xml:2:1-11:12
 MERGED from [:ui_material_button:] /home/vrb/.gradle/caches/transforms-2/files-2.1/cb1d65696817d61e2835e8ea63458ed6/jetified-ui_material_button/AndroidManifest.xml:2:1-9:12
 MERGED from [:widgets-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/070ae7c74783cb3645505217ca894554/jetified-widgets-release/AndroidManifest.xml:2:1-14:12
-MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:2:1-21:12
+MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:2:1-21:12
 MERGED from [:fancycouchbase-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/d10ee3fd2f303f439c6a08cd51e2592a/jetified-fancycouchbase-release/AndroidManifest.xml:2:1-11:12
 MERGED from [:nativescript_feedback:] /home/vrb/.gradle/caches/transforms-2/files-2.1/917f74cba5af8420116a6c6f40b95c4d/jetified-nativescript_feedback/AndroidManifest.xml:2:1-9:12
 MERGED from [:nativescript_imagecropper:] /home/vrb/.gradle/caches/transforms-2/files-2.1/401854bdb0eb155281f3f4409b7b6d79/jetified-nativescript_imagecropper/AndroidManifest.xml:2:1-15:12
@@ -61,85 +61,85 @@ MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/vrb/.gradle/cach
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.2.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/add2a7138917a2450cb82af6a1317817/lifecycle-livedata-core-2.2.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/b49668b7b8df897ff311278ae931658c/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/2782b1dac545593463da56fc918d641b/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:17:1-24:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:1-22:12
 	package
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:117-153
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:117-153
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:182-207
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:182-207
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 	xmlns:tools
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:70-116
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:70-116
 	xmlns:android
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:11-69
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:2:154-181
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:2:154-181
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 supports-screens
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:3:2-136
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:3:2-136
 	android:largeScreens
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:3:77-104
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:3:77-104
 	android:smallScreens
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:3:20-47
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:3:20-47
 	android:normalScreens
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:3:48-76
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:3:48-76
 	android:xlargeScreens
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:3:105-133
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:3:105-133
 uses-permission#android.permission.CAMERA
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:4:2-82
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:4:2-82
 	tools:node
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:4:60-79
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:4:60-79
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:4:19-59
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:4:19-59
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:6:2-77
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:6:2-77
 MERGED from [:nativescript_plugin_filepicker:] /home/vrb/.gradle/caches/transforms-2/files-2.1/8c11f93f38f6dcfb3cc3a3af9ad3840e/jetified-nativescript_plugin_filepicker/AndroidManifest.xml:9:5-80
 MERGED from [:nativescript_plugin_filepicker:] /home/vrb/.gradle/caches/transforms-2/files-2.1/8c11f93f38f6dcfb3cc3a3af9ad3840e/jetified-nativescript_plugin_filepicker/AndroidManifest.xml:9:5-80
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:6:19-74
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:6:19-74
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:7:2-78
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:7:2-78
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:7:19-75
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:7:19-75
 uses-permission#android.permission.WAKE_LOCK
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:8:2-65
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:8:2-65
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:8:19-62
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:8:19-62
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:9:2-96
-REJECTED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:29:5-79
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:9:2-96
+REJECTED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:29:5-79
 	tools:node
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:9:74-93
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:9:74-93
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:9:19-73
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:9:19-73
 uses-permission#android.permission.INTERNET
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:10:2-84
-REJECTED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:28:5-67
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:10:2-84
+REJECTED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:28:5-67
 	tools:node
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:10:62-81
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:10:62-81
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:10:19-61
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:10:19-61
 uses-permission#android.permission.RECORD_AUDIO
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:11:2-88
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:11:2-88
 	tools:node
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:11:66-85
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:11:66-85
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:11:19-65
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:11:19-65
 application
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:2-21:16
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:2-21:16
 MERGED from [com.google.android.material:material:1.2.1] /home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.2.1] /home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/AndroidManifest.xml:22:5-20
-MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:31:5-53
-MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:31:5-53
+MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:31:5-53
+MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:31:5-53
 MERGED from [:widgets-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/070ae7c74783cb3645505217ca894554/jetified-widgets-release/AndroidManifest.xml:11:5-12:19
 MERGED from [:widgets-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/070ae7c74783cb3645505217ca894554/jetified-widgets-release/AndroidManifest.xml:11:5-12:19
-MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:9:5-19:19
-MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:9:5-19:19
+MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:9:5-19:19
+MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:9:5-19:19
 MERGED from [:nativescript_imagecropper:] /home/vrb/.gradle/caches/transforms-2/files-2.1/401854bdb0eb155281f3f4409b7b6d79/jetified-nativescript_imagecropper/AndroidManifest.xml:9:5-13:19
 MERGED from [:nativescript_imagecropper:] /home/vrb/.gradle/caches/transforms-2/files-2.1/401854bdb0eb155281f3f4409b7b6d79/jetified-nativescript_imagecropper/AndroidManifest.xml:9:5-13:19
 MERGED from [:nativescript_plugin_filepicker:] /home/vrb/.gradle/caches/transforms-2/files-2.1/8c11f93f38f6dcfb3cc3a3af9ad3840e/jetified-nativescript_plugin_filepicker/AndroidManifest.xml:11:5-64
@@ -149,69 +149,69 @@ MERGED from [androidx.core:core:1.3.0] /home/vrb/.gradle/caches/transforms-2/fil
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/1aa84a3d8e121b406aa1201cc1bc8237/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/1aa84a3d8e121b406aa1201cc1bc8237/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 	android:requestLegacyExternalStorage
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:251-294
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:251-294
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.3.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/1dc5cba16eb2c928c676e9d5f11f544c/core-1.3.0/AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:126-158
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:126-158
 	android:hardwareAccelerated
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:159-193
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:159-193
 	android:largeHeap
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:194-218
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:194-218
 	android:icon
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:89-125
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:89-125
 	android:allowBackup
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:62-88
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:62-88
 	android:theme
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:219-250
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:219-250
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:12:15-61
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:12:15-61
 activity#com.tns.NativeScriptActivity
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:3-19:14
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:3-19:14
 	android:screenOrientation
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:103-143
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:103-143
 	android:label
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:57-102
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:57-102
 	android:windowSoftInputMode
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:302-344
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:302-344
 	android:configChanges
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:144-260
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:144-260
 	android:theme
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:261-301
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:261-301
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:13:13-56
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:13:13-56
 meta-data#SET_THEME_ON_LAUNCH
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:14:4-87
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:14:4-87
 	android:resource
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:14:50-84
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:14:50-84
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:14:15-49
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:14:15-49
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:15:4-18:20
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:15:4-18:20
 action#android.intent.action.MAIN
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:16:5-57
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:16:5-57
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:16:13-54
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:16:13-54
 category#android.intent.category.LAUNCHER
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:17:5-65
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:17:5-65
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:17:15-62
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:17:15-62
 activity#com.tns.ErrorReportActivity
-ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:20:3-58
+ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:20:3-58
 	android:name
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml:20:13-55
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml:20:13-55
 uses-sdk
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/4e930eb8ff1619b628088c5abaff8ad9/jetified-ucrop-2.2.3/AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/4e930eb8ff1619b628088c5abaff8ad9/jetified-ucrop-2.2.3/AndroidManifest.xml:7:5-9:41
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/a1ac0e418c7c22501d8d66a2f6fbfb08/jetified-ucrop-2.2.3/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.yalantis:ucrop:2.2.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/a1ac0e418c7c22501d8d66a2f6fbfb08/jetified-ucrop-2.2.3/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.android.material:material:1.2.1] /home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.2.1] /home/vrb/.gradle/caches/transforms-2/files-2.1/42dea8ecc581c81857f6fd9072fdd732/material-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.2.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/be4c35a38818aae510fb57719aacbd93/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.2.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/be4c35a38818aae510fb57719aacbd93/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:24:5-26:41
-MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/840435ab883f16f5e43c3f25c2ca03d2/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:24:5-26:41
+MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:24:5-26:41
+MERGED from [com.couchbase.lite:couchbase-lite-android:2.5.3] /home/vrb/.gradle/caches/transforms-2/files-2.1/3ee56aa07b9b0204ba31989da94a7de9/jetified-couchbase-lite-android-2.5.3/AndroidManifest.xml:24:5-26:41
 MERGED from [com.tapadoo.android:alerter:6.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/f007109fd2aa316a2d047d3a40f1c468/jetified-alerter-6.1.0/AndroidManifest.xml:7:5-9:41
 MERGED from [com.tapadoo.android:alerter:6.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/f007109fd2aa316a2d047d3a40f1c468/jetified-alerter-6.1.0/AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/0abc97bfc9304af81765047eb4107a07/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
@@ -234,8 +234,8 @@ MERGED from [:ui_material_button:] /home/vrb/.gradle/caches/transforms-2/files-2
 MERGED from [:ui_material_button:] /home/vrb/.gradle/caches/transforms-2/files-2.1/cb1d65696817d61e2835e8ea63458ed6/jetified-ui_material_button/AndroidManifest.xml:7:5-47
 MERGED from [:widgets-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/070ae7c74783cb3645505217ca894554/jetified-widgets-release/AndroidManifest.xml:7:5-9:41
 MERGED from [:widgets-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/070ae7c74783cb3645505217ca894554/jetified-widgets-release/AndroidManifest.xml:7:5-9:41
-MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:7:5-47
-MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:7:5-47
+MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:7:5-47
+MERGED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:7:5-47
 MERGED from [:fancycouchbase-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/d10ee3fd2f303f439c6a08cd51e2592a/jetified-fancycouchbase-release/AndroidManifest.xml:7:5-9:41
 MERGED from [:fancycouchbase-release:] /home/vrb/.gradle/caches/transforms-2/files-2.1/d10ee3fd2f303f439c6a08cd51e2592a/jetified-fancycouchbase-release/AndroidManifest.xml:7:5-9:41
 MERGED from [:nativescript_feedback:] /home/vrb/.gradle/caches/transforms-2/files-2.1/917f74cba5af8420116a6c6f40b95c4d/jetified-nativescript_feedback/AndroidManifest.xml:7:5-47
@@ -318,39 +318,39 @@ MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/vrb/.gradle/caches/tra
 MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/b49668b7b8df897ff311278ae931658c/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/2782b1dac545593463da56fc918d641b/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/vrb/.gradle/caches/transforms-2/files-2.1/2782b1dac545593463da56fc918d641b/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
-		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		MERGED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
+		INJECTED from /mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/AndroidManifest.xml
 provider#androidx.core.content.FileProvider
-ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:10:9-18:20
+ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:10:9-18:20
 	android:grantUriPermissions
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:14:13-47
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:14:13-47
 	android:authorities
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:12:13-60
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:12:13-60
 	android:exported
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:13:13-37
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:13:13-37
 	android:name
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:11:13-62
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:11:13-62
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:15:13-17:58
+ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:15:13-17:58
 	android:resource
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:17:17-55
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:17:17-55
 	android:name
-		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/25c4aa12df22b7da486b3afc1373710d/jetified-social_share/AndroidManifest.xml:16:17-67
+		ADDED from [:social_share:] /home/vrb/.gradle/caches/transforms-2/files-2.1/b1c91ad9e5120dd9c2c5d72fb1e832b8/jetified-social_share/AndroidManifest.xml:16:17-67
 activity#com.yalantis.ucrop.UCropActivity
 ADDED from [:nativescript_imagecropper:] /home/vrb/.gradle/caches/transforms-2/files-2.1/401854bdb0eb155281f3f4409b7b6d79/jetified-nativescript_imagecropper/AndroidManifest.xml:10:9-12:52
 	android:screenOrientation

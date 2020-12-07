@@ -28,6 +28,10 @@
         "directory": "../../node_modules/@nativescript/core"
     },
     {
+        "name": "@nativescript/localize",
+        "directory": "../../node_modules/@nativescript/localize"
+    },
+    {
         "name": "@nativescript/social-share",
         "directory": "../../node_modules/@nativescript/social-share"
     },

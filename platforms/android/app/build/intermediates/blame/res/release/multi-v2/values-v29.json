@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v29/values-v29.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v29/values-v29.xml",
             "map": [
                 {
-                    "source": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/src/main/res/values-v29/styles.xml",
+                    "source": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/src/main/res/values-v29/styles.xml",
                     "from": {
                         "startLines": "8,4",
                         "startColumns": "4,4",

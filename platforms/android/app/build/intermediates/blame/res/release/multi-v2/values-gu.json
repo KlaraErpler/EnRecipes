@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-gu/values-gu.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-gu/values-gu.xml",
             "map": [
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/be4c35a38818aae510fb57719aacbd93/appcompat-1.2.0/res/values-gu/values-gu.xml",

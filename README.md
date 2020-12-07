@@ -25,7 +25,7 @@ EnRecipes is an easy to use, privacy-friendly digital cookbook that lets you cre
 - Add photo, notes and combinations to your recipes
 - Organise your recipes by category
 - Quickly search for your recipes
-- Mark recipes as favorites and add them to your Try Later list
+- Mark recipes as favourites and add them to your Try Later list
 - Scale your recipe ingredients to serve more or less people
 - Get notified of the last time you tried a recipe
 - Share your recipe to anyone by any means as a nicely formatted message. You can share the recipe photo too.

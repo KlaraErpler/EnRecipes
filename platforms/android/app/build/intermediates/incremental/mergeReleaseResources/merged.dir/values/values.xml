@@ -739,6 +739,174 @@
     <item quantity="one"><ns1:g id="count">%d</ns1:g> new notification</item>
     <item quantity="other"><ns1:g id="count">%d</ns1:g> new notifications</item>
   </plurals>
+    <string name="ADD">"ADD"</string>
+    <string name="About">"About"</string>
+    <string name="Appetizers">"Appetizers"</string>
+    <string name="Author">"Author"</string>
+    <string name="Barbecue">"Barbecue"</string>
+    <string name="Beverages">"Beverages"</string>
+    <string name="Breads">"Breads"</string>
+    <string name="Breakfast">"Breakfast"</string>
+    <string name="CANCEL">"CANCEL"</string>
+    <string name="CONTINUE">"CONTINUE"</string>
+    <string name="Categories">"Categories"</string>
+    <string name="Category">"Category"</string>
+    <string name="Combinations">"Combinations"</string>
+    <string name="Cup">"Cup"</string>
+    <string name="DELETE">"DELETE"</string>
+    <string name="DISCARD">"DISCARD"</string>
+    <string name="DONE">"DONE"</string>
+    <string name="Dark">"Dark"</string>
+    <string name="Database">"Database"</string>
+    <string name="Desserts">"Desserts"</string>
+    <string name="Dinner">"Dinner"</string>
+    <string name="Drinks">"Drinks"</string>
+    <string name="Duration">"Duration"</string>
+    <string name="EnRecipes">"EnRecipes"</string>
+    <string name="Favourites">"Favourites"</string>
+    <string name="Gallon">"Gallon"</string>
+    <string name="Gram">"Gram"</string>
+    <string name="Healthy">"Healthy"</string>
+    <string name="Ingredient">"Ingredient"</string>
+    <string name="Ingredients">"Ingredients"</string>
+    <string name="Instruction">"Instruction"</string>
+    <string name="Instructions">"Instructions"</string>
+    <string name="Interface">"Interface"</string>
+    <string name="Item">"Item"</string>
+    <string name="Kilogram">"Kilogram"</string>
+    <string name="Light">"Light"</string>
+    <string name="Litre">"Litre"</string>
+    <string name="Loaf">"Loaf"</string>
+    <string name="Lunch">"Lunch"</string>
+    <string name="Meat">"Meat"</string>
+    <string name="Millilitre">"Millilitre"</string>
+    <string name="Noodles">"Noodles"</string>
+    <string name="Note">"Note"</string>
+    <string name="Notes">"Notes"</string>
+    <string name="Ounce">"Ounce"</string>
+    <string name="Overview">"Overview"</string>
+    <string name="Pasta">"Pasta"</string>
+    <string name="Patty">"Patty"</string>
+    <string name="Photo">"Photo"</string>
+    <string name="Piece">"Piece"</string>
+    <string name="Poultry">"Poultry"</string>
+    <string name="Pound">"Pound"</string>
+    <string name="REMOVE">"REMOVE"</string>
+    <string name="RENAME">"RENAME"</string>
+    <string name="RESTART">"RESTART"</string>
+    <string name="Recipe">"Recipe"</string>
+    <string name="Required">"Required"</string>
+    <string name="Rice">"Rice"</string>
+    <string name="Roll">"Roll"</string>
+    <string name="SET">"SET"</string>
+    <string name="Salads">"Salads"</string>
+    <string name="Sauces">"Sauces"</string>
+    <string name="Seafood">"Seafood"</string>
+    <string name="Search">"Search"</string>
+    <string name="Serving">"Serving"</string>
+    <string name="Settings">"Settings"</string>
+    <string name="Share">"Share"</string>
+    <string name="Snacks">"Snacks"</string>
+    <string name="Soups">"Soups"</string>
+    <string name="Step">"Step"</string>
+    <string name="Tablespoon">"Tablespoon"</string>
+    <string name="Teaspoon">"Teaspoon"</string>
+    <string name="Theme">"Theme"</string>
+    <string name="Title">"Title"</string>
+    <string name="Undefined">"Undefined"</string>
+    <string name="Unit">"Unit"</string>
+    <string name="Vegan">"Vegan"</string>
+    <string name="Vegetarian">"Vegetarian"</string>
+    <string name="Version">"Version"</string>
+    <string name="_ADD_COMBINATION_2q9HWq">"ADD COMBINATION"</string>
+    <string name="_ADD_INGREDIENT_29sSLU">"ADD INGREDIENT"</string>
+    <string name="_ADD_NEW_Zv8FjM">"ADD NEW"</string>
+    <string name="_ADD_NOTE_ZyNw1r">"ADD NOTE"</string>
+    <string name="_ADD_STEP_ZyMPOe">"ADD STEP"</string>
+    <string name="_Add_at_least_one_recipe_to_perform_a_backup_17xYaH">"Add at least one recipe to perform a backup"</string>
+    <string name="_Added_to_Favourites_2mzllO">"Added to Favourites"</string>
+    <string name="_Added_to_Try_Later_Z1gaF37">"Added to Try Later"</string>
+    <string name="_All_done__72KYl">"All done!"</string>
+    <string name="_App_language_DzFsk">"App language"</string>
+    <string name="_Are_you_sure_you_want_to_delete_the_recipe_29DH9w">"Are you sure you want to delete the recipe"</string>
+    <string name="_Are_you_sure_you_want_to_discard_unsaved_changes_to_this_recipe__Z1G7sVC">"Are you sure you want to discard unsaved changes to this recipe?"</string>
+    <string name="_Category_looks_empty_ZAK5qU">"Category looks empty"</string>
+    <string name="_Cooking_time_2w2fEw">"Cooking time"</string>
+    <string name="_Crop_photo_1VL04J">"Crop photo"</string>
+    <string name="_Delete_recipe__Z2tMYtE">"Delete recipe?"</string>
+    <string name="_Edit_recipe_ZPvwDP">"Edit recipe"</string>
+    <string name="_EnRecipes_needs_to_be_restarted_for_the_app_language_to_take_effect__ZWGUtY">"EnRecipes needs to be restarted for the app language to take effect."</string>
+    <string name="_EnRecipes_needs_to_be_restarted_for_the_theme_change_to_take_effect__2kU319">"EnRecipes needs to be restarted for the theme change to take effect."</string>
+    <string name="_EnRecipes_requires_storage_permission_in_order_to_backup_your_data_to_this_device__2cbvIq">"EnRecipes requires storage permission in order to backup your data to this device."</string>
+    <string name="_EnRecipes_requires_storage_permission_in_order_to_import_your_data_from_a_previous_backup__1CKjb7">"EnRecipes requires storage permission in order to import your data from a previous backup."</string>
+    <string name="_EnRecipes_requires_storage_permission_in_order_to_set_recipe_photo__23OnNT">"EnRecipes requires storage permission in order to set recipe photo."</string>
+    <string name="_Export_a_full_backup_TJfra">"Export a full backup"</string>
+    <string name="_Fluid_Ounce_bd10L">"Fluid Ounce"</string>
+    <string name="_Follow_on_GitHub_Z1GjptH">"Follow on GitHub"</string>
+    <string name="_Follow_on_Mastodon_Z1v6e4V">"Follow on Mastodon"</string>
+    <string name="_Generates_a_zip_file_that_contains_all_your_data__This_file_can_be_imported_back__Z19m3xY">"Generates a zip file that contains all your data. This file can be imported back."</string>
+    <string name="_Grant_permission_Z1UQBuh">"Grant permission"</string>
+    <string name="_Import_from_backup_Z28HsC0">"Import from backup"</string>
+    <string name="_Import_successful_2bLM3e">"Import successful"</string>
+    <string name="_Join_the_Telegram_group_ZAXQgc">"Join the Telegram group"</string>
+    <string name="_KEEP_EDITING_1o9uy3">"KEEP EDITING"</string>
+    <string name="_Last_modified_Z1yBAS3">"Last modified"</string>
+    <string name="_Main_dishes_u6RGQ">"Main dishes"</string>
+    <string name="_Meal_Planner_2aq4oj">"Meal Planner"</string>
+    <string name="_My_Healthy_Recipe_Z1EqB8f">"My Healthy Recipe"</string>
+    <string name="_NOT_NOW_Z1HD7qX">"NOT NOW"</string>
+    <string name="_Natural_order_Z1O8On5">"Natural order"</string>
+    <string name="_New_category_Weg73">"New category"</string>
+    <string name="_New_recipe_Z1Y2YKJ">"New recipe"</string>
+    <string name="_New_yield_unit_1Oevd2">"New yield unit"</string>
+    <string name="_No_favourites_yet_aPSoG">"No favourites yet"</string>
+    <string name="_No_recipes_found_Z125IxD">"No recipes found"</string>
+    <string name="_Nothing_here__Add_some_recipes_and_try_again__Z25A7Q">"Nothing here! Add some recipes and try again."</string>
+    <string name="_Permission_denied_Z7wlWK">"Permission denied"</string>
+    <string name="_Preparation_time_15BfxT">"Preparation time"</string>
+    <string name="_REPLACE_PHOTO_ZLHhwH">"REPLACE PHOTO"</string>
+    <string name="_Recipe_photo_eqm9B">"Recipe photo"</string>
+    <string name="_Recipes_you_mark_as_favourite_will_be_listed_here_Z1iIHgY">"Recipes you mark as favourite will be listed here"</string>
+    <string name="_Recipes_you_mark_as_try_later_will_be_listed_here_Z1ITwPV">"Recipes you mark as try later will be listed here"</string>
+    <string name="_Remove_combination__1dr2LS">"Remove combination?"</string>
+    <string name="_Remove_ingredient__2puvMO">"Remove ingredient?"</string>
+    <string name="_Remove_instruction__vkJfi">"Remove instruction?"</string>
+    <string name="_Remove_note__2wyMVE">"Remove note?"</string>
+    <string name="_Removed_from_Favourites_Z5k7LR">"Removed from Favourites"</string>
+    <string name="_Removed_from_Try_Later_1h5Bkp">"Removed from Try Later"</string>
+    <string name="_Rename_category_Z1WzCco">"Rename category"</string>
+    <string name="_Restart_required_Z22YINL">"Restart required"</string>
+    <string name="_Select_a_recipe_2lL8x2">"Select a recipe"</string>
+    <string name="_Shared_via_EnRecipes__Get_it_on_Play_Store_or_F_Droid__Z2oTOK1">"Shared via EnRecipes. Get it on Play Store or F-Droid."</string>
+    <string name="_Side_dishes_Z1Et4Vg">"Side dishes"</string>
+    <string name="_Sort_by_Zq01TF">"Sort by"</string>
+    <string name="_Start_adding_your_recipes__rwnVV">"Start adding your recipes!"</string>
+    <string name="_Supports_full_backups_exported_by_this_app_ZYs4f2">"Supports full backups exported by this app"</string>
+    <string name="_System_default_Z1jruVS">"System default"</string>
+    <string name="_Try_Later_If7PG">"Try Later"</string>
+    <string name="_Unsaved_changes_9fqb4">"Unsaved changes"</string>
+    <string name="_Use_the_pencil_button_to_add_some_combinations_6NhFS">"Use the pencil button to add some combinations"</string>
+    <string name="_Use_the_pencil_button_to_add_some_ingredients_Z1xOX8S">"Use the pencil button to add some ingredients"</string>
+    <string name="_Use_the_pencil_button_to_add_some_instructions_ZAi0PH">"Use the pencil button to add some instructions"</string>
+    <string name="_Use_the_pencil_button_to_add_some_notes_Z1wyyeb">"Use the pencil button to add some notes"</string>
+    <string name="_Use_the_plus_button_to_add_one_1h20ms">"Use the plus button to add one"</string>
+    <string name="_Verifying____cS102">"Verifying..."</string>
+    <string name="_View_project_on_GitHub_1hrJ0U">"View project on GitHub"</string>
+    <string name="_Vishnu_Raghav_B_1qnRnC">"Vishnu Raghav B"</string>
+    <string name="_Yield_measured_in_2OoRT">"Yield measured in"</string>
+    <string name="_Yield_quantity_ZHx3jw">"Yield quantity"</string>
+    <string name="_You_tried_this_recipe__ZUJOl3">"You tried this recipe:"</string>
+    <string name="_Your_search_did_not_match_any_recipes_Z1eppHH">"Your search did not match any recipes"</string>
+    <string name="_Your_search_did_not_match_any_recipes_in_this_category_P7J4V">"Your search did not match any recipes in this category"</string>
+    <string name="_Your_search_did_not_match_any_recipes_in_your_favourites_1ylvHN">"Your search did not match any recipes in your favourites"</string>
+    <string name="_Your_search_did_not_match_any_recipes_in_your_try_later_list_Z2wWbA1">"Your search did not match any recipes in your try later list"</string>
+    <string name="_app_name_1k3Sbz">"EnRecipes"</string>
+    <string name="_days_ago_2iCYkm">"days ago"</string>
+    <string name="_fl_oz_72kqu">"fl oz"</string>
+    <string name="_for_reporting_issues__suggestions_and_feedback_Z1JUmyE">"for reporting issues, suggestions and feedback"</string>
+    <string name="_long_time_ago_1nwlFA">"long time ago"</string>
+    <string name="_months_ago_Z1TsskA">"months ago"</string>
+    <string name="_weeks_ago_Z2sT1GA">"weeks ago"</string>
     <string name="abc_action_bar_home_description">Navigate home</string>
     <string name="abc_action_bar_up_description">Navigate up</string>
     <string name="abc_action_menu_overflow_description">More options</string>
@@ -766,25 +934,47 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with <ns1:g example="Mail" id="application_name">%s</ns1:g></string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <string name="app_name">EnRecipes</string>
+    <string name="app_name">"EnRecipes"</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
+    <string name="breakfast">"breakfast"</string>
     <string name="character_counter_content_description">Characters entered %1$d of %2$d</string>
     <string name="character_counter_overflowed_content_description">Character limit exceeded %1$d of %2$d</string>
     <string name="character_counter_pattern" translatable="false">%1$d/%2$d</string>
     <string name="chip_text">Chip text</string>
     <string name="clear_text_end_icon_content_description">Clear text</string>
+    <string name="clove">"clove"</string>
+    <string name="cm">"cm"</string>
+    <string name="cup">"cup"</string>
+    <string name="dinner">"dinner"</string>
+    <string name="dozen">"dozen"</string>
+    <string name="drop">"drop"</string>
+    <string name="dsp">"dsp"</string>
     <string name="error_icon_content_description">Error</string>
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
+    <string name="g">"g"</string>
+    <string name="gal">"gal"</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
+    <string name="hr">"hr"</string>
     <string description="Content description for an icon that appears in the title area of a dialog" name="icon_content_description">Dialog Icon</string>
+    <string name="in">"in"</string>
     <string name="item_view_role_description">Tab</string>
+    <string name="kg">"kg"</string>
+    <string name="l">"l"</string>
+    <string name="large">"large"</string>
+    <string name="lb">"lb"</string>
+    <string name="leaf">"leaf"</string>
     <string name="lib_name">Alerter</string>
     <string name="list_view_default_empty_content">No items</string>
+    <string name="lunch">"lunch"</string>
     <string description="Content description for the thumb with the maximum value in a Range slider. [CHAR_LIMIT=NONE]" name="material_slider_range_end">Range end, </string>
     <string description="Content description for the thumb with the minimum value in a Range slider. [CHAR_LIMIT=NONE]" name="material_slider_range_start">Range start, </string>
+    <string name="medium">"medium"</string>
+    <string name="mg">"mg"</string>
+    <string name="min">"min"</string>
+    <string name="ml">"ml"</string>
     <string name="msg.alert_cleared">Alert Cleared</string>
     <string name="msg.no_alert_showing">No Alert Showing</string>
     <string description="Content description for new notification (no number count) [CHAR_LIMIT=NONE]" name="mtrl_badge_numberless_content_description">New notification</string>
@@ -824,14 +1014,25 @@
     <string description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_year_selection">Tap to switch to selecting a year</string>
     <string name="on_demand_manual_button_busy">LOADING…</string>
     <string name="on_demand_manual_button_idle">LOAD MORE</string>
+    <string name="oz">"oz"</string>
     <string name="password_toggle_content_description">Show password</string>
     <string name="path_password_eye" translatable="false">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
     <string name="path_password_eye_mask_strike_through" translatable="false">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
+    <string name="piece">"piece"</string>
+    <string name="pinch">"pinch"</string>
+    <string name="pt">"pt"</string>
+    <string name="qt">"qt"</string>
     <string name="search_menu_title">Search</string>
+    <string name="small">"small"</string>
+    <string name="snacks">"snacks"</string>
     <string name="status_bar_notification_info_overflow">999+</string>
-    <string name="title_activity_kimera">EnRecipes</string>
+    <string name="stick">"stick"</string>
+    <string name="tbsp">"tbsp"</string>
+    <string name="title_activity_kimera">"EnRecipes"</string>
+    <string name="today">"today"</string>
+    <string name="tsp">"tsp"</string>
     <string name="ucrop_crop">Crop</string>
     <string name="ucrop_error_input_data_is_absent" translatable="false">Both input and output Uri must be specified</string>
     <string name="ucrop_label_edit_photo">Edit Photo</string>
@@ -840,6 +1041,8 @@
     <string name="ucrop_mutate_exception_hint" translatable="false">Therefore, override color resource (ucrop_color_toolbar_widget) in your app to make it work on pre-L devices</string>
     <string name="ucrop_rotate">Rotate</string>
     <string name="ucrop_scale">Scale</string>
+    <string name="unit">"unit"</string>
+    <string name="yesterday">"yesterday"</string>
     <style name="AlertButton" parent="@style/Widget.AppCompat.Button.Colored"/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>

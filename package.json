@@ -12,6 +12,7 @@
     "@nativescript-community/ui-material-progress": "^5.0.30",
     "@nativescript-community/ui-material-ripple": "^5.0.30",
     "@nativescript/core": "~7.0.0",
+    "@nativescript/localize": "^5.0.2",
     "@nativescript/social-share": "^2.0.1",
     "@nativescript/theme": "^3.0.0",
     "@nativescript/zip": "^5.0.0",

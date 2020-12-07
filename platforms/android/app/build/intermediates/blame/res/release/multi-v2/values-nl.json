@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-nl/values-nl.xml",
+            "outputFile": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-nl/values-nl.xml",
             "map": [
-                {
-                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/4e930eb8ff1619b628088c5abaff8ad9/jetified-ucrop-2.2.3/res/values-nl/values-nl.xml",
-                    "from": {
-                        "startLines": "2,3,4",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,120,179",
-                        "endColumns": "64,58,54",
-                        "endOffsets": "115,174,229"
-                    },
-                    "to": {
-                        "startLines": "31,32,33",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "3016,3081,3140",
-                        "endColumns": "64,58,54",
-                        "endOffsets": "3076,3135,3190"
-                    }
-                },
                 {
                     "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/be4c35a38818aae510fb57719aacbd93/appcompat-1.2.0/res/values-nl/values-nl.xml",
                     "from": {
@@ -45,6 +28,23 @@
                         "startOffsets": "2915",
                         "endColumns": "100",
                         "endOffsets": "3011"
+                    }
+                },
+                {
+                    "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a1ac0e418c7c22501d8d66a2f6fbfb08/jetified-ucrop-2.2.3/res/values-nl/values-nl.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,120,179",
+                        "endColumns": "64,58,54",
+                        "endOffsets": "115,174,229"
+                    },
+                    "to": {
+                        "startLines": "31,32,33",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "3016,3081,3140",
+                        "endColumns": "64,58,54",
+                        "endOffsets": "3076,3135,3190"
                     }
                 }
             ]

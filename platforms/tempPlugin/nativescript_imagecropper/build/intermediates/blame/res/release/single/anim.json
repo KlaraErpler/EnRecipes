@@ -1,74 +1,74 @@
 [
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_bottom_sheet_slide_out.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_bottom_sheet_slide_out.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/ucrop_loader_circle_scale.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/anim/ucrop_loader_circle_scale.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_fade_in.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_popup_exit.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_shrink_fade_out_from_bottom.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_out_top.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_fade_out.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_snackbar_out.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_snackbar_out.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_popup_enter.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_grow_fade_in_from_bottom.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_snackbar_in.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_snackbar_in.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_bottom_sheet_slide_in.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_bottom_sheet_slide_in.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/ucrop_loader_circle_path.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/5c600378f2f79fec357d68308b351467/jetified-ucrop-2.2.3/res/anim/ucrop_loader_circle_path.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_tooltip_enter.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_tooltip_enter.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_in_top.xml"
-    },
-    {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_tooltip_exit.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_tooltip_exit.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_tooltip_exit.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/ucrop_loader_circle_path.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/anim/ucrop_loader_circle_path.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_snackbar_out.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_snackbar_out.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_snackbar_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_snackbar_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/ucrop_loader_circle_scale.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/a3538a571bebb2cba7b28a0444ca5f2c/jetified-ucrop-2.2.3/res/anim/ucrop_loader_circle_scale.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_bottom_sheet_slide_in.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/design_bottom_sheet_slide_out.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/ce3c4e922b74126d6088b5e052bb6fb5/material-1.0.0/res/anim/design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_tooltip_enter.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_tooltip_enter.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
         "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_out_bottom.xml"
     },
     {
-        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
-        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_slide_in_bottom.xml"
+        "merged": "/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/platforms/tempPlugin/nativescript_imagecropper/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/home/vrb/.gradle/caches/transforms-2/files-2.1/d4346362d40a6ea03e30b4a0f823b8db/appcompat-1.0.0/res/anim/abc_grow_fade_in_from_bottom.xml"
     }
 ]
