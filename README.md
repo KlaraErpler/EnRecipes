@@ -49,6 +49,12 @@ You can add an issue [here](https://github.com/vishnuraghavb/EnRecipes/issues) o
 
 ## Credits
 
+### Recipes used in the Screenshots
+
+**Meen Pollichathu** by [Bency Veronica](https://www.instagram.com/bencys_lil_kitchen)
+**Curd Vada** by P. Shanmugalakshmi
+**Roasted Chicken Biriyani** by [Ranga](https://www.youtube.com/channel/UC6ONI92scjwMmk3IITKIx-g)
+
 This app was written in my free time using NativeScript. I would like to thank all those people who helped me understand the concepts during the process and my special thanks to the NativeScript team and the community.
 
 ## Contributors
