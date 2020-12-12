@@ -27,10 +27,6 @@ EnRecipes is an easy to use, privacy-friendly digital cookbook that lets you cre
 
 Lots of interesting features on the way...
 
-## Screenshots
-
-![EnRecipes](assets/Screenshots/1.png)![Delete Recipe](assets/Screenshots/2.png)![View Recipe](assets/Screenshots/3.png)![Ingredients](assets/Screenshots/4.png)![Edit Recipe](assets/Screenshots/5.png)![Share](assets/Screenshots/6.png)![Side Drawer](assets/Screenshots/7.png)![Mealplanner](assets/Screenshots/8.png)![About](assets/Screenshots/9.png)![Dark Mode](assets/Screenshots/10.png)
-
 ## Downloads
 
 You can get the latest release [here](https://github.com/vishnuraghavb/EnRecipes/releases)
@@ -38,14 +34,18 @@ You can get the latest release [here](https://github.com/vishnuraghavb/EnRecipes
 [![PlayStore](assets/Images/google-play-badge.png)](https://play.google.com/store/apps/details?id=com.vishnuraghav.enrecipes)
 [![IzzyOnDroid](assets/Images/IzzyOnDroid.png)](https://apt.izzysoft.de/fdroid/index/apk/com.vishnuraghav.enrecipes)
 
+## Screenshots
+
+![EnRecipe](assets/Screenshots/2.png)![View Recipe](assets/Screenshots/3.png)![Ingredients](assets/Screenshots/4.png)![Edit Recipe](assets/Screenshots/5.png)![Share](assets/Screenshots/6.png)![Side Drawer](assets/Screenshots/7.png)![Mealplanner](assets/Screenshots/8.png)![Dark Mode](assets/Screenshots/10.png)
+
 ## Having issues, suggestions and feedback?
 
 You can add an issue [here](https://github.com/vishnuraghavb/EnRecipes/issues) or [join the Telegram group](http://t.me/enrecipes)(quicker replies)
 
 ## Future
 
-[Roadmap](https://github.com/vishnuraghavb/EnRecipes/projects/1)
-[Translations](https://github.com/vishnuraghavb/EnRecipes/projects/1) - Contributors are welcome! No technical knowledge is required.
+-   [Roadmap](https://github.com/vishnuraghavb/EnRecipes/projects/1)
+-   [Translations](https://github.com/vishnuraghavb/EnRecipes/projects/1) - Contributors are welcome! No technical knowledge is required.
 
 ## Credits
 
