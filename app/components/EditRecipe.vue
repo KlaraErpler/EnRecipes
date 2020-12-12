@@ -288,14 +288,12 @@ export default {
               if ( focus ) this.autoFocusField( "prepTime", false )
             }
           } )
-        }
-        else if ( action ) {
+        } else if ( action ) {
           this.recipeContent.category = action
           this.hijackBackEvent()
           this.modalOpen = false
           if ( focus ) this.autoFocusField( "prepTime", false )
-        }
-        else {
+        } else {
           this.hijackBackEvent()
         }
       } )
@@ -334,14 +332,12 @@ export default {
               if ( focus ) this.addIngredient()
             }
           } )
-        }
-        else if ( action ) {
+        } else if ( action ) {
           this.recipeContent.yield.unit = action
           this.hijackBackEvent()
           this.modalOpen = false
           if ( focus ) this.addIngredient()
-        }
-        else {
+        } else {
           this.hijackBackEvent()
         }
       } )
@@ -357,13 +353,12 @@ export default {
       } ).then( ( action ) => {
         this.hijackBackEvent()
         if ( action ) {
-          e.object.text = action
+          this.recipeContent.ingredients[ index ].unit = e.object.text = action
           this.modalOpen = false
           if ( focus ) {
             if ( this.recipeContent.ingredients.length - 1 === index ) {
               this.addIngredient()
-            }
-            else {
+            } else {
               this.$refs.ingredient[ index + 1 ].nativeView.focus()
               setTimeout(
                 ( e ) => Utils.ad.showSoftInput( this.$refs.ingredient[ index + 1 ].nativeView.android ), 10 )
@@ -382,8 +377,7 @@ export default {
           },
           backstackVisible: false,
         } )
-      }
-      else this.$navigateBack()
+      } else this.$navigateBack()
     },
     navigateBack() {
       if ( this.hasChanges ) {
@@ -402,8 +396,7 @@ export default {
             this.releaseBackEvent()
           }
         } )
-      }
-      else {
+      } else {
         this.navigateBackController()
         this.releaseBackEvent()
       }
@@ -434,14 +427,12 @@ export default {
           this.blockModal = false
           if ( action ) {
             this.permissionCheck( this.permissionConfirmation, this.imagePicker )
-          }
-          else if ( action != null ) {
+          } else if ( action != null ) {
             this.recipeContent.imageSrc = null
             this.releaseBackEvent()
           }
         } )
-      }
-      else {
+      } else {
         this.permissionCheck( this.permissionConfirmation, this.imagePicker )
       }
     },
@@ -476,8 +467,7 @@ export default {
             } )
           }
         } )
-      }
-      else {
+      } else {
         Permissions.check( "photo" ).then( ( res ) => {
           res[ 0 ] !== "authorized" ? confirmation().then( ( e ) => e && utils.openAppSettingsPage() ) : action()
         } )
@@ -533,8 +523,7 @@ export default {
             this.recipeContent.ingredients.splice( index, 1 )
           }
         } )
-      }
-      else this.recipeContent.ingredients.splice( index, 1 )
+      } else this.recipeContent.ingredients.splice( index, 1 )
     },
     addInstruction() {
       this.recipeContent.instructions.push( "" )
@@ -544,8 +533,7 @@ export default {
         this.fieldDeletionConfirm( "Remove instruction?" ).then( ( res ) => {
           res && this.recipeContent.instructions.splice( index, 1 )
         } )
-      }
-      else this.recipeContent.instructions.splice( index, 1 )
+      } else this.recipeContent.instructions.splice( index, 1 )
     },
     getCombinationTitle( id ) {
       return this.recipes.filter( ( e ) => e.id === id )[ 0 ].title
@@ -584,8 +572,7 @@ export default {
         this.fieldDeletionConfirm( "Remove note?" ).then( ( res ) => {
           if ( res ) this.recipeContent.notes.splice( index, 1 )
         } )
-      }
-      else this.recipeContent.notes.splice( index, 1 )
+      } else this.recipeContent.notes.splice( index, 1 )
     },
     // SAVE OPERATION
     clearEmptyFields() {
@@ -616,8 +603,7 @@ export default {
         if ( this.tempRecipeContent.imageSrc && this.tempRecipeContent.imageSrc !== this.recipeContent.imageSrc ) {
           getFileAccess().deleteFile( this.tempRecipeContent.imageSrc )
         }
-      }
-      else if ( this.tempRecipeContent.imageSrc ) {
+      } else if ( this.tempRecipeContent.imageSrc ) {
         getFileAccess().deleteFile( this.tempRecipeContent.imageSrc )
       }
       this.unSyncCombinationsAction( {
@@ -627,13 +613,13 @@ export default {
       this.saveRecipe()
     },
     saveRecipe() {
+      console.log( this.recipeContent.ingredients );
       if ( this.recipeID ) {
         this.overwriteRecipeAction( {
           id: this.recipeID,
           recipe: this.recipeContent,
         } )
-      }
-      else {
+      } else {
         this.recipeContent.id = this.newRecipeID
         this.addRecipeAction( {
           id: this.newRecipeID,
@@ -655,8 +641,7 @@ export default {
       let recipe = this.recipes.filter( ( e ) => e.id === this.recipeID )[ 0 ]
       Object.assign( this.recipeContent, JSON.parse( JSON.stringify( recipe ) ) )
       Object.assign( this.tempRecipeContent, JSON.parse( JSON.stringify( this.recipeContent ) ) )
-    }
-    else {
+    } else {
       if ( this.selectedCategory ) this.recipeContent.category = this.selectedCategory
       if ( this.filterFavourites ) this.recipeContent.isFavorite = true
       Object.assign( this.tempRecipeContent, JSON.parse( JSON.stringify( this.recipeContent ) ) )

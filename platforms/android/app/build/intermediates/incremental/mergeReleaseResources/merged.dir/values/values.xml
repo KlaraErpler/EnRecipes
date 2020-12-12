@@ -752,6 +752,7 @@
     <string name="Categories">"Categories"</string>
     <string name="Category">"Category"</string>
     <string name="Combinations">"Combinations"</string>
+    <string name="Contributors">"Contributors"</string>
     <string name="Cup">"Cup"</string>
     <string name="DELETE">"DELETE"</string>
     <string name="DISCARD">"DISCARD"</string>
@@ -883,6 +884,7 @@
     <string name="_Start_adding_your_recipes__rwnVV">"Start adding your recipes!"</string>
     <string name="_Supports_full_backups_exported_by_this_app_ZYs4f2">"Supports full backups exported by this app"</string>
     <string name="_System_default_Z1jruVS">"System default"</string>
+    <string name="_Translations__1IFwAu">"Translations:"</string>
     <string name="_Try_Later_If7PG">"Try Later"</string>
     <string name="_Unsaved_changes_9fqb4">"Unsaved changes"</string>
     <string name="_Use_the_pencil_button_to_add_some_combinations_6NhFS">"Use the pencil button to add some combinations"</string>

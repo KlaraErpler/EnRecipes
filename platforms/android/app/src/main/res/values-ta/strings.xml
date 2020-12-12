@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="_Translations__1IFwAu">"மொழிபெயர்ப்புகள்:"</string>
+  <string name="Contributors">"பங்களிப்பாளர்கள்"</string>
   <string name="_Shared_via_EnRecipes__Get_it_on_Play_Store_or_F_Droid__Z2oTOK1">"என்ரெசிபீஸ் வழியாக பகிரப்பட்டது. அதை ப்ளே ஸ்டோர் அல்லது எஃப்-டிரயோடு இருந்து பெறுங்கள்."</string>
   <string name="_Permission_denied_Z7wlWK">"அனுமதி மறுக்கப்பட்டது"</string>
   <string name="_Import_successful_2bLM3e">"வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது"</string>

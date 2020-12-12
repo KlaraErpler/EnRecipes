@@ -13,6 +13,7 @@
     <string name="Categories">"வகைகள்"</string>
     <string name="Category">"வகை"</string>
     <string name="Combinations">"சேர்க்கைகள்"</string>
+    <string name="Contributors">"பங்களிப்பாளர்கள்"</string>
     <string name="Cup">"கோப்பை"</string>
     <string name="DELETE">"நீக்கு"</string>
     <string name="DISCARD">"நிராகரி"</string>
@@ -144,6 +145,7 @@
     <string name="_Start_adding_your_recipes__rwnVV">"உங்கள் சமையல் குறிப்புகளைச் சேர்க்கத் தொடங்குங்கள்!"</string>
     <string name="_Supports_full_backups_exported_by_this_app_ZYs4f2">"இந்த பயன்பாட்டின் மூலம் ஏற்றுமதி செய்யப்பட்ட முழு காப்புப்பிரதிகளை ஆதரிக்கும்"</string>
     <string name="_System_default_Z1jruVS">"கணினி இயல்புநிலை"</string>
+    <string name="_Translations__1IFwAu">"மொழிபெயர்ப்புகள்:"</string>
     <string name="_Try_Later_If7PG">"பின்னர் முயற்சிக்க"</string>
     <string name="_Unsaved_changes_9fqb4">"சேமிக்கப்படாத மாற்றங்கள்"</string>
     <string name="_Use_the_pencil_button_to_add_some_combinations_6NhFS">"சில சேர்க்கைகளைச் சேர்க்க பென்சில் பொத்தானைப் பயன்படுத்தவும்"</string>

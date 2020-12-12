@@ -1,0 +1,2 @@
+- Fixed: Ingredients unit getting reset on save
+- Added app language: Deutsch. More languages coming soon!

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="_Translations__1IFwAu">"Translations:"</string>
+  <string name="Contributors">"Contributors"</string>
   <string name="_Shared_via_EnRecipes__Get_it_on_Play_Store_or_F_Droid__Z2oTOK1">"Shared via EnRecipes. Get it on Play Store or F-Droid."</string>
   <string name="_Permission_denied_Z7wlWK">"Permission denied"</string>
   <string name="_Import_successful_2bLM3e">"Import successful"</string>

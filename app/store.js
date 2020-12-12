@@ -10,90 +10,15 @@ const EnRecipesDB = new Couchbase("EnRecipes")
 const userCategoriesDB = new Couchbase("userCategories")
 const userYieldUnitsDB = new Couchbase("userYieldUnits")
 const mealPlansDB = new Couchbase("mealPlans")
-
 Vue.use(Vuex)
-
-const defaultCategories = [
-  "Appetizers",
-  "Barbecue",
-  "Beverages",
-  "Breads",
-  "Breakfast",
-  "Desserts",
-  "Dinner",
-  "Drinks",
-  "Healthy",
-  "Lunch",
-  "Main dishes",
-  "Meat",
-  "Noodles",
-  "Pasta",
-  "Poultry",
-  "Rice",
-  "Salads",
-  "Sauces",
-  "Seafood",
-  "Side dishes",
-  "Snacks",
-  "Soups",
-  "Undefined",
-  "Vegan",
-  "Vegetarian",
-]
-const defaultYieldUnits = [
-  "Serving",
-  "Piece",
-  "Teaspoon",
-  "Tablespoon",
-  "Fluid Ounce",
-  "Ounce",
-  "Pound",
-  "Gram",
-  "Kilogram",
-  "Cup",
-  "Gallon",
-  "Millilitre",
-  "Litre",
-  "Roll",
-  "Patty",
-  "Loaf",
-]
-
+const defaultCategories = ["Appetizers", "Barbecue", "Beverages", "Breads", "Breakfast", "Desserts", "Dinner", "Drinks", "Healthy", "Lunch", "Main dishes", "Meat", "Noodles", "Pasta", "Poultry", "Rice", "Salads", "Sauces", "Seafood", "Side dishes", "Snacks", "Soups", "Undefined", "Vegan", "Vegetarian", ]
+const defaultYieldUnits = ["Serving", "Piece", "Teaspoon", "Tablespoon", "Fluid Ounce", "Ounce", "Pound", "Gram", "Kilogram", "Cup", "Gallon", "Millilitre", "Litre", "Roll", "Patty", "Loaf", ]
 export default new Vuex.Store({
   state: {
     recipes: [],
     categories: [],
     userCategories: [],
-    units: [
-      "unit",
-      "tsp",
-      "dsp",
-      "tbsp",
-      "fl oz",
-      "cup",
-      "pt",
-      "qt",
-      "gal",
-      "ml",
-      "l",
-      "oz",
-      "lb",
-      "mg",
-      "g",
-      "kg",
-      "cm",
-      "in",
-      "leaf",
-      "clove",
-      "piece",
-      "pinch",
-      "drop",
-      "dozen",
-      "stick",
-      "small",
-      "medium",
-      "large",
-    ],
+    units: ["unit", "tsp", "dsp", "tbsp", "fl oz", "cup", "pt", "qt", "gal", "ml", "l", "oz", "lb", "mg", "g", "kg", "cm", "in", "leaf", "clove", "piece", "pinch", "drop", "dozen", "stick", "small", "medium", "large", ],
     yieldUnits: [],
     userYieldUnits: [],
     mealPlans: [],
@@ -147,6 +72,9 @@ export default new Vuex.Store({
       locale: 'en',
       title: 'English'
     }, {
+      locale: 'de',
+      title: 'Deutsch'
+    }, {
       locale: 'ta',
       title: 'தமிழ்'
     }, ]
@@ -164,19 +92,13 @@ export default new Vuex.Store({
         select: []
       }).length
       if (isCategoriesStored) {
-        state.userCategories = userCategoriesDB.getDocument(
-          "userCategories"
-        ).userCategories
+        state.userCategories = userCategoriesDB.getDocument("userCategories").userCategories
         let categoriesWithRecipes = state.recipes.map((e) => e.category)
-        state.userCategories = state.userCategories.filter((e) =>
-          categoriesWithRecipes.includes(e)
-        )
+        state.userCategories = state.userCategories.filter((e) => categoriesWithRecipes.includes(e))
       } else {
         userCategoriesDB.createDocument({
-            userCategories: []
-          },
-          "userCategories"
-        )
+          userCategories: []
+        }, "userCategories")
       }
       state.categories = [...defaultCategories, ...state.userCategories]
       state.categories.sort()
@@ -186,19 +108,13 @@ export default new Vuex.Store({
         select: []
       }).length
       if (isYieldUnitsStored) {
-        state.userYieldUnits = userYieldUnitsDB.getDocument(
-          "userYieldUnits"
-        ).userYieldUnits
+        state.userYieldUnits = userYieldUnitsDB.getDocument("userYieldUnits").userYieldUnits
         let yieldUnitsWithRecipes = state.recipes.map((e) => e.yield.unit)
-        state.userYieldUnits = state.userYieldUnits.filter((e) =>
-          yieldUnitsWithRecipes.includes(e)
-        )
+        state.userYieldUnits = state.userYieldUnits.filter((e) => yieldUnitsWithRecipes.includes(e))
       } else {
         userYieldUnitsDB.createDocument({
-            userYieldUnits: []
-          },
-          "userYieldUnits"
-        )
+          userYieldUnits: []
+        }, "userYieldUnits")
       }
       state.yieldUnits = [...defaultYieldUnits, ...state.userYieldUnits]
     },
@@ -214,24 +130,20 @@ export default new Vuex.Store({
         }, "mealPlans")
       }
     },
-
     importRecipes(state, recipes) {
       let localRecipesIDs, partition
       if (state.recipes.length) {
         localRecipesIDs = state.recipes.map((e) => e.id)
         partition = recipes.reduce(
           (result, recipe, i) => {
-            localRecipesIDs.indexOf(recipe.id) < 0 ?
-              result[0].push(recipe) // create candidates
-              :
-              result[1].push(recipe) // update candidates
+            localRecipesIDs.indexOf(recipe.id) < 0 ? result[0].push(recipe) // create candidates
+              : result[1].push(recipe) // update candidates
             return result
           },
           [
             [],
             []
-          ]
-        )
+          ])
         if (partition[0].length) createDocuments(partition[0])
         if (partition[1].length) updateDocuments(partition[1])
       } else {
@@ -261,13 +173,11 @@ export default new Vuex.Store({
       function updateDocuments(data) {
         data = getUpdatedData(data)
         data.forEach((recipe) => {
-          let recipeIndex = state.recipes
-            .map((e, i) => {
-              let d1 = new Date(e.lastModified).getTime()
-              let d2 = new Date(recipe.lastModified).getTime()
-              return e.id === recipe.id && d1 < d2 ? i : -1
-            })
-            .filter((e) => e >= 0)[0]
+          let recipeIndex = state.recipes.map((e, i) => {
+            let d1 = new Date(e.lastModified).getTime()
+            let d2 = new Date(recipe.lastModified).getTime()
+            return e.id === recipe.id && d1 < d2 ? i : -1
+          }).filter((e) => e >= 0)[0]
           if (recipeIndex >= 0) {
             Object.assign(state.recipes[recipeIndex], recipe)
             EnRecipesDB.updateDocument(recipe.id, recipe)
@@ -292,17 +202,13 @@ export default new Vuex.Store({
     },
     importMealPlans(state, mealPlans) {
       let newMealPlans = mealPlans.filter(
-        (e) =>
-        !state.mealPlans.some(
-          (f) => f.title === e.title && f.startDate === e.startDate
-        )
-      )
+        (e) => !state.mealPlans.some(
+          (f) => f.title === e.title && f.startDate === e.startDate))
       state.mealPlans = [...state.mealPlans, ...newMealPlans]
       mealPlansDB.updateDocument("mealPlans", {
         mealPlans: [...state.mealPlans],
       })
     },
-
     addRecipe(state, {
       id,
       recipe
@@ -345,7 +251,6 @@ export default new Vuex.Store({
         mealPlans: [...state.mealPlans],
       })
     },
-
     deleteRecipe(state, {
       index,
       id
@@ -378,14 +283,11 @@ export default new Vuex.Store({
         mealPlans: [...mealPlans],
       })
     },
-
     overwriteRecipe(state, {
       id,
       recipe
     }) {
-      let index = state.recipes.indexOf(
-        state.recipes.filter((e) => e.id === id)[0]
-      )
+      let index = state.recipes.indexOf(state.recipes.filter((e) => e.id === id)[0])
       Object.assign(state.recipes[index], recipe)
       EnRecipesDB.updateDocument(id, recipe)
     },
@@ -395,9 +297,7 @@ export default new Vuex.Store({
       key,
       setDate
     }) {
-      let index = state.recipes.indexOf(
-        state.recipes.filter((e) => e.id === id)[0]
-      )
+      let index = state.recipes.indexOf(state.recipes.filter((e) => e.id === id)[0])
       state.recipes[index][key] = !state.recipes[index][key]
       if (setDate) state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(id, recipe)
@@ -406,9 +306,7 @@ export default new Vuex.Store({
       id,
       recipe
     }) {
-      let index = state.recipes.indexOf(
-        state.recipes.filter((e) => e.id === id)[0]
-      )
+      let index = state.recipes.indexOf(state.recipes.filter((e) => e.id === id)[0])
       state.recipes[index].tried = true
       state.recipes[index].lastTried = new Date()
       EnRecipesDB.updateDocument(id, recipe)
@@ -475,7 +373,6 @@ export default new Vuex.Store({
     }) {
       commit("initializeMealPlans")
     },
-
     importRecipesAction({
       commit
     }, recipes) {
@@ -496,7 +393,6 @@ export default new Vuex.Store({
     }, mealPlans) {
       commit("importMealPlans", mealPlans)
     },
-
     addRecipeAction({
       commit
     }, recipe) {
@@ -517,7 +413,6 @@ export default new Vuex.Store({
     }, mealPlan) {
       commit("addMealPlan", mealPlan)
     },
-
     deleteMealPlanAction({
       commit
     }, mealPlan) {
@@ -528,7 +423,6 @@ export default new Vuex.Store({
     }, recipe) {
       commit("deleteRecipe", recipe)
     },
-
     overwriteRecipeAction({
       commit
     }, updatedRecipe) {

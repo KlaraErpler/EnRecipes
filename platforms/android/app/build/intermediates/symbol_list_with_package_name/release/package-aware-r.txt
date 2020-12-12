@@ -1475,7 +1475,6 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable camera
-drawable check
 drawable design_bottom_navigation_item_background
 drawable design_fab_background
 drawable design_ic_visibility
@@ -2112,6 +2111,7 @@ string CONTINUE
 string Categories
 string Category
 string Combinations
+string Contributors
 string Cup
 string DELETE
 string DISCARD
@@ -2243,6 +2243,7 @@ string _Sort_by_Zq01TF
 string _Start_adding_your_recipes__rwnVV
 string _Supports_full_backups_exported_by_this_app_ZYs4f2
 string _System_default_Z1jruVS
+string _Translations__1IFwAu
 string _Try_Later_If7PG
 string _Unsaved_changes_9fqb4
 string _Use_the_pencil_button_to_add_some_combinations_6NhFS

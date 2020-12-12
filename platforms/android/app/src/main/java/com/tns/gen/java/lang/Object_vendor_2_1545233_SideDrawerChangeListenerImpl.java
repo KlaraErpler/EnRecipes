@@ -5,10 +5,10 @@
  */
 package com.tns.gen.java.lang;
 
-public class Object_vendor_2_1545231_SideDrawerChangeListenerImpl extends java.lang.Object
+public class Object_vendor_2_1545233_SideDrawerChangeListenerImpl extends java.lang.Object
     implements com.tns.NativeScriptHashCodeProvider,
         com.telerik.android.primitives.widget.sidedrawer.DrawerChangeListener {
-  public Object_vendor_2_1545231_SideDrawerChangeListenerImpl() {
+  public Object_vendor_2_1545233_SideDrawerChangeListenerImpl() {
     super();
     com.tns.Runtime.initInstance(this);
   }

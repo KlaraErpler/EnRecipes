@@ -2,14 +2,14 @@
 	"@nativescript-community/ui-material-button": {
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/include.gradle": "aa9556ead0428a00cf38da660884c16334afaf04",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button.xml": "3af1596c168b216b5554cce0a5785ecedda84fc1",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_flat_icon.xml": "f20b2f5879c767a84e64609c8a98a217c4d35faf",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_flat.xml": "416b334bc8a4c74dd2f85996c1fc29a7f3f7423d",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_flat_icon.xml": "f20b2f5879c767a84e64609c8a98a217c4d35faf",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_icon.xml": "459d986fcaa1c27d789fb89fac5b90be23f7940d",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_outline_icon.xml": "a4699f1a2a65d184638233714b95d45b0c26fb07",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_outline.xml": "e2b838c88048616006216e1d89ce324a0c14a7d7",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_outline_icon.xml": "a4699f1a2a65d184638233714b95d45b0c26fb07",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_text.xml": "11f39271e457bdbe466454e6d2b321aa590c58df",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/values/materialbuttonstyles.xml": "8a1f523878b2ad3ec92c3df5c69ed86e6bee5a24",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/layout/material_button_text_icon.xml": "221d0ee71b569721b2f9ebae01beecad8c4b3802",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/res/values/materialbuttonstyles.xml": "8a1f523878b2ad3ec92c3df5c69ed86e6bee5a24",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-button/platforms/android/ui_material_button.aar": "8f1cf1ee77462d7806909cfddac8412547ec5433"
 	},
 	"@nativescript/core": {
@@ -17,8 +17,8 @@
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript/core/platforms/android/widgets-release.aar": "ea387e7a96a4ccb0df5c645b313c5dcf8042a0bb"
 	},
 	"@nativescript/social-share": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript/social-share/platforms/android/res/xml/provider_paths.xml": "dbe562dfa44616ea40d88a3cbd74b3e8f44c54f3",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript/social-share/platforms/android/AndroidManifest.xml": "ca6e2ceca22448641563fa6f6c773ef10b292e10",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript/social-share/platforms/android/res/xml/provider_paths.xml": "dbe562dfa44616ea40d88a3cbd74b3e8f44c54f3",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript/social-share/platforms/android/social_share.aar": "3d89f16bd7f2490c09bb8eab1d74e9f88033ffe5"
 	},
 	"@nativescript/zip": {
@@ -29,12 +29,12 @@
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-couchbase-plugin/platforms/android/include.gradle": "697825ccd0e49caa429d63214894357437919716"
 	},
 	"nativescript-feedback": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-feedback/platforms/android/nativescript_feedback.aar": "6bb6b05373f74debd4f7fb0f47794a240794cc40",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-feedback/platforms/android/include.gradle": "162f973f93b517e2be13dfabf0a4c6d6d0020aac"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-feedback/platforms/android/include.gradle": "162f973f93b517e2be13dfabf0a4c6d6d0020aac",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-feedback/platforms/android/nativescript_feedback.aar": "6bb6b05373f74debd4f7fb0f47794a240794cc40"
 	},
 	"nativescript-imagecropper": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-imagecropper/platforms/android/include.gradle": "61ad278ee80be73a906afb5eddd2126c585ba549",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-imagecropper/platforms/android/AndroidManifest.xml": "de9e14f14dae0473e1f887952a39df5e32951275",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-imagecropper/platforms/android/include.gradle": "61ad278ee80be73a906afb5eddd2126c585ba549",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-imagecropper/platforms/android/nativescript_imagecropper.aar": "1cbfff3087414762c1785e5bbfccd593bc3331e2"
 	},
 	"nativescript-plugin-filepicker": {
@@ -43,34 +43,34 @@
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-plugin-filepicker/platforms/android/nativescript_plugin_filepicker.aar": "e53441dd997d4849f45247b4b4eda20fac860b5d"
 	},
 	"nativescript-ui-calendar": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-calendar/platforms/android/TNSCalendar-release.aar": "7c0dd1f9120ddeae8c09c2b03423889c1250f541",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-calendar/platforms/android/typings/calendar.d.ts": "6e196553478b7d7fbe92645b60d0ac7bfa5339db"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-calendar/platforms/android/typings/calendar.d.ts": "6e196553478b7d7fbe92645b60d0ac7bfa5339db",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-calendar/platforms/android/TNSCalendar-release.aar": "7c0dd1f9120ddeae8c09c2b03423889c1250f541"
 	},
 	"nativescript-ui-listview": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-listview/platforms/android/typings/listview.d.ts": "d3b76f21820076bdd93468055d6da69e9b41d98e",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-listview/platforms/android/include.gradle": "47ffe675113a982585b2386750b2d4305b66b6ca",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-listview/platforms/android/typings/listview.d.ts": "d3b76f21820076bdd93468055d6da69e9b41d98e",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-listview/platforms/android/TNSListView-release.aar": "e9677c69bc3e7fa63aee988efe824a992c1fc0ab"
 	},
 	"nativescript-ui-sidedrawer": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-sidedrawer/platforms/android/typings/sidedrawer.d.ts": "8256a2295125597755fe6a6faee866b0750e65f2",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-sidedrawer/platforms/android/TNSSideDrawer-release.aar": "ae03340e741bdf430de4849d4dd117bf07197851"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-sidedrawer/platforms/android/TNSSideDrawer-release.aar": "ae03340e741bdf430de4849d4dd117bf07197851",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-sidedrawer/platforms/android/typings/sidedrawer.d.ts": "8256a2295125597755fe6a6faee866b0750e65f2"
 	},
 	"@nativescript-community/ui-material-core": {
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-core/platforms/android/include.gradle": "ec90dc697edab3c184ec95b0a42c9f206900f048",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-core/platforms/android/res/layout/material_page.xml": "29f912255e893697d6abd438f67a854149136292",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-core/platforms/android/ui_material_core.aar": "3fe79b5007be09ca25466ea2c7021d86fd664dca",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-core/platforms/android/include.gradle": "ec90dc697edab3c184ec95b0a42c9f206900f048"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/ui-material-core/platforms/android/ui_material_core.aar": "3fe79b5007be09ca25466ea2c7021d86fd664dca"
 	},
 	"@nativescript-community/text": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/Font.java": "fb4d246ad367d178e11ef08c34ec182418d30890",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/AndroidManifest.xml": "b80912f909195692d3bd071566274feba0b37660",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/URLSpanNoUnderline.java": "f1535d3e8cdd10b6d25a906a658fd4b77a836b20",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/text.aar": "da95e8963059120f05961c45e7774f63b62a697d",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/CustomBackgroundSpan.java": "ae9e0e6d699e669f96ed7042f2145a1ab0bf6727",
 		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/CustomTypefaceSpan.java": "421f984280aa806183057f2ddd53febdbc32d2b1",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/HtmlToSpannedConverter.java": "38643430e4b8cac690b89a07adc3a86f7060f93d"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/Font.java": "fb4d246ad367d178e11ef08c34ec182418d30890",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/HtmlToSpannedConverter.java": "38643430e4b8cac690b89a07adc3a86f7060f93d",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/java/com/nativescript/text/URLSpanNoUnderline.java": "f1535d3e8cdd10b6d25a906a658fd4b77a836b20",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/@nativescript-community/text/platforms/android/text.aar": "da95e8963059120f05961c45e7774f63b62a697d"
 	},
 	"nativescript-ui-core": {
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-core/platforms/android/typings/core.d.ts": "5c032652edfa1719ef8c8190fc0f66d3b1c313c2",
-		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-core/platforms/android/TNSCore-release.aar": "0e2fe0b867821ad56b8f0b9c8ac4c90f4c399e3c"
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-core/platforms/android/TNSCore-release.aar": "0e2fe0b867821ad56b8f0b9c8ac4c90f4c399e3c",
+		"/mnt/82e5ff15-70b8-44a5-bb66-55688fc2381f/Freelance/Projects/WIP/EnRecipes/Developement/EnRecipes-App/node_modules/nativescript-ui-core/platforms/android/typings/core.d.ts": "5c032652edfa1719ef8c8190fc0f66d3b1c313c2"
 	}
 }

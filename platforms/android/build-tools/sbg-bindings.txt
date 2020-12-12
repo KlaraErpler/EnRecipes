@@ -65,7 +65,7 @@ androidx.viewpager.widget.PagerAdapter*vendor*2*1025271*FragmentPagerAdapter*get
 org.nativescript.widgets.TabsBar*vendor*2*1027832*TabsBarImplementation*onSelectedPositionChange,onTap***
 java.lang.Object*vendor*2*1037367*TimeChangedListenerImpl*onTimeChanged***android.widget.TimePicker.OnTimeChangedListener
 android.webkit.WebViewClient*vendor*2*1039000*WebViewClientImpl*shouldOverrideUrlLoading,onPageStarted,onPageFinished,onReceivedError***
-java.lang.Object*vendor*2*1545231*SideDrawerChangeListenerImpl*onDrawerOpening,onDrawerOpened,onDrawerClosing,onDrawerClosed,onDrawerPan***com.telerik.android.primitives.widget.sidedrawer.DrawerChangeListener
+java.lang.Object*vendor*2*1545233*SideDrawerChangeListenerImpl*onDrawerOpening,onDrawerOpened,onDrawerClosing,onDrawerClosed,onDrawerPan***com.telerik.android.primitives.widget.sidedrawer.DrawerChangeListener
 android.view.View.OnLayoutChangeListener*vendor*2*86886**onLayoutChange***
 android.view.ViewTreeObserver.OnGlobalLayoutListener*vendor*2*110510**onGlobalLayout***
 android.app.Application.ActivityLifecycleCallbacks*vendor*2*110815**onActivityCreated,onActivityDestroyed,onActivityPaused,onActivityResumed,onActivitySaveInstanceState,onActivityStarted,onActivityStopped***
@@ -99,4 +99,4 @@ android.view.View.OnClickListener*vendor*2*1065004**onClick***
 com.tapadoo.alerter.OnShowAlertListener*vendor*2*1065143**onShow***
 com.tapadoo.alerter.OnHideAlertListener*vendor*2*1065243**onHide***
 android.widget.CompoundButton.OnCheckedChangeListener*vendor*2*1073061**onCheckedChanged***
-android.view.Choreographer.FrameCallback*vendor*2*1551401**doFrame***
+android.view.Choreographer.FrameCallback*vendor*2*1551403**doFrame***
